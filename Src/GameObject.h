@@ -16,6 +16,9 @@ public:
     y (y)
     { }
 
+    int getX() { return x; }
+    int getY() { return y; }
+
 protected:
     int x;
     int y;
