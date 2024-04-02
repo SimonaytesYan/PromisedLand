@@ -16,8 +16,12 @@ public:
  
     void draw(RenderTarget& render_target) override
     {
-        render_target.drawCircle(x, y, kFieldSize, kBackgroundColor);
+        static Texture texture(kTexturePath);
+        render_target.drawTexture(x, y, texture);
     }
+
+private:
+    const char* kTexturePath = "Assets/sawmill.png";
 
 private:
     const sf::Color kBackgroundColor = sf::Color(124, 252, 0);
