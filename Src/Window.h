@@ -1,8 +1,8 @@
 #pragma once
 
 #include "GameObject.h"
-// #include "../StlVector/Src/Vector.hpp"
-#include <vector>
+#include "../StlVector/Src/Vector.hpp"
+// #include <vector>
 
 const size_t kDefaultWindowSize = 100;
 
@@ -32,5 +32,5 @@ public:
 private:
     size_t x_size;
     size_t y_size; 
-    std::vector<GameObject*> child;
+    Vector<GameObject*> child;
 };
