@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../GameObject.h"
 #include <functional>
+
+#include "../GameObject.h"
 
 typedef void (*Function)(void* args);
 
@@ -27,17 +28,17 @@ class Button : GameObject
 {
 public:
     Button(int x, int y, size_t x_len, size_t y_len, const Functor& func, 
-           sf::Color background_color) :
+           const char* imp_path) :
     GameObject       (x, y),
     x_len            (x_len),
     y_len            (y_len),
     on_click         (func),
-    background_color (background_color)
+    texture          (imp_path)
     { }
     
     void draw(RenderTarget& render_target)
     {
-        render_target.drawRect(x, y, x_len, y_len, background_color);
+        render_target.drawTexture(x, y, texture);
     }
 
     bool onClick(int press_x, int press_y)
@@ -55,9 +56,8 @@ public:
     { }
 
 private:
-    size_t    x_len;
-    size_t    y_len;
-    sf::Color background_color;
-
+    size_t  x_len;
+    size_t  y_len;
+    Texture texture;
     Functor on_click;
 };
