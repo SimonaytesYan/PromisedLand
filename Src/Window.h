@@ -31,6 +31,6 @@ public:
 
 private:
     size_t x_size;
-    size_t y_size; 
+    size_t y_size;
     Vector<GameObject*> child;
 };

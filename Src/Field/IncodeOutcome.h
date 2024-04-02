@@ -1,14 +1,14 @@
 #pragma once
 
-#define BUILDING(name, building_res, tick_res, texture_path)    \
-    class name : public Building                                \
+#define FIELD(name, appear_res, tick_res, texture_path)          \
+    class name : public Field                                   \
     {                                                           \
     public:                                                     \
-        name(int x, int y) : Building(x, y)                     \
+        name(int x, int y) : Field(x, y)                        \
         { }                                                     \
                                                                 \
-        Resources getBuildingIncome() override                  \
-        { return building_res; }                                \
+        Resources getAppearIncome() override                    \
+        { return appear_res; }                                \
                                                                 \
         Resources getTickIncome() override                      \
         { return tick_res; }                                    \

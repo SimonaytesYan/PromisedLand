@@ -4,12 +4,11 @@
 #include <SFML/Graphics.hpp>
 
 #include "Field/Field.h"
-#include "Field/Building/Buildings.h"
+#include "Field/Fields.h"
 #include "Window.h"
 #include "WindowManager.h"
 #include "RenderTarget.h"
 #include "ResourcesManager.h"
-#include "Field/Building/IncodeOutcome.h"
 #include "TextView/TextView.hpp"
 #include "TextView/ResourceBar.hpp"
 
@@ -20,7 +19,7 @@ const int   kMSInClock     = 1000;
 
 const std::function<Field*(int, int)> kFieldGenerators[] = 
 {
-	[](int x, int y) { return new Field   (x, y); },
+	[](int x, int y) { return new Grass   (x, y); },
 	[](int x, int y) { return new Windmill(x, y); },
 	[](int x, int y) { return new Well    (x, y); },
 	[](int x, int y) { return new Sawmill (x, y); },
@@ -47,7 +46,7 @@ void generateField(Window& window, ResourcesManager& resource_man, const sf::Vec
 			window.addChild(cell);
 			
 			// TODO: make better
-			if (cell_type != 0) resource_man.addBuilding(static_cast<Building*>(cell));
+			if (cell_type != 0) resource_man.addField(static_cast<Field*>(cell));
 		}
 	}
 }

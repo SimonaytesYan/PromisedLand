@@ -19,6 +19,11 @@ public:
         func(args);
     }
 
+    ~Functor()
+    {
+        delete args;
+    }
+
 protected:
     Function func;
     void*    args;

@@ -1,25 +1,24 @@
 #pragma once
-#include "Field/Building/Building.h"
+#include "Field/Field.h"
+#include "Field/Fields.h"
 
 class BuildingManager
 {
 public:
 
     BuildingManager() :
-    current (nullptr)
+    current (FieldType::Error)
     {}
 
-    void setBuildingType(Building* building)
-    {
-        current = building;
-    }
+    void setFieldType(FieldType building)
+    { current = building; }
 
-    Building* getBuildingType()
+    FieldType getFieldType()
     { return current; }
 
-    bool buildingTypeSetted()
-    { return current == nullptr; }
+    bool FieldTypeSetted()
+    { return current == FieldType::Error; }
 
 private:
-    Building* current;
+    FieldType current;
 };

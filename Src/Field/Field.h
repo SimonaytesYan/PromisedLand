@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../GameObject.h"
+#include "../Resources.h"
 
 const size_t kFieldSize = 64;
 
@@ -16,12 +17,17 @@ public:
         render_target.drawTexture(x, y, texture);
     }
 
-    bool onClick(int x, int y) override {}
-    void onTick()              override {}
+    bool onClick(int click_x, int click_y) override 
+    {
+        return x <= click_x && click_x <= x + kFieldSize &&
+               y <= click_y && click_y <= y + kFieldSize;
+    }
+
+    virtual Resources getAppearIncome() = 0;
+    virtual Resources getTickIncome()     = 0;
+
+    void onTick() override {}
 
 private:
     const char* kTexturePath = "Assets/field.png";
-
-private:
-    const sf::Color kBackgroundColor = sf::Color::Green;
 };
