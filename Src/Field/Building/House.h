@@ -2,20 +2,20 @@
 
 #include "Building.h"
 
-class WellBuilding : public Building
+class House : public Building
 {
 public:
     Resources getBuildingIncome() override 
-    { return WELL_BUILDING; }
+    { return HOUSE_BUILDING; }
 
     Resources getTickIncome() override 
-    { return WELL_TICK; }
- 
+    { return HOUSE_TICK; }
+
     void draw(RenderTarget& render_target) override
     {
         render_target.drawCircle(x, y, kFieldSize, kFieldSize, kBackgroundColor);
     }
 
 private:
-    const sf::Color kBackgroundColor = sf::Color(73, 126, 118);
+    const sf::Color kBackgroundColor = sf::Color(111, 79, 40);
 };
