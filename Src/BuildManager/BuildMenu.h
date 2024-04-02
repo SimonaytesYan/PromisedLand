@@ -1,10 +1,13 @@
 #pragma once
 
 #include "../GameObject.h"
-#include "../StlVector/Src/Vector.hpp"
+#include "../../StlVector/Src/Vector.hpp"
 #include "Button.h"
 #include "BuildingManager.h"
 #include "../Field/Fields.h"
+
+class BuildMenu;
+void SetFieldType(void* arg);
 
 struct ButtonArgs
 {
@@ -20,7 +23,7 @@ struct ButtonArgs
 class BuildMenu : public GameObject
 {
 public:
-    BuildMenu(int x, int y, BuildingManager& build_manager) :
+    BuildMenu(int x, int y, BuildingManager* build_manager) :
     GameObject   (x, y),
     build_manager(build_manager)
     {
@@ -37,7 +40,7 @@ public:
     
     void setFieldType(FieldType building)
     {
-        build_manager.setFieldType(building);
+        build_manager->setFieldType(building);
     }
 
     void draw(RenderTarget& render_target) override
@@ -60,7 +63,7 @@ public:
     { }
 
 private:
-    BuildingManager& build_manager;
+    BuildingManager* build_manager;
     Vector<Button> menu;
 };
 

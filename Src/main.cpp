@@ -11,9 +11,11 @@
 #include "ResourcesManager.h"
 #include "TextView/TextView.hpp"
 #include "TextView/ResourceBar.hpp"
+#include "BuildManager/BuildMenu.h"
 
 const char* kWindowHeader  = "Promised Lands";
 const int   kControlPanelH = 150;
+const int   kControlPanelW = 150;
 const int   kTextSize      = 20;
 const int   kMSInClock     = 1000;
 
@@ -26,10 +28,10 @@ const std::function<Field*(int, int)> kFieldGenerators[] =
 	[](int x, int y) { return new House   (x, y); } 
 };
 
-void generateField(Window& window, ResourcesManager& resource_man, const sf::Vector2u window_size)
+void generateField(ResourcesManager& resource_man, const sf::Vector2u window_size)
 {
-	const int x_cell_cnt = window_size.x                    / kFieldSize;
 	// leave space for controls below
+	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
 	const int y_cell_cnt = (window_size.y - kControlPanelH) / kFieldSize;
 
 	const int field_cnt = sizeof(kFieldGenerators) / sizeof(kFieldGenerators[0]);
@@ -40,13 +42,9 @@ void generateField(Window& window, ResourcesManager& resource_man, const sf::Vec
 		{
 			const int cell_x    = i * kFieldSize;
 			const int cell_y    = j * kFieldSize;
-			const int cell_type = rand() % field_cnt;
-			Field* cell = kFieldGenerators[cell_type](cell_x, cell_y);
-
-			window.addChild(cell);
+			Field* cell = new Grass(cell_x, cell_y);  // kFieldGenerators[cell_type](cell_x, cell_y);
 			
-			// TODO: make better
-			if (cell_type != 0) resource_man.addField(static_cast<Field*>(cell));
+			resource_man.addField(static_cast<Field*>(cell));
 		}
 	}
 }
@@ -67,10 +65,15 @@ int main()
 
 	Window 	         game_window;
 	WindowManger     window_manager(game_window);
-	ResourcesManager resource_manager(kStartResources);
+	BuildingManager  build_manager;
+	ResourcesManager resource_manager(kStartResources, &build_manager);
 
-	generateField  (game_window, resource_manager, window.getSize());
+	generateField(resource_manager, window.getSize());
+	game_window.addChild(&resource_manager);
+
 	createInfoPanel(game_window, resource_manager, window.getSize());	
+	game_window.addChild(new BuildMenu(window.getSize().x - kControlPanelW / 2, 100, &build_manager));
+
 
 	auto timer_start = std::chrono::system_clock::now(); 
     while (window.isOpen())
@@ -98,7 +101,7 @@ int main()
 
 				case sf::Event::MouseButtonPressed:
 				{
-
+					game_window.onClick(event.mouseButton.x, event.mouseButton.y);
 				}
 			}
 		}

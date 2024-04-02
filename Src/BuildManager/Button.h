@@ -20,9 +20,7 @@ public:
     }
 
     ~Functor()
-    {
-        delete args;
-    }
+    { }
 
 protected:
     Function func;

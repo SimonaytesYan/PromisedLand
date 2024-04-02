@@ -1,6 +1,6 @@
 #pragma once
-#include "Field/Field.h"
-#include "Field/Fields.h"
+#include "../Field/Field.h"
+#include "../Field/Fields.h"
 
 class BuildingManager
 {
