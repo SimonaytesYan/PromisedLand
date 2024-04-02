@@ -40,6 +40,8 @@ public:
     void display();
     void display(sf::RenderWindow& window);
 
+    void clear(const sf::Color clear_color = sf::Color::Transparent);
+
 private:
     static constexpr char* const kDefaultFont = "Assets/arial.ttf";
     static constexpr char* const kOnOpenError = "Could not open file: ";

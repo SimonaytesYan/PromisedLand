@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "../StlVector/Src/Vector.hpp"
+// #include <vector>
 
 const size_t kDefaultWindowSize = 100;
 
@@ -25,6 +26,8 @@ public:
     void draw(RenderTarget& render_target) override;
     void onClick(int x, int y) override;
     void onTick() override;
+
+    ~Window();
 
 private:
     size_t x_size;

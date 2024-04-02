@@ -107,3 +107,8 @@ void RenderTarget::display(sf::RenderWindow& window)
 
     window.draw(to_draw_on_win);
 }
+
+void RenderTarget::clear(const sf::Color clear_color)
+{
+    rt.clear(clear_color);
+}

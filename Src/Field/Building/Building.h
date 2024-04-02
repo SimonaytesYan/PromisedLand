@@ -2,12 +2,18 @@
 
 #include "IncodeOutcome.h"
 
-#include "Field.h"
-#include "Resources.h"
+#include "../Field.h"
+#include "../../Resources.h"
 
 class Building : public Field
 {
 public:
-    virtual Resources getBuildingIncome();
-    virtual Resources getTickIncome();
+    Building(int x, int y) : Field(x, y)
+    { }
+
+    virtual Resources getBuildingIncome() = 0;
+    virtual Resources getTickIncome()     = 0;
+
+    void onClick(int x, int y) override {}
+    void onTick()              override {}
 };

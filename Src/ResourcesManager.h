@@ -1,15 +1,43 @@
 #pragma once
 
-#include "Building.h"
+#include <iostream>
+
+#include "Field/Building/Building.h"
 #include "Resources.h"
 #include "EventProcessable.h"
-#include "StlVector/Src/Vector.hpp"
+#include "../StlVector/Src/Vector.hpp"
 
 // Every tick update resources from buildings
 // Kill program if population less then zero
 class ResourcesManager : public EventProcessable
 {    
-    void onTick() override;
+public:
+    explicit ResourcesManager(Resources start_resources) 
+      : user_res (start_resources) {}
+
+    void onClick(int x, int y) override {}
+    void onTick()              override 
+    {  
+        for (size_t i = 0; i < buildings.Size(); ++i)
+        {
+            user_res += buildings[i]->getTickIncome();
+        }
+    }
+
+    bool isAlive()
+    {
+        return user_res.food       >= 0 && 
+               user_res.wood       >= 0 && 
+               user_res.water      >= 0 && 
+               user_res.population >= 0;
+    }
+
+    Resources getUserRes()
+    { return user_res; }
+
+    void addBuilding(Building* building) 
+    { buildings.PushBack(building); }
+
 private:
     Resources         user_res;
     Vector<Building*> buildings;
