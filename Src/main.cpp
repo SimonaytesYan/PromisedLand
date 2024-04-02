@@ -89,6 +89,11 @@ int main()
 			timer_start = timer_end;
 		}
 
+		if (!resource_manager.isAlive())
+		{
+			window.close();
+		}
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{

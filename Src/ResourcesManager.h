@@ -83,6 +83,14 @@ public:
         }
     }
 
+    bool isAlive()
+    {
+        return user_res.food       >= 0 && 
+               user_res.wood       >= 0 && 
+               user_res.water      >= 0 && 
+               user_res.population >= 0;
+    }
+
     Resources getUserRes()
     { return user_res; }
 
