@@ -14,8 +14,13 @@ void Window::draw(RenderTarget& render_target)
 bool Window::onClick(int click_x, int click_y)
 {
     const size_t child_num = child.Size();
-    for (size_t i = 0; i < child_num; i++)
-        child[i]->onClick(click_x, click_y);
+    for (size_t i = 0; i < child_num; i++) 
+    {
+        bool res = child[i]->onClick(click_x, click_y);
+        if (res)
+            return true;
+    }
+    return false;
 }
 
 void Window::onTick()

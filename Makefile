@@ -15,13 +15,13 @@ compile_release: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)Window.
 	$(COMPILER) -fPIE $(RELEASE_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Window.o $(OBJ)Utils.o -o $(ELF_FILE)
 
 $(OBJ)RenderTarget.o: $(SRC)RenderTarget.cpp
-	$(COMPILER) -c -fPIE $(RELEASE_FLAGS) $(SRC)RenderTarget.cpp $(SFML_FLAGS) -o $(OBJ)RenderTarget.o
+	$(COMPILER) -fPIE -c $(DEBUG_FLAGS) $(SRC)RenderTarget.cpp $(SFML_FLAGS) -o $(OBJ)RenderTarget.o
 
 $(OBJ)Utils.o: $(SRC)Utils.cpp
-	$(COMPILER) -c $(RELEASE_FLAGS) $(SRC)Utils.cpp -o $(OBJ)Utils.o
+	$(COMPILER) -fPIE -c $(DEBUG_FLAGS) $(SRC)Utils.cpp -o $(OBJ)Utils.o
 	
 $(OBJ)Window.o: $(SRC)Window.cpp
-	$(COMPILER) -c $(RELEASE_FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
+	$(COMPILER) -fPIE -c $(DEBUG_FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
 
 run:
 	./$(ELF_FILE)
