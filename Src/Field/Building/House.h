@@ -5,6 +5,9 @@
 class House : public Building
 {
 public:
+    House(int x, int y) : Building(x, y)
+    { }
+
     Resources getBuildingIncome() override 
     { return HOUSE_BUILDING; }
 

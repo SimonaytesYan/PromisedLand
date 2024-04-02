@@ -5,6 +5,9 @@
 class Sawmill : public Building
 {
 public:
+    Sawmill(int x, int y) : Building(x, y)
+    { }
+
     Resources getBuildingIncome() override 
     { return WINDMILL_BUILDING; }
 
