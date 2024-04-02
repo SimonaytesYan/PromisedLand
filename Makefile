@@ -14,7 +14,7 @@ compile_debug: create_folders
 compile_release: create_folders
 	$(COMPILER) $(RELEASE_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp -o $(ELF_FILE)
 
-run: compile
+run:
 	./$(ELF_FILE)
 
 create_folders:
