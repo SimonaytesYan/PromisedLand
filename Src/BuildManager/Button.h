@@ -26,14 +26,20 @@ protected:
 class Button : GameObject
 {
 
-    Button(int x, int y, size_t x_len, size_t y_len, const Functor& func) :
-    GameObject(x, y),
-    x_len     (x_len),
-    y_len     (y_len),
-    on_click  (func)
+    Button(int x, int y, size_t x_len, size_t y_len, const Functor& func, 
+           sf::Color background_color) :
+    GameObject       (x, y),
+    x_len            (x_len),
+    y_len            (y_len),
+    on_click         (func),
+    background_color (background_color)
     { }
     
-    void draw(RenderTarget& render_target) override;
+    void draw(RenderTarget& render_target)
+    {
+        render_target.drawRect(x, y, x_len, y_len, background_color);
+    }
+
     bool onClick(int press_x, int press_y)
     {
         if (x <= press_x && press_x <= x + x_len &&
@@ -49,8 +55,9 @@ class Button : GameObject
     { }
 
 private:
-    size_t x_len;
-    size_t y_len;
+    size_t    x_len;
+    size_t    y_len;
+    sf::Color background_color;
 
     Functor on_click;
 };
