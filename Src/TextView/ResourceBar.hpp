@@ -35,10 +35,10 @@ private:
 
     void updateValues(const Resources resources)
     {
-        food_view      .setContent(std::to_string(resources.food));
-        water_view     .setContent(std::to_string(resources.water));
-        wood_view      .setContent(std::to_string(resources.wood));
-        population_view.setContent(std::to_string(resources.population));
+        food_view      .setContent("Food: "   + std::to_string(resources.food));
+        water_view     .setContent("Water: "  + std::to_string(resources.water));
+        wood_view      .setContent("Wood: "   + std::to_string(resources.wood));
+        population_view.setContent("People: " + std::to_string(resources.population));
     }
 
 private:
