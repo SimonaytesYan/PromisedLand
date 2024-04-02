@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include "Window.h"
-#include "WindowManager.h"
+// #include "Window.h"
+// #include "WindowManager.h"
 
 #include "RenderTarget.h"
 
@@ -12,8 +12,8 @@ int main()
                             kWindowHeader, sf::Style::Fullscreen);
 
 	
-	Window game_window;
-	WindowManger window_manager();
+	// Window game_window;
+	// WindowManger window_manager();
 	RenderTarget rt(window.getSize().x, window.getSize().y);
 	Texture test_img("Assets/test.jpg");
 
