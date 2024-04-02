@@ -11,8 +11,6 @@
 #include "RenderTarget.h"
 
 const char* kWindowHeader = "Promised Lands";
-const int   kCellWidth    = 50;
-const int   kCellHeight   = 50;
 
 const std::function<Field*(int, int)> kFieldGenerators[] = 
 {
@@ -25,15 +23,16 @@ const std::function<Field*(int, int)> kFieldGenerators[] =
 
 void generateField(Window& window, const sf::Vector2u window_size)
 {
-	int x_cell_cnt = window_size.x / kCellWidth;
-	int y_cell_cnt = window_size.y / kCellHeight;
+	// kFieldSize = radius of circle
+	int x_cell_cnt = window_size.x / (kFieldSize * 2);
+	int y_cell_cnt = window_size.y / (kFieldSize * 2);
 
 	int field_cnt = sizeof(kFieldGenerators) / sizeof(kFieldGenerators[0]);
 
 	for (int i = 0; i <= x_cell_cnt; ++i) {
 		for (int j = 0; j < y_cell_cnt; ++j) {
-			int cell_x = i * kCellWidth;
-			int cell_y = j * kCellHeight;
+			int cell_x = i * kFieldSize * 2;
+			int cell_y = j * kFieldSize * 2;
 			Field* cell = kFieldGenerators[rand() % field_cnt](cell_x, cell_y);
 
 			window.addChild(cell);
