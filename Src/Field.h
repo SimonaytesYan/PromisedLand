@@ -1,12 +1,12 @@
 #pragma once
 
-#include "EventProcessable.h"
+#include "GameObject.h"
 
-class Field : EventProcessable
+class Field : public GameObject
 {
-    virtual void draw();
-//==================EVENTS============= 
-    virtual bool onClick(int x, int y);
+    void draw(RenderTarget& render_target) override; 
+    void onClick(int x, int y) override;
+    void onTick() override;
 };
 
 

@@ -3,5 +3,6 @@
 
 class Drawable
 {
-    virtual void draw(const RenderTarget& render_taget) = 0; 
+public:
+    virtual void draw(RenderTarget& render_target) = 0; 
 };

@@ -1,9 +1,31 @@
-#include "EventProcessable.h"
 
-class Window : EventProcessable
+#include "GameObject.h"
+#include "../StlVector/Src/Vector.hpp"
+
+const size_t kDefaultWindowSize = 100;
+
+class Window : public GameObject
 {
+    Window() :
+    GameObject(),
+    x_size    (kDefaultWindowSize),
+    y_size    (kDefaultWindowSize)
+    { }
 
-    
+    Window(int x, int y, size_t x_size, size_t y_size) :
+    GameObject(x, y),
+    x_size    (x_size),
+    y_size    (y_size)
+    { }
+
+    void addChild(GameObject* new_game_object);
+
+    void draw(RenderTarget& render_target) override;
+    void onClick(int x, int y) override;
+    void onTick() override;
 
 private:
+    size_t x_size;
+    size_t y_size; 
+    Vector<GameObject*> child;
 };
