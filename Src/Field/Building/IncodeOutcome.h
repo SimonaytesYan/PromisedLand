@@ -1,5 +1,7 @@
 #pragma once
 
+const Resources kStartResources(1000, 1000, 1000, 1000);
+
 #define HOUSE_BUILDING    Resources( 0,  0, -15, 5)
 #define WELL_BUILDING     Resources( 0,  0, -10, 0)
 #define WINDMILL_BUILDING Resources( 0,  0, -10, 0)

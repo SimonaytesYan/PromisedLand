@@ -9,7 +9,19 @@
 // Kill program if population less then zero
 class ResourcesManager : public EventProcessable
 {    
-    void onTick() override;
+public:
+    explicit ResourcesManager(Resources start_resources) 
+      : user_res (start_resources) {}
+
+    void onClick(int x, int y) override {}
+    void onTick()              override {}
+
+    Resources getUserRes()
+    { return user_res; }
+
+    void addBuilding(Building* building) 
+    { buildings.PushBack(building); }
+
 private:
     Resources         user_res;
     Vector<Building*> buildings;

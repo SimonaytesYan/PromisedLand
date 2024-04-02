@@ -4,7 +4,7 @@ const sf::Color kBackgroundColor(128, 255, 255);
 
 void Window::draw(RenderTarget& render_target)
 {
-    render_target.drawRect(x, y, x_size, y_size, kBackgroundColor);
+    // render_target.drawRect(x, y, x_size, y_size, kBackgroundColor);
 
     const size_t child_num = child.Size();
     for (size_t i = 0; i < child_num; i++)
