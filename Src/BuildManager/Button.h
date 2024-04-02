@@ -25,7 +25,7 @@ protected:
 
 class Button : GameObject
 {
-
+public:
     Button(int x, int y, size_t x_len, size_t y_len, const Functor& func, 
            sf::Color background_color) :
     GameObject       (x, y),
