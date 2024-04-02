@@ -32,10 +32,9 @@ const std::function<Field*(int, int)> kFieldGenerators[] =
 
 void generateField(Window& window, ResourcesManager& resource_man, const sf::Vector2u window_size)
 {
-	// kFieldSize = radius of circle
-	const int x_cell_cnt = window_size.x                    / (kFieldSize * 2);
+	const int x_cell_cnt = window_size.x                    / kFieldSize;
 	// leave space for controls below
-	const int y_cell_cnt = (window_size.y - kControlPanelH) / (kFieldSize * 2);
+	const int y_cell_cnt = (window_size.y - kControlPanelH) / kFieldSize;
 
 	const int field_cnt = sizeof(kFieldGenerators) / sizeof(kFieldGenerators[0]);
 
@@ -43,8 +42,8 @@ void generateField(Window& window, ResourcesManager& resource_man, const sf::Vec
 	{
 		for (int j = 0; j <= y_cell_cnt; ++j) 
 		{
-			const int cell_x    = i * kFieldSize * 2;
-			const int cell_y    = j * kFieldSize * 2;
+			const int cell_x    = i * kFieldSize;
+			const int cell_y    = j * kFieldSize;
 			const int cell_type = rand() % field_cnt;
 			Field* cell = kFieldGenerators[cell_type](cell_x, cell_y);
 
