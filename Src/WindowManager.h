@@ -3,7 +3,8 @@
 
 class WindowManger
 {
-    WindowManger(Window window) :
+public:
+    WindowManger(Window& window) :
     window (window)
     { }
 

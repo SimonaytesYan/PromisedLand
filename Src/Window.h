@@ -1,7 +1,8 @@
 #pragma once
 
 #include "GameObject.h"
-#include "../StlVector/Src/Vector.hpp"
+// #include "../StlVector/Src/Vector.hpp"
+#include <vector>
 
 const size_t kDefaultWindowSize = 100;
 
@@ -26,8 +27,10 @@ public:
     void onClick(int x, int y) override;
     void onTick() override;
 
+    ~Window();
+
 private:
     size_t x_size;
     size_t y_size; 
-    Vector<GameObject*> child;
+    std::vector<GameObject*> child;
 };
