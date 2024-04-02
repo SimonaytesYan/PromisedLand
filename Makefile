@@ -9,10 +9,10 @@ OBJ = Obj/
 ELF_FILE = $(BIN)run
 
 compile_debug: create_folders
-	$(COMPILER) $(DEBUG_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp -o $(ELF_FILE)
+	$(COMPILER) $(DEBUG_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(SRC)RenderTarget.cpp $(SRC)Utils.cpp -o $(ELF_FILE)
 
 compile_release: create_folders
-	$(COMPILER) $(RELEASE_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp -o $(ELF_FILE)
+	$(COMPILER) $(RELEASE_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(SRC)RenderTarget.cpp $(SRC)Utils.cpp -o $(ELF_FILE)
 
 run:
 	./$(ELF_FILE)
