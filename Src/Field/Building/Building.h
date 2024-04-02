@@ -14,6 +14,6 @@ public:
     virtual Resources getBuildingIncome() = 0;
     virtual Resources getTickIncome()     = 0;
 
-    void onClick(int x, int y) override {}
+    bool onClick(int x, int y) override {}
     void onTick()              override {}
 };

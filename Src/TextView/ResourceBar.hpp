@@ -27,7 +27,7 @@ public:
         population_view.draw(render_target);
     }
 
-    void onClick(int x, int y) override {}
+    bool onClick(int x, int y) override {}
     void onTick()              override 
     { updateValues(resource_manager.getUserRes()); }
 

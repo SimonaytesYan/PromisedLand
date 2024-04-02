@@ -100,6 +100,11 @@ int main()
 				{
 					window.close();
 				}
+
+				case sf::Event::MouseButtonPressed:
+				{
+					
+				}
 			}
 		}
 

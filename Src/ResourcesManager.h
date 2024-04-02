@@ -15,7 +15,7 @@ public:
     explicit ResourcesManager(Resources start_resources) 
       : user_res (start_resources) {}
 
-    void onClick(int x, int y) override {}
+    bool onClick(int x, int y) override {}
     void onTick()              override 
     {  
         for (size_t i = 0; i < buildings.Size(); ++i)

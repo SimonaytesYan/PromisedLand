@@ -24,7 +24,7 @@ public:
     void addChild(GameObject* new_game_object);
 
     void draw(RenderTarget& render_target) override;
-    void onClick(int x, int y) override;
+    bool onClick(int x, int y) override;
     void onTick() override;
 
     ~Window();
