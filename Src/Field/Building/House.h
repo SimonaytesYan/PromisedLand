@@ -13,7 +13,7 @@ public:
 
     void draw(RenderTarget& render_target) override
     {
-        render_target.drawCircle(x, y, kFieldSize, kFieldSize, kBackgroundColor);
+        render_target.drawCircle(x, y, kFieldSize, kBackgroundColor);
     }
 
 private:

@@ -8,11 +8,18 @@ BIN = Bin/
 OBJ = Obj/
 ELF_FILE = $(BIN)run
 
-compile_debug: create_folders
-	$(COMPILER) $(DEBUG_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(SRC)RenderTarget.cpp $(SRC)Utils.cpp -o $(ELF_FILE)
+compile_debug: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o
+	$(COMPILER) -fPIE $(DEBUG_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Utils.o -o $(ELF_FILE)
 
-compile_release: create_folders
-	$(COMPILER) $(RELEASE_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(SRC)RenderTarget.cpp $(SRC)Utils.cpp -o $(ELF_FILE)
+compile_release: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o
+	$(COMPILER) -fPIE $(RELEASE_FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Utils.o -o $(ELF_FILE)
+
+$(OBJ)RenderTarget.o: $(SRC)RenderTarget.cpp
+	$(COMPILER) -c -fPIE $(RELEASE_FLAGS) $(SRC)RenderTarget.cpp $(SFML_FLAGS) -o $(OBJ)RenderTarget.o
+
+$(OBJ)Utils.o: $(SRC)Utils.cpp
+	$(COMPILER) -c $(RELEASE_FLAGS) $(SRC)Utils.cpp -o $(OBJ)Utils.o
+	
 
 run:
 	./$(ELF_FILE)
