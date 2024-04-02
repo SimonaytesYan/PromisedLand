@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "Field/Building/Building.h"
 #include "Resources.h"
 #include "EventProcessable.h"
@@ -14,7 +16,13 @@ public:
       : user_res (start_resources) {}
 
     void onClick(int x, int y) override {}
-    void onTick()              override {}
+    void onTick()              override 
+    {  
+        for (size_t i = 0; i < buildings.Size(); ++i)
+        {
+            user_res += buildings[i]->getTickIncome();
+        }
+    }
 
     Resources getUserRes()
     { return user_res; }

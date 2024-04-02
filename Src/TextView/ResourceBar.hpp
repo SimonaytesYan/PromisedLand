@@ -14,7 +14,10 @@ public:
         water_view       (width / 4    , y_start),
         wood_view        (width / 2    , y_start),
         population_view  (width / 4 * 3, y_start),
-        resource_manager (_resource_manager)       {}
+        resource_manager (_resource_manager)       
+    {
+        updateValues(resource_manager.getUserRes());
+    }
 
     void draw(RenderTarget& render_target) override
     {

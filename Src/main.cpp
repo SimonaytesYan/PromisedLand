@@ -1,3 +1,4 @@
+#include <chrono>
 #include <functional>
 
 #include <SFML/Graphics.hpp>
@@ -18,6 +19,7 @@
 const char* kWindowHeader  = "Promised Lands";
 const int   kControlPanelH = 150;
 const int   kTextSize      = 20;
+const int   kMSInClock     = 1000;
 
 const std::function<Field*(int, int)> kFieldGenerators[] = 
 {
@@ -75,8 +77,20 @@ int main()
 	generateField  (game_window, resource_manager, window.getSize());
 	createInfoPanel(game_window, resource_manager, window.getSize());	
 
+	auto timer_start = std::chrono::system_clock::now(); 
     while (window.isOpen())
 	{
+		// TODO: switch to EventManager
+		auto timer_end = std::chrono::system_clock::now();
+        auto passed   = std::chrono::duration_cast<std::chrono::milliseconds>(timer_end - timer_start);
+		if (passed.count() >= kMSInClock)
+		{
+			window_manager.getWindow().onTick();
+			resource_manager.onTick();
+
+			timer_start = timer_end;
+		}
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -88,8 +102,10 @@ int main()
 				}
 			}
 		}
+
+		main_rt.clear();
+		window.clear();
 		
-		window_manager.getWindow().onTick();
 		window_manager.getWindow().draw(main_rt);
 
 		main_rt.display(window);
