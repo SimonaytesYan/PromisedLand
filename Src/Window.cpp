@@ -11,7 +11,7 @@ void Window::draw(RenderTarget& render_target)
         child[i]->draw(render_target);
 }
 
-void Window::onClick(int click_x, int click_y)
+bool Window::onClick(int click_x, int click_y)
 {
     const size_t child_num = child.Size();
     for (size_t i = 0; i < child_num; i++)

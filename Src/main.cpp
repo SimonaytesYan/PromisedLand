@@ -4,10 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Field/Field.h"
-#include "Field/Building/Windmill.h"
-#include "Field/Building/Well.h"
-#include "Field/Building/Sawmill.h"
-#include "Field/Building/House.h"
+#include "Field/Building/Buildings.h"
 #include "Window.h"
 #include "WindowManager.h"
 #include "RenderTarget.h"
@@ -102,7 +99,7 @@ int main()
 
 				case sf::Event::MouseButtonPressed:
 				{
-					
+
 				}
 			}
 		}
