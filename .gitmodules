@@ -1,0 +1,3 @@
+[submodule "StlVector"]
+	path = StlVector
+	url = https://github.com/SimonaytesYan/StlVector
