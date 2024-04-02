@@ -18,10 +18,13 @@ struct Resources
         return *this;
     }
 
+    bool isValid()
+    { return food >= 0 && water >= 0 && wood >= 0 && population >= 0; }
+
     long int food;
     long int water;
     long int wood;
     long int population;
 };
 
-const Resources kStartResources = {0, 0, 0, 0};
+const Resources kStartResources = {0, 0, 100, 0};

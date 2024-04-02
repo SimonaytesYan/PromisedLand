@@ -39,34 +39,7 @@ public:
                 if (build_manager->FieldTypeSetted())
                 {
                     printf("ResourcesManager build_manager field setted%d\n", i);
-                    const int new_x = fields[i]->getX();
-                    const int new_y = fields[i]->getY();
-                    Field* new_field;
-
-                    switch (build_manager->getFieldType())
-                    {
-                        case FieldType::Grass:
-                            new_field = new Grass(new_x, new_y);
-                            break;
-                        case FieldType::House:
-                            new_field = new House(new_x, new_y);
-                            break;
-                        case FieldType::Sawmill:
-                            new_field = new Sawmill(new_x, new_y);
-                            break;
-                        case FieldType::Well:
-                            new_field = new Well(new_x, new_y);
-                            break;
-                        case FieldType::Windmill:
-                            new_field = new Windmill(new_x, new_y);
-                            break;
-
-                        default:
-                            break;
-                    }
-
-                    delete fields[i];
-                    fields[i] = new_field;
+                    BuildAnother(i);
                 }
                 return true;
             }
@@ -85,10 +58,7 @@ public:
 
     bool isAlive()
     {
-        return user_res.food       >= 0 && 
-               user_res.wood       >= 0 && 
-               user_res.water      >= 0 && 
-               user_res.population >= 0;
+        return user_res.isValid();
     }
 
     Resources getUserRes()
@@ -98,6 +68,44 @@ public:
     { fields.PushBack(field); }
 
 private:
+
+    void BuildAnother(const size_t index)
+    {
+        const int new_x = fields[index]->getX();
+        const int new_y = fields[index]->getY();
+        Field* new_field;
+
+        switch (build_manager->getFieldType())
+        {
+            case FieldType::Grass:
+                new_field = new Grass(new_x, new_y);
+                break;
+            case FieldType::House:
+                new_field = new House(new_x, new_y);
+                break;
+            case FieldType::Sawmill:
+                new_field = new Sawmill(new_x, new_y);
+                break;
+            case FieldType::Well:
+                new_field = new Well(new_x, new_y);
+                break;
+            case FieldType::Windmill:
+                new_field = new Windmill(new_x, new_y);
+                break;
+
+            default:
+                break;
+        }
+        Resources new_user_res = user_res;
+        new_user_res += new_field->getAppearIncome();
+        if (new_user_res.isValid())
+        {
+            delete fields[index];
+            fields[index] = new_field;
+            user_res += new_field->getAppearIncome();
+        }
+    }
+
     BuildingManager* const build_manager;
     Resources              user_res;
     Vector<Field*>         fields;
