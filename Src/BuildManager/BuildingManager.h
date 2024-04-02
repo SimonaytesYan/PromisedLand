@@ -4,8 +4,21 @@
 class BuildingManager
 {
 public:
-    void setBuildingType(Building* building);
-    Building* getBuildingType();
+
+    BuildingManager() :
+    current (nullptr)
+    {}
+
+    void setBuildingType(Building* building)
+    {
+        current = building;
+    }
+
+    Building* getBuildingType()
+    { return current; }
+
+    bool buildingTypeSetted()
+    { return current == nullptr; }
 
 private:
     Building* current;
