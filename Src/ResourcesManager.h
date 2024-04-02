@@ -26,16 +26,19 @@ public:
     }
 
     bool onClick(int x, int y) override 
-    { 
+    {
+        printf("ResourcesManager::OnClock(%d %d)\n", x, y);
+
         const size_t field_num = fields.Size();
         for (size_t i = 0; i < field_num; i++)
         {
             const bool res = fields[i]->onClick(x, y);
             if (res)
             {
+                printf("ResourcesManager find field %d\n", i);
                 if (build_manager->FieldTypeSetted())
                 {
-                    
+                    printf("ResourcesManager build_manager field setted%d\n", i);
                     const int new_x = fields[i]->getX();
                     const int new_y = fields[i]->getY();
                     Field* new_field;
@@ -65,8 +68,8 @@ public:
                     delete fields[i];
                     fields[i] = new_field;
                 }
+                return true;
             }
-            return true;
         }
 
         return false;

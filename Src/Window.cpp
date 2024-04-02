@@ -13,9 +13,11 @@ void Window::draw(RenderTarget& render_target)
 
 bool Window::onClick(int click_x, int click_y)
 {
+    printf("Window::onClick(%d %d)\n", click_x, click_y);
     const size_t child_num = child.Size();
     for (size_t i = 0; i < child_num; i++) 
     {
+        printf("child[%d]\n", i);
         bool res = child[i]->onClick(click_x, click_y);
         if (res)
             return true;

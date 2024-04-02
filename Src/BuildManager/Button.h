@@ -46,6 +46,7 @@ public:
 
     bool onClick(int press_x, int press_y)
     {
+        printf("Button::onClick(%d %d)\n", x, y);
         if (x <= press_x && press_x <= x + x_len &&
             y <= press_y && press_y <= y + y_len)
         {

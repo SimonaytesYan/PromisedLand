@@ -52,6 +52,8 @@ public:
 
     bool onClick(int x, int y) override
     {
+        printf("BuildMenu::onClick(%d %d)\n", x, y);
+
         const size_t size = menu.Size();
         for (size_t i = 0; i < size; i++)
             if (menu[i].onClick(x, y))

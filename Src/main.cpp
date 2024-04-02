@@ -101,6 +101,7 @@ int main()
 
 				case sf::Event::MouseButtonPressed:
 				{
+					printf("=======================================\n");
 					game_window.onClick(event.mouseButton.x, event.mouseButton.y);
 				}
 			}

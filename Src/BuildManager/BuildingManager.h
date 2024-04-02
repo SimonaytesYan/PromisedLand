@@ -11,13 +11,16 @@ public:
     {}
 
     void setFieldType(FieldType building)
-    { current = building; }
+    { 
+        printf("setFieldType = %d\n", building);
+        current = building; 
+    }
 
     FieldType getFieldType()
     { return current; }
 
     bool FieldTypeSetted()
-    { return current == FieldType::Error; }
+    { return current != FieldType::Error; }
 
 private:
     FieldType current;
