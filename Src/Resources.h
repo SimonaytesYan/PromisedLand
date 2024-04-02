@@ -14,3 +14,5 @@ struct Resources
     long int wood;
     long int population;
 };
+
+const Resources kStartResources = {1000, 1000, 1000, 1000};

@@ -1,16 +1,22 @@
 #pragma once
 
+#include <string>
+#include <string_view>
+
 #include "../Drawable.h"
 
-class TextView : public Drawable {
+class TextView : public Drawable 
+{
 public:
-    explicit TextView(const char* _content)
-      : content (_content) {} 
+    explicit TextView(const int _x, const int _y, const std::string_view _content = "")
+      : x       (_x),
+        y       (_y),
+        content (_content) {} 
 
     void draw(RenderTarget& render_target) override 
-    { render_target.drawText(x, y, content, kTextSize, kTextColor); }
+    { render_target.drawText(x, y, content.c_str(), kTextSize, kTextColor); }
 
-    void setContent(const char* _content) 
+    void setContent(const std::string_view _content) 
     { content = _content; }
 
 private:
@@ -20,5 +26,5 @@ private:
 private:
     int x;
     int y;
-    const char* content;
+    std::string content;
 };

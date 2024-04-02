@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Building.h"
+#include "Field/Building/Building.h"
 #include "Resources.h"
 #include "EventProcessable.h"
-#include "StlVector/Src/Vector.hpp"
+#include "../StlVector/Src/Vector.hpp"
 
 // Every tick update resources from buildings
 // Kill program if population less then zero

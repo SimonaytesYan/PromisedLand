@@ -11,11 +11,13 @@
 #include "WindowManager.h"
 #include "RenderTarget.h"
 #include "ResourcesManager.h"
+#include "Field/Building/IncodeOutcome.h"
+#include "TextView/TextView.hpp"
+#include "TextView/ResourceBar.hpp"
 
 const char* kWindowHeader  = "Promised Lands";
 const int   kControlPanelH = 150;
 const int   kTextSize      = 20;
-const int   kTxtBlockCnt   = 3;
 
 const std::function<Field*(int, int)> kFieldGenerators[] = 
 {
@@ -35,8 +37,10 @@ void generateField(Window& window, ResourcesManager& resource_man, const sf::Vec
 
 	const int field_cnt = sizeof(kFieldGenerators) / sizeof(kFieldGenerators[0]);
 
-	for (int i = 0; i <= x_cell_cnt; ++i) {
-		for (int j = 0; j < y_cell_cnt; ++j) {
+	for (int i = 0; i <= x_cell_cnt; ++i) 
+	{
+		for (int j = 0; j <= y_cell_cnt; ++j) 
+		{
 			const int cell_x    = i * kFieldSize * 2;
 			const int cell_y    = j * kFieldSize * 2;
 			const int cell_type = rand() % field_cnt;
@@ -45,15 +49,15 @@ void generateField(Window& window, ResourcesManager& resource_man, const sf::Vec
 			window.addChild(cell);
 			
 			// TODO: make better
-			if (!cell_type) resource_man.addBuilding(static_cast<Building*>(cell));
+			if (cell_type != 0) resource_man.addBuilding(static_cast<Building*>(cell));
 		}
 	}
 }
 
-void createControlPanel(Window& window, const ResourcesManager& resource_man, const sf::Vector2u window_size)
+void createInfoPanel(Window& window, ResourcesManager& resource_manager, const sf::Vector2u window_size)
 {
-	const int text_block_width = window_size.x / kTxtBlockCnt;
-	
+	ResourceBar* resource_bar = new ResourceBar(window_size.x, window_size.y - kControlPanelH / 2, resource_manager);
+	window.addChild(resource_bar);
 }
 
 int main()
@@ -68,8 +72,8 @@ int main()
 	WindowManger     window_manager(game_window);
 	ResourcesManager resource_manager(kStartResources);
 
-	generateField     (game_window, resource_manager, window.getSize());
-	createControlPanel(game_window, resource_manager, window.getSize());
+	generateField  (game_window, resource_manager, window.getSize());
+	createInfoPanel(game_window, resource_manager, window.getSize());	
 
     while (window.isOpen())
 	{
@@ -85,6 +89,7 @@ int main()
 			}
 		}
 		
+		window_manager.getWindow().onTick();
 		window_manager.getWindow().draw(main_rt);
 
 		main_rt.display(window);
