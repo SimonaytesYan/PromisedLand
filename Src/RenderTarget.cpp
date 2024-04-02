@@ -67,6 +67,11 @@ void RenderTarget::drawCircle (const int x_lu,
 }
 
 void RenderTarget::drawText(const int x, const int y, const char* const content, const uint16_t char_size, const sf::Color color)
-{
+{    
+    sf::Text text_to_draw = sf::Text(content, font, char_size);
 
+    text_to_draw.setFillColor(color);
+    text_to_draw.setPosition ({x, y});
+
+    rt.draw(text_to_draw);
 }
