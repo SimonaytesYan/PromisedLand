@@ -6,6 +6,7 @@ const size_t kDefaultWindowSize = 100;
 
 class Window : public GameObject
 {
+public:
     Window() :
     GameObject(),
     x_size    (kDefaultWindowSize),
