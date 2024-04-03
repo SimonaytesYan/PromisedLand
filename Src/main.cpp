@@ -22,10 +22,7 @@ const int   kMSInClock     = 1000;
 const std::function<Field*(int, int)> kFieldGenerators[] = 
 {
 	[](int x, int y) { return new Grass   (x, y); },
-	[](int x, int y) { return new Windmill(x, y); },
-	[](int x, int y) { return new Well    (x, y); },
-	[](int x, int y) { return new Sawmill (x, y); },
-	[](int x, int y) { return new House   (x, y); } 
+	[](int x, int y) { return new Water   (x, y); }
 };
 
 void generateField(ResourcesManager& resource_man, const sf::Vector2u window_size)
@@ -40,9 +37,10 @@ void generateField(ResourcesManager& resource_man, const sf::Vector2u window_siz
 	{
 		for (int j = 0; j <= y_cell_cnt; ++j) 
 		{
-			const int cell_x = i * kFieldSize;
-			const int cell_y = j * kFieldSize;
-			Field* cell = new Grass(cell_x, cell_y);  // kFieldGenerators[cell_type](cell_x, cell_y);
+			const int cell_x    = i * kFieldSize;
+			const int cell_y    = j * kFieldSize;
+			const int cell_type = rand() % 2;
+			Field* cell = kFieldGenerators[cell_type](cell_x, cell_y);  // kFieldGenerators[cell_type](cell_x, cell_y);
 			
 			resource_man.addField(static_cast<Field*>(cell));
 		}
@@ -84,7 +82,6 @@ int main()
 		if (passed.count() >= kMSInClock)
 		{
 			window_manager.getWindow().onTick();
-			resource_manager.onTick();
 
 			timer_start = timer_end;
 		}

@@ -106,6 +106,8 @@ private:
             fields[index] = new_field;
             user_res += new_field->getAppearIncome();
         }
+
+        build_manager->setFieldType(FieldType::Error);
     }
 
     BuildingManager* const build_manager;
