@@ -40,8 +40,8 @@ void generateField(ResourcesManager& resource_man, const sf::Vector2u window_siz
 	{
 		for (int j = 0; j <= y_cell_cnt; ++j) 
 		{
-			const int cell_x    = i * kFieldSize;
-			const int cell_y    = j * kFieldSize;
+			const int cell_x = i * kFieldSize;
+			const int cell_y = j * kFieldSize;
 			Field* cell = new Grass(cell_x, cell_y);  // kFieldGenerators[cell_type](cell_x, cell_y);
 			
 			resource_man.addField(static_cast<Field*>(cell));

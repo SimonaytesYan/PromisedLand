@@ -19,9 +19,6 @@ public:
 
     bool onClick(int click_x, int click_y) override 
     {
-        printf("Field::OnClock(%d %d)\n", click_x, click_y);
-        printf("field = (%d %d %d %d)\n", x, x + kFieldSize, y, y + kFieldSize);
-
         return (x <= click_x) && (click_x <= (x + kFieldSize)) &&
                (y <= click_y) && (click_y <= (y + kFieldSize));
     }

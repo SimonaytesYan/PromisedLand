@@ -28,7 +28,6 @@ public:
     bool onClick(int x, int y) override 
     {
         printf("ResourcesManager::OnClock(%d %d)\n", x, y);
-
         const size_t field_num = fields.Size();
         for (size_t i = 0; i < field_num; i++)
         {
@@ -38,7 +37,7 @@ public:
                 printf("ResourcesManager find field %d\n", i);
                 if (build_manager->FieldTypeSetted())
                 {
-                    printf("ResourcesManager build_manager field setted%d\n", i);
+                    printf("ResourcesManager build_manager field setted(%d)\n", i);
                     BuildAnother(i);
                 }
                 return true;
@@ -91,6 +90,9 @@ private:
                 break;
             case FieldType::Windmill:
                 new_field = new Windmill(new_x, new_y);
+                break;
+            case FieldType::Water:
+                new_field = new Water(new_x, new_y);
                 break;
 
             default:
