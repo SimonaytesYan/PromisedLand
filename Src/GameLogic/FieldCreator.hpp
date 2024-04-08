@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../GameObject.h"
-#include "../Resources.h"
+#include "Resources.h"
 
 const size_t kFieldSize = 64;
 
