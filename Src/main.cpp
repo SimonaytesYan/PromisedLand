@@ -7,10 +7,12 @@
 #include "Constants.hpp"
 #include "Utils/RenderTarget.hpp"
 #include "GameLogic/Managers/ResourceManager.hpp"
+#include "GameLogic/Views/TextView/ResourceBar.hpp"
 #include "GameLogic/Views/Window.hpp"
 
 void runGameCycle(sf::RenderWindow& window, RenderTarget& rt) 
 {
+	// just testing
 	ResourceManager resource_manager;
 	Window          game_window({0, 0}, resource_manager);
 
@@ -22,8 +24,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 	game_window.addChild(test_cell2);
 	game_window.addChild(test_cell3);
 
-	Resources cur_res = resource_manager.getUserRes();
-	printf("%d %d %d %d %d\n", cur_res.food, cur_res.water, cur_res.wood, cur_res.population, cur_res.free_population);
+	game_window.addChild(new ResourceBar(1920, 50, resource_manager));
 
     auto timer_start = std::chrono::system_clock::now(); 
     while (window.isOpen())
@@ -34,9 +35,6 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 		{
 			Event tick_event(EventType::TICK);
 			game_window.push(&tick_event);
-
-			cur_res = resource_manager.getUserRes();
-			printf("%d %d %d %d %d\n", cur_res.food, cur_res.water, cur_res.wood, cur_res.population, cur_res.free_population);
 
 			timer_start = timer_end;
 		}
@@ -57,6 +55,10 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 				}
 			}
 		}
+		rt.clear();
+		window.clear();
+
+		game_window.draw(rt);
 
 		rt.display(window);
 		window.display();

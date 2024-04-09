@@ -26,11 +26,17 @@ public:
 
     void push(const Event* event) override
     {
+
         view_manager.pushToLogic(event);
     }
 
     void draw(RenderTarget& rt) override
-    {} 
+    {
+        for (auto child : children)
+        {
+            child->draw(rt);
+        }
+    } 
 
     void addChild(Renderable* child)
     {
