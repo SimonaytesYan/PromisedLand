@@ -9,17 +9,17 @@ BIN = Bin/
 OBJ = Obj/
 ELF_FILE = $(BIN)run
 
-compile: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)Window.o
-	$(COMPILER) -fPIE $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Window.o $(OBJ)Utils.o -o $(ELF_FILE)
+compile: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o
+	$(COMPILER) -fPIE $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Utils.o -o $(ELF_FILE)
 
-$(OBJ)RenderTarget.o: $(SRC)RenderTarget.cpp
-	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)RenderTarget.cpp $(SFML_FLAGS) -o $(OBJ)RenderTarget.o
+$(OBJ)RenderTarget.o: $(SRC)Utils/RenderTarget.cpp
+	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Utils/RenderTarget.cpp $(SFML_FLAGS) -o $(OBJ)RenderTarget.o
 
-$(OBJ)Utils.o: $(SRC)Utils.cpp
-	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Utils.cpp -o $(OBJ)Utils.o
+$(OBJ)Utils.o: $(SRC)Utils/Utils.cpp
+	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Utils/Utils.cpp -o $(OBJ)Utils.o
 	
-$(OBJ)Window.o: $(SRC)Window.cpp
-	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
+# $(OBJ)Window.o: $(SRC)Window.cpp
+# 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
 
 run:
 	./$(ELF_FILE)
