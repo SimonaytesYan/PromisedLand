@@ -4,7 +4,7 @@
 #include "../../Eventable.hpp"
 #include "../../Renderable.hpp"
 
-class CellView : Eventable, Renderable 
+class CellView : public Eventable, public Renderable 
 {
 public:
     void push(const Event* event) override

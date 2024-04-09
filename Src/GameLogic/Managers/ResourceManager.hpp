@@ -2,6 +2,7 @@
 
 #include "../Logics/Tiles/Cell.hpp"
 #include "LogicManager.hpp"
+#include "../Events/ResourceEvent.hpp"
 #include "../../../StlVector/Src/VectorDecor.hpp"
 #include "ViewManager.hpp"
 
@@ -23,7 +24,19 @@ public:
 
     void pushToLogic(const Event* event)
     {
-
+        const ResourceEvent* res_event = static_cast<const ResourceEvent*>(event);
+        
+        switch (res_event->event_type)
+        {
+        case EventType::TICK:
+            onTick();
+            break;
+        case EventType::MOUSE_CLICK:
+            user_res += res_event->add_resources;
+            break;
+        default:
+            break;
+        }
     }
 
     void pushToView(const Event* event)
@@ -42,6 +55,17 @@ public:
         for (auto val : vector_traits)
         {
             delete val;
+        }
+    }
+
+private:
+
+    void onTick()
+    {
+        STLVectorDecor<Cell*> vector_traits(cells);
+        for (auto val : vector_traits)
+        {
+            user_res += val->getTickIncome();
         }
     }
 

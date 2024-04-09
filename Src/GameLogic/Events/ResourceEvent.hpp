@@ -5,7 +5,7 @@
 
 struct ResourceEvent : public Event
 {
-    explicit ResourceEvent(const EventType _event_type, const Resources _resources)
+    explicit ResourceEvent(const EventType _event_type, const Resources _resources = kStartResources)
       : Event         (_event_type),
         add_resources (_resources)
     {}

@@ -46,13 +46,16 @@ public:
         switch (event->event_type)
         {
         case EventType::TICK:
+          // Doesn't do anything
+          // TICKS are proceeded through Window with one message
+          break;
+        case EventType::MOUSE_CLICK:
           {  
-            ResourceEvent res_event(EventType::TICK, cell->getTickIncome());
+            // = on build expenses
+            ResourceEvent res_event(EventType::MOUSE_CLICK, cell->getAppearIncome());
             res_manager.pushToLogic(&res_event);
             break;
           }
-        case EventType::MOUSE_CLICK:
-            break;
         default:
             break;
         }
