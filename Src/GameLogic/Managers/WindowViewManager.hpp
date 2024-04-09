@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Events/ResourceEvent.hpp"s
+#include "../Events/ResourceEvent.hpp"
 #include "ResourceManager.hpp"
 #include "ViewManager.hpp"
 

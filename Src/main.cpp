@@ -3,21 +3,41 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "GameLogic/Views/Tiles/CellView.hpp"
 #include "Constants.hpp"
 #include "Utils/RenderTarget.hpp"
+#include "GameLogic/Managers/ResourceManager.hpp"
+#include "GameLogic/Views/Window.hpp"
 
 void runGameCycle(sf::RenderWindow& window, RenderTarget& rt) 
 {
-	Texture test_img("Assets/field.png");
+	ResourceManager resource_manager;
+	Window          game_window({0, 0}, resource_manager);
+
+	CellView* test_cell1 = new CellView({0, 0}, FieldType::House, resource_manager);
+	CellView* test_cell2 = new CellView({0, 0}, FieldType::House, resource_manager);
+	CellView* test_cell3 = new CellView({0, 0}, FieldType::House, resource_manager);
+
+	game_window.addChild(test_cell1);
+	game_window.addChild(test_cell2);
+	game_window.addChild(test_cell3);
+
+	Resources cur_res = resource_manager.getUserRes();
+	printf("%d %d %d %d %d\n", cur_res.food, cur_res.water, cur_res.wood, cur_res.population, cur_res.free_population);
 
     auto timer_start = std::chrono::system_clock::now(); 
     while (window.isOpen())
 	{
-		// TODO: switch to EventManager
 		auto timer_end = std::chrono::system_clock::now();
         auto passed   = std::chrono::duration_cast<std::chrono::milliseconds>(timer_end - timer_start);
 		if (passed.count() >= kMSInClock)
 		{
+			Event tick_event(EventType::TICK);
+			game_window.push(&tick_event);
+
+			cur_res = resource_manager.getUserRes();
+			printf("%d %d %d %d %d\n", cur_res.food, cur_res.water, cur_res.wood, cur_res.population, cur_res.free_population);
+
 			timer_start = timer_end;
 		}
 
@@ -37,13 +57,6 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 				}
 			}
 		}
-
-		rt.drawRect   ({20, 20}, {100, 100}, sf::Color::Red, 5, sf::Color::Blue);
-		rt.drawCircle ({40, 40}, 20, sf::Color::Cyan, 2, sf::Color::Green);
-		rt.setPixel   ({25, 25}, sf::Color::Magenta);
-		rt.drawLine   ({10, 10}, {400, 400}, sf::Color::Blue);
-		rt.drawText   ({100, 100}, "TEST", 20, sf::Color::Yellow);
-		rt.drawTexture({300, 300}, test_img);
 
 		rt.display(window);
 		window.display();

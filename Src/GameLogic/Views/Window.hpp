@@ -1,8 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include "../Eventable.hpp"
 #include "../Renderable.hpp"
-#include "../../../StlVector/Src/VectorDecor.hpp"
+// #include "../../../StlVector/Src/VectorDecor.hpp"
 #include "../Managers/WindowViewManager.hpp"
 
 class Window : public Renderable, public Eventable
@@ -30,17 +32,22 @@ public:
     void draw(RenderTarget& rt) override
     {} 
 
+    void addChild(Renderable* child)
+    {
+        children.push_back(child);
+    }
+
     ~Window()
     {
-        STLVectorDecor<Renderable*> children_traits(children);
-        for (auto val : children_traits)
+        // STLVectorDecor<Renderable*> children_traits(children);
+        for (auto val : children)
         {
             delete val;
         }
     }
 
 private:
-    Point               position;
-    WindowViewManager   view_manager;
-    Vector<Renderable*> children;
+    Point                    position;
+    WindowViewManager        view_manager;
+    std::vector<Renderable*> children;
 };

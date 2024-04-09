@@ -1,9 +1,11 @@
 #pragma once
 
+#include <vector>
+
 #include "../Logics/Tiles/Cell.hpp"
 #include "LogicManager.hpp"
 #include "../Events/ResourceEvent.hpp"
-#include "../../../StlVector/Src/VectorDecor.hpp"
+// #include "../../../StlVector/Src/VectorDecor.hpp"
 #include "ViewManager.hpp"
 
 class ResourceManager : public ViewManager, public LogicManager
@@ -46,13 +48,18 @@ public:
 
     void addCell(Cell* cell)
     {
-        cells.PushBack(cell);
+        cells.push_back(cell);
+    }
+
+    Resources getUserRes()
+    {
+        return user_res;
     }
 
     ~ResourceManager()
     {
-        STLVectorDecor<Cell*> vector_traits(cells);
-        for (auto val : vector_traits)
+        // STLVectorDecor<Cell*> vector_traits(cells);
+        for (auto val : cells)
         {
             delete val;
         }
@@ -62,14 +69,14 @@ private:
 
     void onTick()
     {
-        STLVectorDecor<Cell*> vector_traits(cells);
-        for (auto val : vector_traits)
+        // STLVectorDecor<Cell*> vector_traits(cells);
+        for (auto val : cells)
         {
             user_res += val->getTickIncome();
         }
     }
 
 private:
-    Vector<Cell*> cells;
-    Resources     user_res;
+    std::vector<Cell*> cells;
+    Resources          user_res;
 };
