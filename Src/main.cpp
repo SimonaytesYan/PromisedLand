@@ -6,7 +6,8 @@
 #include "Constants.hpp"
 #include "Utils/RenderTarget.hpp"
 
-void runGameCycle(sf::RenderWindow& window, RenderTarget& rt) {
+void runGameCycle(sf::RenderWindow& window, RenderTarget& rt) 
+{
 	Texture test_img("Assets/field.png");
 
     auto timer_start = std::chrono::system_clock::now(); 

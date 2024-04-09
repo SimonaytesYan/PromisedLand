@@ -19,34 +19,35 @@ void mPrint(FILE* ostream, const char* const fmt, ...);
     }                                                            \
 }
 
-struct Point {
+struct Point 
+{
 public:
     Point()
       : x (0),
-        y (0) {
-    }
+        y (0) 
+    {}
 
     Point(const double _x, const double _y)
       : x (_x),
-        y (_y) {
-    }
+        y (_y) 
+    {}
 
   #if USES_SFML
 
     Point(const sf::Vector2f sf_point)
       : x (sf_point.x),
-        y (sf_point.y) {
-    }
+        y (sf_point.y) 
+    {}
 
     Point(const sf::Vector2i sf_point)
       : x (sf_point.x),
-        y (sf_point.y) {
-    }
+        y (sf_point.y) 
+    {}
 
     Point(const sf::Vector2u sf_point)
       : x (sf_point.x),
-        y (sf_point.y) {
-    }
+        y (sf_point.y) 
+    {}
 
     operator sf::Vector2f() const
     {
