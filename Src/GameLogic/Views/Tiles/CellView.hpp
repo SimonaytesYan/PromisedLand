@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Managers/CellViewManager.hpp"
 #include "../../Eventable.hpp"
 #include "../../Renderable.hpp"
 
