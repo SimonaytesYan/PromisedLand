@@ -2,7 +2,6 @@
 
 #include "../../Interlayers/ViewInterlayer.hpp"
 #include "../Widget/Widget.hpp"
-// #include "../../Interlayers/CellInterlayer.hpp"
 
 class CellInterlayer;
 

@@ -25,7 +25,7 @@ public:
     void onTick()
     {
         user_res += tick_income;
-
+        // printf("RES: %d\n", user_res.food);
         informResourceBar();
     }
 

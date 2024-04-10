@@ -62,6 +62,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 		{
 			Event tick_event(EventType::TICK);
 			game_window.push(&tick_event);
+			// res_manager.push(&tick_event);
 
 			timer_start = timer_end;
 		}

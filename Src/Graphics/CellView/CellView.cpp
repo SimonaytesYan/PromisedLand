@@ -21,9 +21,10 @@ void CellView::push(const Event* event)
 void CellView::onClick(const Point point, const Event* event)
 {
     printf("CellView::onClick(%d %d)\n", pos.x, pos.y);
-    if (pos.x <= point.x && point.x <= pos.x + kFieldSize &&
-        pos.y <= point.y && point.y <= pos.y + kFieldSize)
+    if (pos.x < point.x && point.x < pos.x + kFieldSize &&
+        pos.y < point.y && point.y < pos.y + kFieldSize)
     {
-        interlayer.pushToLogic(event);
+        MouseEvent mouse_event(pos);
+        interlayer.pushToLogic(&mouse_event);
     }
 }

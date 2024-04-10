@@ -32,16 +32,20 @@ public:
 
     void pushToLogic(const Event* event) override
     {
-        const MouseEvent* mouse_event = static_cast<const MouseEvent*>(event);
-
-        switch (mouse_event->event_type)
+        printf("INSIDE\n");
+        printf("%d\n", event->event_type);
+        switch (event->event_type)
         {
         case EventType::TICK:
+            printf("TO CELL\n");
             cell_manager.onTick();
             break;
         case EventType::MOUSE_CLICK:
+          {
+            const MouseEvent* mouse_event = static_cast<const MouseEvent*>(event);
             cell_manager.createCell(mouse_event->pos);
             break;
+          }
         default:
             break;
         }

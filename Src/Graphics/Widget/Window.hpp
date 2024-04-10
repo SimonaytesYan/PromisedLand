@@ -23,21 +23,23 @@ public:
 
     void push(const Event* event) override
     {
-        for (auto val : children)
-            val->push(event);
-
         switch (event->event_type)
         {
+        case EventType::TICK:
+            cell_interlayer->pushToLogic(event);
+            break;
         case EventType::BUILD_CELL_EVENT:
           {  
             const BuildCellEvent* build_event = static_cast<const BuildCellEvent*>(event);
             addChild(build_event->cell_view);
             break;
           }  
-        
         default:
             break;
         }
+
+        for (auto val : children)
+            val->push(event);
     }
 
     void draw(RenderTarget& rt) override
