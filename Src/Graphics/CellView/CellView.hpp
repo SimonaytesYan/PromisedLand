@@ -4,12 +4,14 @@
 #include "../Widget/Widget.hpp"
 // #include "../../Interlayers/CellInterlayer.hpp"
 
+class CellInterlayer;
+
 const size_t kFieldSize = 64;
 
 class CellView : public Widget
 {
 public:
-    CellView(const Texture texture, Point pos, const FieldType field_type, ViewInterlayer& interlayer) 
+    CellView(const Texture texture, Point pos, const FieldType field_type, CellInterlayer& interlayer) 
     : Widget     (pos),
       texture    (texture),
       interlayer (interlayer)
@@ -20,21 +22,11 @@ public:
         render_target.drawTexture(pos, texture);
     }
 
-    void push(const Event* event) override
-    { 
-        switch (event->event_type)
-        {
-        case EventType::MOUSE_CLICK:
-            interlayer.pushToLogic(event);
-            break;
-        
-        default:
-            break;
-        }
-    }
+    void push(const Event* event) override;
+    void onClick(const Point point, const Event* event);
 
 private:
     const Texture texture;
-    ViewInterlayer& interlayer;
+    CellInterlayer& interlayer;
 };
 
