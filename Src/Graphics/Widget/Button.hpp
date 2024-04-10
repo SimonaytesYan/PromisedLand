@@ -30,9 +30,9 @@ protected:
 class Button : public Widget
 {
 public:
-    Button(int x, int y, size_t x_len, size_t y_len, const Functor& func, 
+    Button(Point pos, size_t x_len, size_t y_len, const Functor& func, 
            const char* imp_path) :
-    Widget   (x, y),
+    Widget   (pos),
     x_len    (x_len),
     y_len    (y_len),
     on_click (func),
@@ -44,11 +44,24 @@ public:
         render_target.drawTexture(pos, texture);
     }
 
-    bool onClick(int press_x, int press_y)
+    void push(const Event* event) override
+    {
+        switch (event->event_type)
+        {
+            case EventType::MOUSE_CLICK:
+                onClick(static_cast<const MouseEvent*>(event)->pos);
+                break;
+            
+            default:
+                break;
+        }
+    }
+
+    bool onClick(const Point point)
     {
         printf("Button::onClick(%d %d)\n", pos.x, pos.y);
-        if (pos.x <= press_x && press_x <= pos.x + x_len &&
-            pos.y <= press_y && press_y <= pos.y + y_len)
+        if (pos.x <= point.x && point.x <= pos.x + x_len &&
+            pos.y <= point.y && point.y <= pos.y + y_len)
         {
             on_click();
             return true;
