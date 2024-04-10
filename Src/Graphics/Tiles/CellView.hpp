@@ -1,15 +1,14 @@
 #pragma once
 
-#include "../../Managers/CellViewManager.hpp"
-#include "../../Eventable.hpp"
-#include "../../Renderable.hpp"
+#include "../../Interlayers/CellInterlayer.hpp"
+#include "../Widget/Widget.hpp"
 
-class CellView : public Eventable, public Renderable 
+class CellView : public Widget 
 {
 public:
-    explicit CellView(const Point _position, const FieldType _field_type, ResourceManager& _res_manager)
-      : position     (_position),
-        view_manager (_field_type, _res_manager)
+    explicit CellView(const Point position, const FieldType field_type, CellInterlayer& interlayer)
+      : Widget     (position),
+        interlayer (interlayer)
     {
         // spend some resources on build
         // we should discuss it
@@ -18,12 +17,22 @@ public:
     }
 
     void push(const Event* event) override
-    {}
+    {
+        switch (event->event_type)
+        {
+            case EventType::MOUSE_CLICK:
+                if ()
+                interlayer.pushToLogic(event);
+                break;
+            
+            default:
+                break;
+        }
+    }
 
-    void draw(RenderTarget& rt) override
+    virtual void draw(RenderTarget& rt) override
     {} 
 
 private:
-    Point           position;
-    CellViewManager view_manager;
+    CellInterlayer& interlayer;
 };

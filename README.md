@@ -1,11 +1,11 @@
 # TODO:
-* BuildingPanel
-* BuildingPanelInterlayer
 * CellView
 
 * EventManager
 
 # DONE:
+* BuildingPanel
+* BuildingPanelInterlayer
 * Widget
 * Buttons
 * CellInterlayer
