@@ -4,12 +4,12 @@
 * CellView
 * BuildingPanel
 * BuildingPanelInterlayer
-* Buttons
 
 * EventManager
 
 # DONE:
 * Widget
+* Buttons
 
 
 Codes style:
