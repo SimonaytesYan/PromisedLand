@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Renderable.hpp"
+#include "../Renderable.hpp"
 #include "../Events/Eventable.hpp"
 #include "../../Utils/GraphicPrimitives.hpp"
 
