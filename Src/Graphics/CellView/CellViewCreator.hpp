@@ -13,7 +13,7 @@ const char* kCellsAssets[] = {"Assets/field.png",
     class name : public CellView                                      \
     {                                                                 \
     public:                                                           \
-        name (Point pos, CellInterlayer& interlayer) :                \
+        name (Point pos, ViewInterlayer& interlayer) :                \
         CellView (Texture(texture_path), pos, field_type, interlayer) \
         { }                                                           \
     };

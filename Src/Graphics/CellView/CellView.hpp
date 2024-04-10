@@ -1,16 +1,15 @@
 #pragma once
 
-#include  "../Widget/Widget.hpp"
+#include "../../Interlayers/ViewInterlayer.hpp"
+#include "../Widget/Widget.hpp"
 // #include "../../Interlayers/CellInterlayer.hpp"
 
 const size_t kFieldSize = 64;
 
-class CellInterlayer;
-
-class CellView : Widget
+class CellView : public Widget
 {
 public:
-    CellView(const Texture texture, Point pos, const FieldType field_type, CellInterlayer& interlayer) 
+    CellView(const Texture texture, Point pos, const FieldType field_type, ViewInterlayer& interlayer) 
     : Widget     (pos),
       texture    (texture),
       interlayer (interlayer)
@@ -36,6 +35,6 @@ public:
 
 private:
     const Texture texture;
-    CellInterlayer& interlayer;
+    ViewInterlayer& interlayer;
 };
 

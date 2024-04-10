@@ -7,9 +7,10 @@
 class Window : public Widget
 {
 public:
-    explicit Window(const Point position)
-      : Widget   (position),
-        children ()
+    explicit Window(const Point position, CellInterlayer* _cell_interlayer = nullptr)
+      : Widget          (position),
+        children        (),
+        cell_interlayer (_cell_interlayer)
     {}
 
     // Non-copyable
@@ -39,6 +40,19 @@ public:
         children.push_back(child);
     }
 
+    void setCellInterlayer(CellInterlayer* _cell_interlayer)
+    {
+        cell_interlayer = _cell_interlayer;
+    }
+
+    void createCell(Widget* child, const FieldType cell_type)
+    {
+        Event event(EventType::MOUSE_CLICK);
+        cell_interlayer->pushToLogic(&event);
+
+        addChild(child);
+    }
+
     ~Window()
     {
         // STLVectorDecor<Renderable*> children_traits(children);
@@ -50,4 +64,5 @@ public:
 
 private:
     std::vector<Widget*> children;
+    CellInterlayer*      cell_interlayer;
 };

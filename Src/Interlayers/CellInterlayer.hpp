@@ -9,11 +9,11 @@
 class CellInterlayer : public ViewInterlayer, public LogicInterlayer
 {
 public:
-    explicit CellInterlayer(CellManager& cell_manager, 
-                            const Vector<CellView*>& cell_views)
-      : cell_manager (cell_manager),
-        cell_views   (cell_views)
-    { }
+    // explicit CellInterlayer(CellManager& cell_manager, 
+    //                         const Vector<CellView*>& cell_views)
+    //   : cell_manager (cell_manager),
+    //     cell_views   (cell_views)
+    // { }
 
     explicit CellInterlayer(CellManager& cell_manager)
       : cell_manager (cell_manager),

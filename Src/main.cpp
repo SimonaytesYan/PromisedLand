@@ -23,7 +23,7 @@ void generateField(Window& window, CellInterlayer& cell_int, const sf::Vector2u 
 			const int cell_x    = i * kFieldSize;
 			const int cell_y    = j * kFieldSize;
 			
-			// window.
+			window.createCell(new GrassView({cell_x, cell_y}, cell_int), FieldType::Grass);
 		}
 	}
 }
@@ -47,6 +47,9 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 	BuildingPanel* build_panel = new BuildingPanel({1800, 200}, build_pan_interlayer);
 	game_window.addChild(build_panel);
 
+	game_window.setCellInterlayer(&cell_interlayer);
+	generateField(game_window, cell_interlayer, window.getSize());
+
     auto timer_start = std::chrono::system_clock::now(); 
     while (window.isOpen())
 	{
@@ -54,8 +57,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
         auto passed   = std::chrono::duration_cast<std::chrono::milliseconds>(timer_end - timer_start);
 		if (passed.count() >= kMSInClock)
 		{
-			// Event tick_event(EventType::TICK);
-			// game_window.push(&tick_event);
+			Event tick_event(EventType::TICK);
+			game_window.push(&tick_event);
 
 			timer_start = timer_end;
 		}
@@ -72,7 +75,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 
 				case sf::Event::MouseButtonPressed:
 				{
-
+					MouseEvent click_event({event.mouseButton.x, event.mouseButton.y});
+					game_window.push(&click_event);
 				}
 			}
 		}

@@ -5,5 +5,7 @@
 class Renderable
 {
 public:
-    virtual void draw(RenderTarget& render_target);
+    virtual void draw(RenderTarget& render_target) = 0;
+
+    virtual ~Renderable() = default;
 };
