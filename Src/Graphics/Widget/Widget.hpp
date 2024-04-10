@@ -8,13 +8,13 @@ class Widget : public Renderable, public Eventable
 { 
 public:
     Widget(const int x = 0, const int y = 0) :
-    point(x, y)
+    pos(x, y)
     { }
 
-    Widget(const Point point) : 
-    point (point)
+    Widget(const Point pos) : 
+    pos (pos)
     { }
 
 protected:
-    Point point;
+    Point pos;
 };

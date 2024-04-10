@@ -3,13 +3,13 @@
 #include <string>
 #include <string_view>
 
-#include "../../Renderable.hpp"
+#include "../Widget.hpp"
 
-class TextView : public Renderable 
+class TextView : public Widget 
 {
 public:
     explicit TextView(const Point _pos, const std::string_view _content = "")
-      : pos     (_pos),
+      : Widget  (_pos),
         content (_content) {} 
 
     void draw(RenderTarget& render_target) override 
@@ -23,6 +23,5 @@ private:
     const Color kTextColor = Color::White;
 
 private:
-    Point       pos;
     std::string content;
 };

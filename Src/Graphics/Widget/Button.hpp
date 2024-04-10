@@ -41,14 +41,14 @@ public:
     
     void draw(RenderTarget& render_target)
     {
-        render_target.drawTexture(point, texture);
+        render_target.drawTexture(pos, texture);
     }
 
     bool onClick(int press_x, int press_y)
     {
-        printf("Button::onClick(%d %d)\n", point.x, point.y);
-        if (point.x <= press_x && press_x <= point.x + x_len &&
-            point.y <= press_y && press_y <= point.y + y_len)
+        printf("Button::onClick(%d %d)\n", pos.x, pos.y);
+        if (pos.x <= press_x && press_x <= pos.x + x_len &&
+            pos.y <= press_y && press_y <= pos.y + y_len)
         {
             on_click();
             return true;
