@@ -2,18 +2,14 @@
 
 #include <vector>
 
-#include "../Eventable.hpp"
-#include "../Renderable.hpp"
-// #include "../../../StlVector/Src/VectorDecor.hpp"
-#include "../Managers/WindowViewManager.hpp"
+#include "Widget.hpp"
 
-class Window : public Renderable, public Eventable
+class Window : public Widget
 {
 public:
-    explicit Window(const Point _position, ResourceManager& _res_manager)
-      : position     (_position),
-        view_manager (_res_manager),
-        children     ()
+    explicit Window(const Point position)
+      : Widget   (position),
+        children ()
     {}
 
     // Non-copyable
@@ -26,8 +22,8 @@ public:
 
     void push(const Event* event) override
     {
-
-        view_manager.pushToLogic(event);
+        for (auto val : children)
+            val->push(event);
     }
 
     void draw(RenderTarget& rt) override
@@ -38,7 +34,7 @@ public:
         }
     } 
 
-    void addChild(Renderable* child)
+    void addChild(Widget* child)
     {
         children.push_back(child);
     }
@@ -53,7 +49,5 @@ public:
     }
 
 private:
-    Point                    position;
-    WindowViewManager        view_manager;
-    std::vector<Renderable*> children;
+    std::vector<Widget*> children;
 };
