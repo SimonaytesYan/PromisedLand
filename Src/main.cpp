@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Graphics/Widget/BuildingPanel.hpp"
+#include "Interlayers/CellInterlayer.hpp"
 #include "Graphics/CellView/CellViewCreator.hpp"
 #include "Constants.hpp"
 #include "Utils/RenderTarget.hpp"
@@ -30,7 +31,21 @@ void generateField(Window& window, CellInterlayer& cell_int, const sf::Vector2u 
 void runGameCycle(sf::RenderWindow& window, RenderTarget& rt) 
 {
 	Window game_window({0, 0});
-	BuildingPanel
+
+	ResourceBar* res_bar = new ResourceBar(window.getSize().x, window.getSize().y - kControlPanelH / 2, kStartResources);
+	game_window.addChild(res_bar);
+
+	// Interlayer + Manager initialisation
+	ResourceBarInterlayer   res_bar_inter       (*res_bar);
+	ResourceManager         res_manager         (res_bar_inter);
+	CellManager             cell_manager        (&res_manager);
+	CellInterlayer          cell_interlayer     (cell_manager);
+	BuildingPanelInterlayer build_pan_interlayer(cell_manager);
+
+	cell_manager.setCellInterlayer(&cell_interlayer);
+
+	BuildingPanel* build_panel = new BuildingPanel({1800, 200}, build_pan_interlayer);
+	game_window.addChild(build_panel);
 
     auto timer_start = std::chrono::system_clock::now(); 
     while (window.isOpen())
@@ -65,6 +80,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 		rt.clear();
 		window.clear();
 
+		game_window.draw(rt);
+
 		rt.display(window);
 		window.display();
     }
@@ -76,9 +93,6 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 	RenderTarget main_rt(window.getSize());
-
-	ResourceBarInterlayer res_bar_interlayer;
-	ResourceManager res_manager;
 
 	runGameCycle(window, main_rt);
 }

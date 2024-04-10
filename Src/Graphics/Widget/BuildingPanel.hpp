@@ -20,7 +20,7 @@ struct ButtonArgs
     FieldType      field;
 };
 
-class BuildingPanel : Widget
+class BuildingPanel : public Widget
 {
 public:
     BuildingPanel(Point pos, BuildingPanelInterlayer& interlayer) : 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Utils/GraphicPrimitives.hpp"
+#include "../GameLogic/Resources.hpp"
 
 enum class EventType 
 {
