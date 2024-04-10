@@ -5,7 +5,6 @@
 #include "LogicInterlayer.hpp"
 #include "../Graphics/CellView/CellViewCreator.hpp"
 #include "../Managers/CellManager.hpp"
-#include "../Events/CellEvent.hpp"
 
 class CellInterlayer : public ViewInterlayer, public LogicInterlayer
 {

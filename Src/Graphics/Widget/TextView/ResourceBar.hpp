@@ -27,7 +27,22 @@ public:
     }
 
     void push(const Event* event) override
-    { }
+    { 
+        const ResourceEvent* res_event = static_cast<const ResourceEvent*>(event);
+
+        switch (res_event->event_type)
+        {
+        case EventType::RESOURCES_CHANGED_EVENT:
+            updateValues(res_event->resources);
+            break;
+        case EventType::TICK:
+        case EventType::MOUSE_CLICK:
+        case EventType::SELECT_BUILDING_EVENT:
+            break;
+        default:
+            break;
+        }
+    }
 
     void updateValues(const Resources resources)
     {

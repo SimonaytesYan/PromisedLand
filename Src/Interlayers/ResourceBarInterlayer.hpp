@@ -5,6 +5,7 @@
 
 class ResourceBarInterlayer : public LogicInterlayer
 {
+public:
     ResourceBarInterlayer(ResourceBar& resources_bar) 
     : resources_bar (resources_bar)
     { }

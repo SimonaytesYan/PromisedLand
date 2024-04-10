@@ -2,6 +2,7 @@
 
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "../GameLogic/Tiles/CellCreator.hpp"
+#include "../Interlayers/CellInterlayer.hpp"
 #include "ResourceManager.hpp"
 #include "../../StlVector/Src/Vector.hpp"
 #include "../Utils/Utils.hpp"
