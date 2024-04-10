@@ -20,7 +20,7 @@ public:
 
 private:
     const uint16_t  kTextSize  = 20;
-    const sf::Color kTextColor = sf::Color::White;
+    const Color kTextColor = Color::White;
 
 private:
     Point       pos;

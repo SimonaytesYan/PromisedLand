@@ -14,7 +14,7 @@ RenderTarget::RenderTarget(const Point size)
     rt.create(size.x, size.y);
 }
 
-void RenderTarget::setPixel(const Point pos, const sf::Color color)
+void RenderTarget::setPixel(const Point pos, const Color color)
 {
     sf::VertexArray point(sf::Points, 1);
 
@@ -24,7 +24,7 @@ void RenderTarget::setPixel(const Point pos, const sf::Color color)
     rt.draw(point);
 }
 
-void RenderTarget::drawLine(const Point pos1, const Point pos2, const sf::Color color)
+void RenderTarget::drawLine(const Point pos1, const Point pos2, const Color color)
 {
     sf::VertexArray line(sf::LinesStrip, 2);
 
@@ -39,9 +39,9 @@ void RenderTarget::drawLine(const Point pos1, const Point pos2, const sf::Color 
 
 void RenderTarget::drawRect(const Point lu, 
                             const Point size, 
-                            const sf::Color fill_color,
+                            const Color fill_color,
                             const int line_thickness, 
-                            const sf::Color out_color)
+                            const Color out_color)
 {
     sf::RectangleShape rect(size);
 
@@ -55,9 +55,9 @@ void RenderTarget::drawRect(const Point lu,
 
 void RenderTarget::drawCircle (const Point lu, 
                                const double radius, 
-                               const sf::Color fill_color, 
+                               const Color fill_color, 
                                const int line_thickness, 
-                               const sf::Color out_color)
+                               const Color out_color)
 {
     sf::CircleShape circle(radius);
 
@@ -69,7 +69,7 @@ void RenderTarget::drawCircle (const Point lu,
     rt.draw(circle);
 }
 
-void RenderTarget::drawText(const Point pos, const char* const content, const uint16_t char_size, const sf::Color color)
+void RenderTarget::drawText(const Point pos, const char* const content, const uint16_t char_size, const Color color)
 {    
     sf::Text text_to_draw = sf::Text(content, font, char_size);
 
@@ -105,7 +105,7 @@ void RenderTarget::display(sf::RenderWindow& window)
     window.draw(to_draw_on_win);
 }
 
-void RenderTarget::clear(const sf::Color clear_color)
+void RenderTarget::clear(const Color clear_color)
 {
     rt.clear(clear_color);
 }
