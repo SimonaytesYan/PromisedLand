@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Renderable.hpp"
+#include  "../Widget/Widget.hpp"
 
-class CellView : Renderable
+class CellView : Widget
 {
 public:
     CellView(const Texture texture, const int x = 0, const int y = 0) :
