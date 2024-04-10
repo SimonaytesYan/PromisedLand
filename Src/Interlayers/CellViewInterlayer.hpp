@@ -4,13 +4,13 @@
 #include "../Logics/Tiles/Cell.hpp"
 #include "../Logics/Tiles/CellCreator.hpp"
 #include "../Events/ResourceEvent.hpp"
-#include "ResourceManager.hpp"
+#include "../../GameLogic/Managers/ResourceManager.hpp"
 #include "ViewManager.hpp"
 
-class CellViewManager : public ViewManager
+class CellInterlayer : public ViewManager
 {
 public:
-    explicit CellViewManager(const FieldType _field_type, ResourceManager& _res_manager)
+    explicit CellInterlayer(const FieldType _field_type, ResourceManager& _res_manager)
       : res_manager (_res_manager),
         cell        (nullptr)
     {

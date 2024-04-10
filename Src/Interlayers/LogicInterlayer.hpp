@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Eventable.hpp"
+#include "../../Eventable.hpp"
 
-struct LogicManager 
+struct LogicInterlayer 
 {
     virtual void pushToView(const Event* event) = 0;
 };

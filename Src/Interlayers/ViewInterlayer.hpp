@@ -2,7 +2,7 @@
 
 #include "../Eventable.hpp"
 
-struct ViewManager 
+struct ViewInterlayer
 {
     virtual void pushToLogic(const Event* event) = 0;
 };
