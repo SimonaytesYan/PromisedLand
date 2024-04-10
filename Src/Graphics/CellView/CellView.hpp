@@ -1,13 +1,17 @@
 #pragma once
 
 #include  "../Widget/Widget.hpp"
+#include "../../Interlayers/CellInterlayer.hpp"
+
+const size_t kFieldSize = 64;
 
 class CellView : Widget
 {
 public:
-    CellView(const Texture texture, const int x = 0, const int y = 0) 
-    : Widget  (x, y),
-      texture (texture)
+    CellView(const Texture texture, Point pos, const FieldType field_type, CellInterlayer& interlayer) 
+    : Widget     (pos),
+      texture    (texture),
+      interlayer (interlayer)
     { }
 
     void draw(RenderTarget& render_target) override
@@ -20,5 +24,6 @@ public:
 
 private:
     const Texture texture;
+    CellInterlayer& interlayer;
 };
 
