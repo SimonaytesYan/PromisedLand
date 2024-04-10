@@ -9,7 +9,7 @@ enum class EventType
     MOUSE_CLICK,
 
     // VIRTUAL EVENTS
-    BUILDING_EVENT
+    SELECT_BUILDING_EVENT
 };
 
 struct Event 
@@ -34,7 +34,7 @@ struct MouseEvent : public Event
 struct SelectBuildingEvent : public Event
 {
     SelectBuildingEvent(FieldType type)
-    : Event(EventType::BUILDING_EVENT),
+    : Event(EventType::SELECT_BUILDING_EVENT),
       type (type)
     { }
 

@@ -12,7 +12,6 @@ public:
 
     void pushToLogic(const Event* event) override
     {
-        
     }
 
 private:

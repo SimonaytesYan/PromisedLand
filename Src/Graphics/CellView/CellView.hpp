@@ -20,7 +20,17 @@ public:
     }
 
     void push(const Event* event) override
-    { }
+    { 
+        switch (event->event_type)
+        {
+        case EventType::MOUSE_CLICK:
+            // TODO push CellEvent
+            break;
+        
+        default:
+            break;
+        }
+    }
 
 private:
     const Texture texture;
