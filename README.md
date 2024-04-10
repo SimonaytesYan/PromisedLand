@@ -1,13 +1,16 @@
-TODO:
+# TODO:
 * CellInterlayer
 * ResourceBarInterlayer
 * CellView
 * BuildingPanel
 * BuildingPanelInterlayer
 * Buttons
-* Widget
 
 * EventManager
+
+# DONE:
+* Widget
+
 
 Codes style:
 
