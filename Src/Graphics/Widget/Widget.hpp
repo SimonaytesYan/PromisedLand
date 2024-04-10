@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../Renderable.hpp"
-#include "../Events/Eventable.hpp"
+#include "../../Events/Eventable.hpp"
 #include "../../Utils/GraphicPrimitives.hpp"
 
 class Widget : public Renderable, public Eventable

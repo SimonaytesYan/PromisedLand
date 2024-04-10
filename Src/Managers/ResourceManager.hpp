@@ -1,19 +1,17 @@
 #pragma once
 
-#include <vector>
+#include "../GameLogic/Tiles/Cell.hpp"
+#include "../Events/Eventable.hpp"
+#include "../Interlayers/ResourceBarInterlayer.hpp"
+#include "../../StlVector/Src/Vector.hpp"
 
-#include "../Logics/Tiles/Cell.hpp"
-#include "LogicManager.hpp"
-#include "../Events/ResourceEvent.hpp"
-// #include "../../../StlVector/Src/VectorDecor.hpp"
-#include "ViewManager.hpp"
-
-class ResourceManager : public ViewManager, public LogicManager
+class ResourceManager
 {
 public:
-    explicit ResourceManager()
-      : cells    (),
-        user_res (kStartResources)
+    explicit ResourceManager(ResourceBarInterlayer& _res_bar_int)
+      : user_res                (kStartResources),
+        tick_income             (),
+        resource_bar_interlayer (_res_bar_int)
     {}
 
     // Non-copyable
@@ -24,31 +22,24 @@ public:
     ResourceManager(ResourceManager&& other)           = delete;
     ResourceManager operator=(ResourceManager&& other) = delete;
 
-    void pushToLogic(const Event* event)
+    void onTick()
     {
-        const ResourceEvent* res_event = static_cast<const ResourceEvent*>(event);
-        
-        switch (res_event->event_type)
-        {
-        case EventType::TICK:
-            onTick();
-            break;
-        case EventType::MOUSE_CLICK:
-            user_res += res_event->add_resources;
-            break;
-        default:
-            break;
-        }
+        user_res += tick_income;
+
+        informResourceBar();
     }
 
-    void pushToView(const Event* event)
+    void onBuild(const Cell* new_cell)
     {
+        user_res    += new_cell->getAppearIncome();
+        tick_income += new_cell->getTickIncome();
 
+        informResourceBar();
     }
 
-    void addCell(Cell* cell)
+    void onDelete(const Cell* delete_cell)
     {
-        cells.push_back(cell);
+        // To be continued
     }
 
     Resources getUserRes()
@@ -56,27 +47,16 @@ public:
         return user_res;
     }
 
-    ~ResourceManager()
+private:
+
+    void informResourceBar()
     {
-        // STLVectorDecor<Cell*> vector_traits(cells);
-        for (auto val : cells)
-        {
-            delete val;
-        }
+        ResourceEvent res_event(user_res);
+        resource_bar_interlayer.pushToView(&res_event);
     }
 
 private:
-
-    void onTick()
-    {
-        // STLVectorDecor<Cell*> vector_traits(cells);
-        for (auto val : cells)
-        {
-            user_res += val->getTickIncome();
-        }
-    }
-
-private:
-    std::vector<Cell*> cells;
-    Resources          user_res;
+    Resources              user_res;
+    Resources              tick_income;
+    ResourceBarInterlayer& resource_bar_interlayer;
 };

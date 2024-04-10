@@ -10,8 +10,9 @@ const char* kCellsAssets[] = {"Assets/field.png",
                               "Assets/windmill.png"};
 
 #define CELL_VIEW(name, texture_path, field_type)                     \
-    class name : CellView                                             \
+    class name : public CellView                                      \
     {                                                                 \
+    public:                                                           \
         name (Point pos, CellInterlayer& interlayer) :                \
         CellView (Texture(texture_path), pos, field_type, interlayer) \
         { }                                                           \

@@ -29,7 +29,17 @@ public:
 
     void pushToLogic(const Event* event) override
     {
-        // TODO Vova
+        switch (event->event_type)
+        {
+        case EventType::TICK:
+            cell_manager.onTick();
+            break;
+        case EventType::MOUSE_CLICK:
+            cell_manager.createCell();
+            break;
+        default:
+            break;
+        }
     }
 
 private:

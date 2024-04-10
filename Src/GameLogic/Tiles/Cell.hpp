@@ -6,12 +6,12 @@
 class Cell : GameObject 
 {
 public:
-    virtual Resources getAppearIncome() 
+    virtual Resources getAppearIncome() const
     {
         return kStartResources;
     }
 
-    virtual Resources getTickIncome()
+    virtual Resources getTickIncome() const
     {
         return kStartResources;
     }
