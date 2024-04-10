@@ -1,9 +1,11 @@
 #pragma once
 
 #include  "../Widget/Widget.hpp"
-#include "../../Interlayers/CellInterlayer.hpp"
+// #include "../../Interlayers/CellInterlayer.hpp"
 
 const size_t kFieldSize = 64;
+
+class CellInterlayer;
 
 class CellView : Widget
 {
@@ -24,7 +26,7 @@ public:
         switch (event->event_type)
         {
         case EventType::MOUSE_CLICK:
-            // TODO push CellEvent
+            interlayer.pushToLogic(event);
             break;
         
         default:
