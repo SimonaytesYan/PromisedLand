@@ -30,14 +30,13 @@ public:
 
     void pushToLogic(const Event* event) override
     {
-        const CellEvent* res_event = static_cast<const CellEvent*>(event);
-        switch (res_event->event_type)
+        switch (event->event_type)
         {
         case EventType::TICK:
             cell_manager.onTick();
             break;
         case EventType::MOUSE_CLICK:
-            cell_manager.createCell(res_event->cell_type);
+            cell_manager.createCell();
             break;
         default:
             break;

@@ -9,14 +9,18 @@
 class CellManager
 {
 public:
-    explicit CellManager()
-      : cells       (),
-        res_manager (nullptr) 
+    explicit CellManager(CellInterlayer* _cell_interlayer)
+      : cells           (),
+        res_manager     (nullptr),
+        cell_interlayer (_cell_interlayer),
+        cell_type       (FieldType::Error) 
     {}
 
-    explicit CellManager(ResourceManager* _res_manager)
-      : cells       (),
-        res_manager (_res_manager) 
+    explicit CellManager(ResourceManager* _res_manager = nullptr, CellInterlayer* _cell_interlayer = nullptr)
+      : cells           (),
+        res_manager     (_res_manager),
+        cell_interlayer (_cell_interlayer),
+        cell_type       (FieldType::Error) 
     {}
 
     // Non-copyable
@@ -40,12 +44,22 @@ public:
         res_manager = _res_manager;
     }
 
+    void setCellInterlayer(CellInterlayer* _cell_interlayer)
+    {
+        cell_interlayer = _cell_interlayer;
+    }
+
+    void setCellType(const FieldType _cell_type)
+    {
+        cell_type = _cell_type;
+    }
+
     void onTick()
     {
         res_manager->onTick();
     }
 
-    void createCell(const FieldType cell_type)
+    void createCell()
     {
         Cell* new_cell = nullptr;
 
@@ -79,11 +93,6 @@ public:
         createCell(new_cell);
     }
 
-    void createCell(Cell* new_cell)
-    {
-        cells.PushBack(new_cell);
-    }
-
     void deleteCell(Cell* delete_cell)
     {
         auto begin_iterator = cells.Begin();
@@ -101,6 +110,14 @@ public:
     }
 
 private:
+    void createCell(Cell* new_cell)
+    {
+        cells.PushBack(new_cell);
+    }
+
+private:
     Vector<Cell*>    cells;
     ResourceManager* res_manager;
+    CellInterlayer*  cell_interlayer;
+    FieldType        cell_type;
 };
