@@ -5,6 +5,7 @@
 #include "LogicInterlayer.hpp"
 #include "../Graphics/CellView/CellViewCreator.hpp"
 #include "../Managers/CellManager.hpp"
+#include "../Events/CellEvent.hpp"
 
 class CellInterlayer : public ViewInterlayer, public LogicInterlayer
 {
@@ -29,7 +30,18 @@ public:
 
     void pushToLogic(const Event* event) override
     {
-        // TODO Vova
+        const CellEvent* res_event = static_cast<const CellEvent*>(event);
+        switch (res_event->event_type)
+        {
+        case EventType::TICK:
+            cell_manager.onTick();
+            break;
+        case EventType::MOUSE_CLICK:
+            cell_manager.createCell(res_event->cell_type);
+            break;
+        default:
+            break;
+        }
     }
 
 private:

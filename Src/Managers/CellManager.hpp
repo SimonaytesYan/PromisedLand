@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../GameLogic/Tiles/Cell.hpp"
+#include "../GameLogic/Tiles/CellCreator.hpp"
 #include "ResourceManager.hpp"
 #include "../../StlVector/Src/Vector.hpp"
 #include "../Utils/Utils.hpp"
@@ -37,6 +38,45 @@ public:
     void setResourceManager(ResourceManager* _res_manager)
     {
         res_manager = _res_manager;
+    }
+
+    void onTick()
+    {
+        res_manager->onTick();
+    }
+
+    void createCell(const FieldType cell_type)
+    {
+        Cell* new_cell = nullptr;
+
+        switch (cell_type)
+        {
+        case FieldType::Grass:
+            new_cell = new Grass();
+            break;
+        case FieldType::Water:
+            new_cell = new Water();
+            break;
+        case FieldType::House:
+            new_cell = new House();
+            break;
+        case FieldType::Sawmill:
+            new_cell = new Sawmill();
+            break;
+        case FieldType::Well:
+            new_cell = new Well();
+            break;
+        case FieldType::Windmill:
+            new_cell = new Windmill();
+            break;
+        case FieldType::FieldNumber:
+        case FieldType::Error:
+            break;
+        default:
+            break;
+        }
+
+        createCell(new_cell);
     }
 
     void createCell(Cell* new_cell)
