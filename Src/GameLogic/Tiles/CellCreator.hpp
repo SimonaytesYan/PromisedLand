@@ -11,10 +11,10 @@
         name() : base_class()                               \
         { }                                                 \
                                                             \
-        Resources getAppearIncome() override                \
+        Resources getAppearIncome() const override          \
         { return appear_res; }                              \
                                                             \
-        Resources getTickIncome() override                  \
+        Resources getTickIncome() const override            \
         { return tick_res; }                                \
     }; 
 

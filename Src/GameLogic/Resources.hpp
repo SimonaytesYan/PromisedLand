@@ -4,6 +4,14 @@
 
 struct Resources : GameObject 
 {
+    Resources() :
+    food            (0),
+    water           (0),
+    wood            (0),
+    population      (0),
+    free_population (0)
+    { }
+
     Resources(const long int food, const long int water, const long int wood, const long int population, const long int free_population) :
     food            (food),
     water           (water),
