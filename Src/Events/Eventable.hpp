@@ -9,6 +9,7 @@ enum class EventType
     MOUSE_CLICK,
 
     // VIRTUAL EVENTS
+    BUILDING_EVENT
 };
 
 struct Event 
@@ -28,6 +29,16 @@ struct MouseEvent : public Event
     { }
 
     Point pos;
+};
+
+struct SelectBuildingEvent : public Event
+{
+    SelectBuildingEvent(FieldType type)
+    : Event(EventType::BUILDING_EVENT),
+      type (type)
+    { }
+
+    FieldType type;
 };
 
 struct Eventable 
