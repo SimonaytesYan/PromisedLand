@@ -1,5 +1,4 @@
 # TODO:
-* ResourceBarInterlayer
 * BuildingPanel
 * BuildingPanelInterlayer
 
@@ -10,6 +9,7 @@
 * Buttons
 * CellView
 * CellInterlayer
+* ResourceBarInterlayer
 
 
 Codes style:
