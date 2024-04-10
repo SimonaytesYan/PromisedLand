@@ -100,5 +100,7 @@ public:
 
 private:
     EventHolder* event_holder;
+    
+    // TODO Optimization: add field Event*
 };
 
