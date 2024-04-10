@@ -1,6 +1,7 @@
 #pragma once
 
-class Widget : public Renderable, public Eventable
-{
+#include "Renderable.hpp"
+#include "../Events/Eventable.hpp"
 
-};
+class Widget : public Renderable, public Eventable
+{ };
