@@ -30,6 +30,11 @@ public:
         tick_income += new_cell->getTickIncome();
     }
 
+    void onDelete(const Cell* delete_cell)
+    {
+        // To be continued
+    }
+
     Resources getUserRes()
     {
         return user_res;

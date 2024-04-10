@@ -44,6 +44,22 @@ public:
         cells.PushBack(new_cell);
     }
 
+    void deleteCell(Cell* delete_cell)
+    {
+        auto begin_iterator = cells.Begin();
+        auto end_iterator   = cells.End();
+        
+        for (; begin_iterator != end_iterator; ++begin_iterator)
+        {
+            if (*begin_iterator == delete_cell)
+            {
+                res_manager->onDelete(delete_cell);
+                cells.Erase(begin_iterator);
+                return;
+            }
+        }
+    }
+
 private:
     Vector<Cell*>    cells;
     ResourceManager* res_manager;
