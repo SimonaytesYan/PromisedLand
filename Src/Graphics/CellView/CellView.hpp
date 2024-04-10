@@ -24,7 +24,7 @@ public:
         switch (event->event_type)
         {
         case EventType::MOUSE_CLICK:
-            // TODO push CellEvent
+            interlayer.pushToLogic(event);
             break;
         
         default:
