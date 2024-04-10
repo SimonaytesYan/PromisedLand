@@ -1,13 +1,13 @@
 # TODO:
 * BuildingPanel
 * BuildingPanelInterlayer
+* CellView
 
 * EventManager
 
 # DONE:
 * Widget
 * Buttons
-* CellView
 * CellInterlayer
 * ResourceBarInterlayer
 
