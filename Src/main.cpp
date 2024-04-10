@@ -23,7 +23,7 @@ void generateField(Window& window, CellInterlayer& cell_int, const sf::Vector2u 
 			const int cell_x    = i * kFieldSize;
 			const int cell_y    = j * kFieldSize;
 			
-			window.createCell(new GrassView({cell_x, cell_y}, cell_int), FieldType::Grass);
+			window.createCell({cell_x, cell_y}, FieldType::Grass);
 		}
 	}
 }
@@ -42,7 +42,10 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 	CellInterlayer          cell_interlayer     (cell_manager);
 	BuildingPanelInterlayer build_pan_interlayer(cell_manager);
 
+	cell_interlayer.setWindow(&game_window);
+
 	cell_manager.setCellInterlayer(&cell_interlayer);
+	cell_manager.setCellType      (FieldType::Grass);
 
 	BuildingPanel* build_panel = new BuildingPanel({1800, 200}, build_pan_interlayer);
 	game_window.addChild(build_panel);

@@ -25,6 +25,19 @@ public:
     {
         for (auto val : children)
             val->push(event);
+
+        switch (event->event_type)
+        {
+        case EventType::BUILD_CELL_EVENT:
+          {  
+            const BuildCellEvent* build_event = static_cast<const BuildCellEvent*>(event);
+            addChild(build_event->cell_view);
+            break;
+          }  
+        
+        default:
+            break;
+        }
     }
 
     void draw(RenderTarget& rt) override
@@ -45,12 +58,10 @@ public:
         cell_interlayer = _cell_interlayer;
     }
 
-    void createCell(Widget* child, const FieldType cell_type)
+    void createCell(const Point position, const FieldType cell_type)
     {
-        Event event(EventType::MOUSE_CLICK);
+        MouseEvent event(position);
         cell_interlayer->pushToLogic(&event);
-
-        addChild(child);
     }
 
     ~Window()

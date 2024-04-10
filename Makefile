@@ -9,15 +9,21 @@ BIN = Bin/
 OBJ = Obj/
 ELF_FILE = $(BIN)run
 
-compile: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o
-	$(COMPILER) -fPIE $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Utils.o -o $(ELF_FILE)
+compile: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o
+	$(COMPILER) -fPIE $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o -o $(ELF_FILE)
 
 $(OBJ)RenderTarget.o: $(SRC)Utils/RenderTarget.cpp
 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Utils/RenderTarget.cpp $(SFML_FLAGS) -o $(OBJ)RenderTarget.o
 
 $(OBJ)Utils.o: $(SRC)Utils/Utils.cpp
 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Utils/Utils.cpp -o $(OBJ)Utils.o
-	
+
+$(OBJ)CellInterlayer.o: $(SRC)Interlayers/CellInterlayer.cpp
+	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Interlayers/CellInterlayer.cpp -o $(OBJ)CellInterlayer.o
+
+$(OBJ)CellManager.o: $(SRC)Managers/CellManager.cpp
+	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Managers/CellManager.cpp -o $(OBJ)CellManager.o
+
 # $(OBJ)Window.o: $(SRC)Window.cpp
 # 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
 

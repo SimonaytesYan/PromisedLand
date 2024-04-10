@@ -2,7 +2,8 @@
 
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "../GameLogic/Tiles/CellCreator.hpp"
-// #include "../Interlayers/CellInterlayer.hpp"
+#include "../Interlayers/ViewInterlayer.hpp"
+#include "../Graphics/CellView/CellViewCreator.hpp"
 #include "ResourceManager.hpp"
 #include "../../StlVector/Src/Vector.hpp"
 #include "../Utils/Utils.hpp"
@@ -62,39 +63,7 @@ public:
         res_manager->onTick();
     }
 
-    void createCell()
-    {
-        Cell* new_cell = nullptr;
-
-        switch (cell_type)
-        {
-        case FieldType::Grass:
-            new_cell = new Grass();
-            break;
-        case FieldType::Water:
-            new_cell = new Water();
-            break;
-        case FieldType::House:
-            new_cell = new House();
-            break;
-        case FieldType::Sawmill:
-            new_cell = new Sawmill();
-            break;
-        case FieldType::Well:
-            new_cell = new Well();
-            break;
-        case FieldType::Windmill:
-            new_cell = new Windmill();
-            break;
-        case FieldType::FieldNumber:
-        case FieldType::Error:
-            break;
-        default:
-            break;
-        }
-
-        createCell(new_cell);
-    }
+    void createCell(const Point position);
 
     void deleteCell(Cell* delete_cell)
     {

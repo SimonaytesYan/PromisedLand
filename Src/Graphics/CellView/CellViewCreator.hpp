@@ -2,7 +2,7 @@
 
 #include "CellView.hpp"
 
-const char* kCellsAssets[] = {"Assets/field.png",
+static const char* kCellsAssets[] = {"Assets/field.png",
                               "Assets/water.png",
                               "Assets/house.png",
                               "Assets/sawmill.png",
