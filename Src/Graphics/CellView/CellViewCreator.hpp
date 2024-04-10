@@ -17,9 +17,9 @@ const char* kCellsAssets[] = {"Assets/field.png",
         { }                                         \
     };
 
-CELL_VIEW(Grass,    kCellsAssets[0]);
-CELL_VIEW(Water,    kCellsAssets[1]);
-CELL_VIEW(House,    kCellsAssets[2]);
-CELL_VIEW(Sawmill,  kCellsAssets[3]);
-CELL_VIEW(Well,     kCellsAssets[4]);
-CELL_VIEW(Windmill, kCellsAssets[5]);
+CELL_VIEW(GrassView,    kCellsAssets[0]);
+CELL_VIEW(WaterView,    kCellsAssets[1]);
+CELL_VIEW(HouseView,    kCellsAssets[2]);
+CELL_VIEW(SawmillView,  kCellsAssets[3]);
+CELL_VIEW(WellView,     kCellsAssets[4]);
+CELL_VIEW(WindmillView, kCellsAssets[5]);
