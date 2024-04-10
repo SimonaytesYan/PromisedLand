@@ -1,23 +1,20 @@
 #pragma once
 
-#include "../../Eventable.hpp"
-#include "../../Renderable.hpp"
-#include "../../Managers/ResourceManager.hpp"
-#include "../../Logics/Resources.hpp"
+#include "../Widget.hpp"
+#include "../../../GameLogic/Resources.hpp"
 #include "TextView.hpp"
 
-class ResourceBar : public Eventable, public Renderable
+class ResourceBar : public Widget
 {
 public:
-    explicit ResourceBar(const int width, const int y_start, ResourceManager& _resource_manager)
+    explicit ResourceBar(const int width, const int y_start, Resources start_res)
       : food_view        ({0            , y_start}),
         water_view       ({width / text_view_cnt    , y_start}),
         wood_view        ({width / text_view_cnt * 2, y_start}),
         population_view  ({width / text_view_cnt * 3, y_start}),
-        free_pop_view    ({width / text_view_cnt * 4, y_start}),
-        resource_manager (_resource_manager)       
+        free_pop_view    ({width / text_view_cnt * 4, y_start})
     {
-        updateValues(resource_manager.getUserRes());
+        updateValues(start_res);
     }
 
     void draw(RenderTarget& render_target) override
@@ -30,20 +27,7 @@ public:
     }
 
     void push(const Event* event) override
-    {
-        switch (event->event_type)
-        {
-        case EventType::TICK:
-            updateValues(resource_manager.getUserRes());
-            break;
-        case EventType::MOUSE_CLICK:
-            break;
-        default:
-            break;
-        }
-    }
-
-private:
+    { }
 
     void updateValues(const Resources resources)
     {
@@ -54,6 +38,7 @@ private:
         free_pop_view  .setContent(kFreePopTitle    + std::to_string(resources.free_population));
     }
 
+private:
     const int text_view_cnt = 5;
 
     const char* kFoodTitle       = "Food: ";
@@ -63,12 +48,9 @@ private:
     const char* kFreePopTitle    = "Free people: ";
 
 private:
-    // TODO: make better
     TextView food_view;
     TextView water_view;
     TextView wood_view;
     TextView population_view;
     TextView free_pop_view;
-
-    ResourceManager& resource_manager;
 };

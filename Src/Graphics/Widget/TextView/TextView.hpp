@@ -15,6 +15,9 @@ public:
     void draw(RenderTarget& render_target) override 
     { render_target.drawText(pos, content.c_str(), kTextSize, kTextColor); }
 
+    void push(const Event* event) override
+    { }
+
     void setContent(const std::string_view _content) 
     { content = _content; }
 
