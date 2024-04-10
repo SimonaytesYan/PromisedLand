@@ -7,7 +7,7 @@
 #include "../../GameLogic/Managers/ResourceManager.hpp"
 #include "ViewManager.hpp"
 
-class CellInterlayer : public ViewManager
+class CellInterlayer : public ViewInterlayer
 {
 public:
     explicit CellInterlayer(const FieldType _field_type, ResourceManager& _res_manager)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Eventable.hpp"
+#include "../Events/Eventable.hpp"
 
 struct ViewInterlayer
 {
