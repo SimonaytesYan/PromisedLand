@@ -12,6 +12,20 @@ public:
 
     void pushToLogic(const Event* event) override
     {
+        const SelectBuildingEvent* select_event = static_cast<const SelectBuildingEvent*>(event);
+
+        switch (select_event->event_type)
+        {
+        case EventType::SELECT_BUILDING_EVENT:
+            cell_manager.setCellType(select_event->type);
+            break;
+        case EventType::TICK:
+        case EventType::MOUSE_CLICK:
+        case EventType::RESOURCES_CHANGED_EVENT:
+            break;
+        default:
+            break;
+        }
     }
 
 private:

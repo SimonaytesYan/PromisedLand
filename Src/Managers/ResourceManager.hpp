@@ -1,14 +1,17 @@
 #pragma once
 
 #include "../GameLogic/Tiles/Cell.hpp"
+#include "../Events/Eventable.hpp"
+#include "../Interlayers/ResourceBarInterlayer.hpp"
 #include "../../StlVector/Src/Vector.hpp"
 
 class ResourceManager
 {
 public:
-    explicit ResourceManager()
-      : user_res    (kStartResources),
-        tick_income ()
+    explicit ResourceManager(ResourceBarInterlayer& _res_bar_int)
+      : user_res                (kStartResources),
+        tick_income             (),
+        resource_bar_interlayer (_res_bar_int)
     {}
 
     // Non-copyable
@@ -22,12 +25,16 @@ public:
     void onTick()
     {
         user_res += tick_income;
+
+        informResourceBar();
     }
 
     void onBuild(const Cell* new_cell)
     {
         user_res    += new_cell->getAppearIncome();
         tick_income += new_cell->getTickIncome();
+
+        informResourceBar();
     }
 
     void onDelete(const Cell* delete_cell)
@@ -41,6 +48,15 @@ public:
     }
 
 private:
-    Resources     user_res;
-    Resources     tick_income;
+
+    void informResourceBar()
+    {
+        ResourceEvent res_event(user_res);
+        resource_bar_interlayer.pushToView(&res_event);
+    }
+
+private:
+    Resources              user_res;
+    Resources              tick_income;
+    ResourceBarInterlayer& resource_bar_interlayer;
 };

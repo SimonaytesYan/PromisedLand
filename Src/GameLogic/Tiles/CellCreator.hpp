@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Building.hpp"
-#include "../../../Constants.hpp"
+#include "../../Constants.hpp"
 #include "../Resources.hpp"
 
 #define CELL_LOGIC(name, base_class, appear_res, tick_res)  \
