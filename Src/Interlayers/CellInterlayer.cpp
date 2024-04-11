@@ -38,21 +38,15 @@ void CellInterlayer::pushToLogic(const Event* event)
     case EventType::DESTROY_CELL_EVENT:
         {
         const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event);
-        int delete_ind = -1;
 
         for (size_t i = 0; i < cell_views.size(); ++i)
         {
             if (cell_views[i] == delete_event->cell_view)
             {
-                delete_ind = i;
+                cell_manager.deleteCell(i);
+                cell_views.erase(cell_views.begin() + i);
                 break;
             }
-        }
-
-        if (delete_ind != -1)
-        {
-            cell_manager.deleteCell(delete_ind);
-            cell_views.erase(cell_views.begin() + delete_ind);
         }
 
         window->push(delete_event);

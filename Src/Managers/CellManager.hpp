@@ -70,6 +70,8 @@ public:
     void deleteCell(const size_t index)
     {
         res_manager->onDelete(cells[index]);
+
+        delete cells[index];
         cells.erase(cells.begin() + index);
     }
 

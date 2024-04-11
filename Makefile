@@ -26,6 +26,7 @@ $(OBJ)CellManager.o: $(SRC)Managers/CellManager.cpp
 
 $(OBJ)CellView.o: $(SRC)Graphics/CellView/CellView.cpp
 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Graphics/CellView/CellView.cpp -o $(OBJ)CellView.o
+	
 # $(OBJ)Window.o: $(SRC)Window.cpp
 # 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
 
