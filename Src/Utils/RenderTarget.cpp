@@ -1,5 +1,15 @@
 #include "RenderTarget.hpp"
 
+const Color Color::Black      (sf::Color::Black);
+const Color Color::White      (sf::Color::White);
+const Color Color::Red        (sf::Color::Red);
+const Color Color::Green      (sf::Color::Green);
+const Color Color::Blue       (sf::Color::Blue);
+const Color Color::Yellow     (sf::Color::Yellow);
+const Color Color::Magenta    (sf::Color::Magenta);
+const Color Color::Cyan       (sf::Color::Cyan);
+const Color Color::Transparent(sf::Color::Transparent);
+
 Texture::Texture(const char* const img_path)
 {
     if (img_path)

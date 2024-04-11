@@ -20,7 +20,9 @@ public:
     }
 
     ~Functor()
-    { }
+    { 
+        // delete args;
+    }
 
 protected:
     Function func;
@@ -59,7 +61,8 @@ public:
 
     bool onClick(const Point point)
     {
-        printf("Button::onClick(%d %d)\n", pos.x, pos.y);
+        // printf("Button::onClick(%lf %lf)\n", pos.x, pos.y);
+        // printf("Button::onClick(%lf %lf)\n", point.x, point.y);
         if (pos.x <= point.x && point.x <= pos.x + x_len &&
             pos.y <= point.y && point.y <= pos.y + y_len)
         {

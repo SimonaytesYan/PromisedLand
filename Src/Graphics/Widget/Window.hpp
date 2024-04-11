@@ -7,9 +7,10 @@
 class Window : public Widget
 {
 public:
-    explicit Window(const Point position)
-      : Widget   (position),
-        children ()
+    explicit Window(const Point position, CellInterlayer* _cell_interlayer = nullptr)
+      : Widget          (position),
+        children        (),
+        cell_interlayer (_cell_interlayer)
     {}
 
     // Non-copyable
@@ -22,15 +23,47 @@ public:
 
     void push(const Event* event) override
     {
+        switch (event->event_type)
+        {
+        case EventType::TICK:
+            cell_interlayer->pushToLogic(event);
+            break;
+        case EventType::BUILD_CELL_EVENT:
+          {  
+            const BuildCellEvent* build_event = static_cast<const BuildCellEvent*>(event);
+            addChild(build_event->cell_view);
+            break;
+          }  
+        case EventType::DESTROY_CELL_EVENT:
+          {  
+            const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event);
+            delete_event->cell_view->kill();
+
+            break;
+          }   
+        default:
+            break;
+        }
+
         for (auto val : children)
             val->push(event);
     }
 
     void draw(RenderTarget& rt) override
     {
-        for (auto child : children)
+        auto begin_iterator = children.begin() - 1;
+        auto end_iterator   = children.end()   - 1;
+
+        for (; end_iterator != begin_iterator; --end_iterator)
         {
-            child->draw(rt);
+            if (!((*end_iterator)->isAlive()))
+            {
+                delete (*end_iterator);
+                children.erase(end_iterator);
+            }
+            
+            (*end_iterator)->draw(rt);
+            
         }
     } 
 
@@ -39,9 +72,19 @@ public:
         children.push_back(child);
     }
 
+    void setCellInterlayer(CellInterlayer* _cell_interlayer)
+    {
+        cell_interlayer = _cell_interlayer;
+    }
+
+    void createCell(const Point position, const FieldType cell_type)
+    {
+        MouseEvent event(position);
+        cell_interlayer->pushToLogic(&event);
+    }
+
     ~Window()
     {
-        // STLVectorDecor<Renderable*> children_traits(children);
         for (auto val : children)
         {
             delete val;
@@ -50,4 +93,5 @@ public:
 
 private:
     std::vector<Widget*> children;
+    CellInterlayer*      cell_interlayer;
 };

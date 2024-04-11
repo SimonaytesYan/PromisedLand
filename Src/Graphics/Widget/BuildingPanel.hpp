@@ -20,7 +20,7 @@ struct ButtonArgs
     FieldType      field;
 };
 
-class BuildingPanel : Widget
+class BuildingPanel : public Widget
 {
 public:
     BuildingPanel(Point pos, BuildingPanelInterlayer& interlayer) : 
@@ -63,7 +63,8 @@ public:
 
     void setFieldType(const FieldType field_type)
     {
-        interlayer.pushToLogic(new SelectBuildingEvent(field_type));
+        SelectBuildingEvent select_build_event(field_type);
+        interlayer.pushToLogic(&select_build_event);
     }
 
 private:

@@ -1,11 +1,13 @@
 #pragma once
 
-#include  "../Widget/Widget.hpp"
-#include "../../Interlayers/CellInterlayer.hpp"
+#include "../../Interlayers/ViewInterlayer.hpp"
+#include "../Widget/Widget.hpp"
+
+class CellInterlayer;
 
 const size_t kFieldSize = 64;
 
-class CellView : Widget
+class CellView : public Widget
 {
 public:
     CellView(const Texture texture, Point pos, const FieldType field_type, CellInterlayer& interlayer) 
@@ -19,18 +21,8 @@ public:
         render_target.drawTexture(pos, texture);
     }
 
-    void push(const Event* event) override
-    { 
-        switch (event->event_type)
-        {
-        case EventType::MOUSE_CLICK:
-            interlayer.pushToLogic(event);
-            break;
-        
-        default:
-            break;
-        }
-    }
+    void push(const Event* event) override;
+    void onClick(const Point point, const Event* event);
 
 private:
     const Texture texture;
