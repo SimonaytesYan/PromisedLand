@@ -47,7 +47,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 	cell_manager.setCellInterlayer(&cell_interlayer);
 	cell_manager.setCellType      (FieldType::Grass);
 
-	BuildingPanel* build_panel = new BuildingPanel({1800, 200}, build_pan_interlayer);
+	BuildingPanel* build_panel = new BuildingPanel({window.getSize().x - kControlPanelW / 2, kControlPanelYStart}, build_pan_interlayer);
 	game_window.addChild(build_panel);
 
 	game_window.setCellInterlayer(&cell_interlayer);
