@@ -69,7 +69,6 @@ public:
 
     void deleteCell(const size_t index)
     {
-        // printf("%lu %lu\n", index, cells.size());
         res_manager->onDelete(cells[index]);
         cells.erase(cells.begin() + index);
     }

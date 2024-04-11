@@ -85,7 +85,6 @@ public:
 
     ~Window()
     {
-        // STLVectorDecor<Renderable*> children_traits(children);
         for (auto val : children)
         {
             delete val;
