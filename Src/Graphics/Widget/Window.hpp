@@ -36,19 +36,9 @@ public:
           }  
         case EventType::DESTROY_CELL_EVENT:
           {  
-            // const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event);
+            const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event);
+            delete_event->cell_view->kill();
 
-            // auto begin_iterator = children.begin();
-            // auto end_iterator   = children.end();
-
-            // for (; begin_iterator != end_iterator; ++begin_iterator)
-            // {
-            //     if (*begin_iterator == delete_event->cell_view)
-            //     {
-            //         children.erase(begin_iterator);
-            //         break;;
-            //     }
-            // }
             break;
           }   
         default:
@@ -61,9 +51,19 @@ public:
 
     void draw(RenderTarget& rt) override
     {
-        for (auto child : children)
+        auto begin_iterator = children.begin() - 1;
+        auto end_iterator   = children.end()   - 1;
+
+        for (; end_iterator != begin_iterator; --end_iterator)
         {
-            child->draw(rt);
+            if (!((*end_iterator)->isAlive()))
+            {
+                delete (*end_iterator);
+                children.erase(end_iterator);
+            }
+            
+            (*end_iterator)->draw(rt);
+            
         }
     } 
 

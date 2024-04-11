@@ -55,8 +55,7 @@ void CellInterlayer::pushToLogic(const Event* event)
             cell_views.erase(cell_views.begin() + delete_ind);
         }
 
-        // там нельзя сразу удалять, нужно как в фотошопе помечать мертвой и потом удалять
-        // window->push(delete_event);
+        window->push(delete_event);
 
         break;
         }

@@ -23,10 +23,10 @@ void CellView::onClick(const Point point, const Event* event)
     if (pos.x < point.x && point.x < pos.x + kFieldSize &&
         pos.y < point.y && point.y < pos.y + kFieldSize)
     {
-        MouseEvent mouse_event(pos);
-        interlayer.pushToLogic(&mouse_event);
-
         DestroyCellEvent delete_event(this);
         interlayer.pushToLogic(&delete_event);
+
+        MouseEvent mouse_event(pos);
+        interlayer.pushToLogic(&mouse_event);
     }
 }

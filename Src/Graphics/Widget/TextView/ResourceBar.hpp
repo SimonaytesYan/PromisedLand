@@ -8,7 +8,8 @@ class ResourceBar : public Widget
 {
 public:
     explicit ResourceBar(const int width, const int y_start, Resources start_res)
-      : food_view        ({0            , y_start}),
+      : Widget           (0, y_start),
+        food_view        ({0            , y_start}),
         water_view       ({width / text_view_cnt    , y_start}),
         wood_view        ({width / text_view_cnt * 2, y_start}),
         population_view  ({width / text_view_cnt * 3, y_start}),

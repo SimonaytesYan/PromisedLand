@@ -38,7 +38,6 @@ public:
 
     void onDelete(const Cell* delete_cell)
     {
-        printf("DELETE: %d\n", delete_cell->getTickIncome().food);
         tick_income -= delete_cell->getTickIncome();
         informResourceBar();
     }
