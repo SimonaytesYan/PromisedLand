@@ -34,6 +34,23 @@ public:
             addChild(build_event->cell_view);
             break;
           }  
+        case EventType::DESTROY_CELL_EVENT:
+          {  
+            // const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event);
+
+            // auto begin_iterator = children.begin();
+            // auto end_iterator   = children.end();
+
+            // for (; begin_iterator != end_iterator; ++begin_iterator)
+            // {
+            //     if (*begin_iterator == delete_event->cell_view)
+            //     {
+            //         children.erase(begin_iterator);
+            //         break;;
+            //     }
+            // }
+            break;
+          }   
         default:
             break;
         }

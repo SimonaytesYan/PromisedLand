@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "../../StlVector/Src/Vector.hpp"
 #include "ViewInterlayer.hpp"
 #include "LogicInterlayer.hpp"
@@ -29,30 +31,10 @@ public:
     }
 
     void pushToView(const Event* event) override;
-
-    void pushToLogic(const Event* event) override
-    {
-        printf("INSIDE\n");
-        printf("%d\n", event->event_type);
-        switch (event->event_type)
-        {
-        case EventType::TICK:
-            printf("TO CELL\n");
-            cell_manager.onTick();
-            break;
-        case EventType::MOUSE_CLICK:
-          {
-            const MouseEvent* mouse_event = static_cast<const MouseEvent*>(event);
-            cell_manager.createCell(mouse_event->pos);
-            break;
-          }
-        default:
-            break;
-        }
-    }
+    void pushToLogic(const Event* event) override;
 
 private:
-    Vector<CellView*> cell_views;   // CellInterlayer don`t own it
+    std::vector<CellView*> cell_views;   // CellInterlayer don`t own it
     CellManager&      cell_manager;
     Window*           window;
 };

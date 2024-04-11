@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "../GameLogic/Tiles/CellCreator.hpp"
 #include "../Interlayers/ViewInterlayer.hpp"
@@ -37,7 +39,7 @@ public:
 
     ~CellManager()
     {
-        for (size_t i = 0; i < cells.Size(); ++i)
+        for (size_t i = 0; i < cells.size(); ++i)
         {
             delete cells[i];
         }
@@ -65,30 +67,21 @@ public:
 
     void createCell(const Point position);
 
-    void deleteCell(Cell* delete_cell)
+    void deleteCell(const size_t index)
     {
-        auto begin_iterator = cells.Begin();
-        auto end_iterator   = cells.End();
-        
-        for (; begin_iterator != end_iterator; ++begin_iterator)
-        {
-            if (*begin_iterator == delete_cell)
-            {
-                res_manager->onDelete(delete_cell);
-                cells.Erase(begin_iterator);
-                return;
-            }
-        }
+        // printf("%lu %lu\n", index, cells.size());
+        res_manager->onDelete(cells[index]);
+        cells.erase(cells.begin() + index);
     }
 
 private:
     void createCell(Cell* new_cell)
     {
-        cells.PushBack(new_cell);
+        cells.push_back(new_cell);
     }
 
 private:
-    Vector<Cell*>    cells;
+    std::vector<Cell*>    cells;
     ResourceManager* res_manager;
     CellInterlayer*  cell_interlayer;
     FieldType        cell_type;

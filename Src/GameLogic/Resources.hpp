@@ -30,6 +30,16 @@ struct Resources : GameObject
         return *this;
     }
 
+    Resources& operator-=(const Resources& other){
+        food            -= other.food;
+        water           -= other.water;
+        wood            -= other.wood;
+        population      -= other.population;
+        free_population -= other.free_population;
+
+        return *this;
+    }
+
     long int food;
     long int water;
     long int wood;

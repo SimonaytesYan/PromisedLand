@@ -25,7 +25,6 @@ public:
     void onTick()
     {
         user_res += tick_income;
-        // printf("RES: %d\n", user_res.food);
         informResourceBar();
     }
 
@@ -39,7 +38,9 @@ public:
 
     void onDelete(const Cell* delete_cell)
     {
-        // To be continued
+        printf("DELETE: %d\n", delete_cell->getTickIncome().food);
+        tick_income -= delete_cell->getTickIncome();
+        informResourceBar();
     }
 
     Resources getUserRes()
