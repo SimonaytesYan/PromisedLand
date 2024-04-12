@@ -5,20 +5,22 @@
 #include "../CellView/CellViewCreator.hpp"
 #include "../../../StlVector/Src/Vector.hpp"
 #include "../../Interlayers/BuldingPanelInterlayer.hpp"
+#include "../../Utils/Functor.hpp"
 
 class BuildingPanel;
-void SetFieldType(void* arg);
 
 struct ButtonArgs
 {
-    ButtonArgs(BuildingPanel* build_menu, FieldType field) :
+    ButtonArgs(BuildingPanel& build_menu, const FieldType field) :
     build_menu (build_menu),
     field      (field)
     { }
 
-    BuildingPanel* build_menu;
-    FieldType      field;
+    BuildingPanel&  build_menu;
+    const FieldType field;
 };
+
+void SetFieldType(ButtonArgs arg);
 
 class BuildingPanel : public Widget
 {
@@ -30,8 +32,8 @@ public:
         const size_t field_num = static_cast<size_t>(FieldType::FieldNumber);
         for (size_t i = 0; i < field_num; i++)
         {
-            Functor func(SetFieldType, 
-                        new ButtonArgs(this, static_cast<FieldType>(i)));
+            ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(i));
+            BasicFunctor* func = new Functor<ButtonArgs>(SetFieldType, args);
 
             buttons.PushBack(Button(Point(pos.x, pos.y + 70 * i), kFieldSize, kFieldSize, 
                                     func, kCellsAssets[i]));
@@ -72,8 +74,7 @@ private:
     BuildingPanelInterlayer& interlayer;
 };
 
-void SetFieldType(void* arg)
+void SetFieldType(ButtonArgs arg)
 {
-    ButtonArgs* button_args = static_cast<ButtonArgs*>(arg);
-    button_args->build_menu->setFieldType(button_args->field);
+    arg.build_menu.setFieldType(arg.field);
 }
