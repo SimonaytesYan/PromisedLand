@@ -7,7 +7,6 @@
 #include "../Interlayers/ViewInterlayer.hpp"
 #include "../Graphics/CellView/CellViewCreator.hpp"
 #include "ResourceManager.hpp"
-#include "../../StlVector/Src/Vector.hpp"
 #include "../Utils/Utils.hpp"
 
 class CellInterlayer;

@@ -38,13 +38,20 @@ public:
 
     void onDelete(const Cell* delete_cell)
     {
+        user_res    += delete_cell->getDestroyIncome();
         tick_income -= delete_cell->getTickIncome();
+
         informResourceBar();
     }
 
     Resources getUserRes()
     {
         return user_res;
+    }
+
+    bool hasLost()
+    {
+        return user_res < kZeroResources;
     }
 
 private:

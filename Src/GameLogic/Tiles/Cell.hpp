@@ -8,11 +8,16 @@ class Cell : GameObject
 public:
     virtual Resources getAppearIncome() const
     {
-        return kStartResources;
+        return kZeroResources;
     }
 
     virtual Resources getTickIncome() const
     {
-        return kStartResources;
+        return kZeroResources;
+    }
+
+    virtual Resources getDestroyIncome() const
+    {
+        return kZeroResources;
     }
 };
