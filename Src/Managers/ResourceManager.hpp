@@ -30,16 +30,22 @@ public:
 
     void onBuild(const Cell* new_cell)
     {
-        user_res    += new_cell->getAppearIncome();
-        tick_income += new_cell->getTickIncome();
+        const Building* building_cell = dynamic_cast<const Building*>(new_cell);
+        if (!building_cell) return; // it is not a Building
+
+        user_res    += building_cell->getAppearIncome();
+        tick_income += building_cell->getTickIncome();
 
         informResourceBar();
     }
 
     void onDelete(const Cell* delete_cell)
     {
-        user_res    += delete_cell->getDestroyIncome();
-        tick_income -= delete_cell->getTickIncome();
+        const Building* building_cell = dynamic_cast<const Building*>(delete_cell);
+        if (!building_cell) return; // it is not a Building
+
+        user_res    += building_cell->getDestroyIncome();
+        tick_income -= building_cell->getTickIncome();
 
         informResourceBar();
     }

@@ -40,17 +40,13 @@ struct Resources : GameObject
         return *this;
     }
 
-    auto operator<=>(const Resources& other) const
+    bool operator<(const Resources& other) const
     {
-        if (auto compare_result = food <=> other.food; compare_result != 0)
-            return compare_result;
-        if (auto compare_result = water <=> other.water; compare_result != 0)
-            return compare_result;
-        if (auto compare_result = wood <=> other.wood; compare_result != 0)
-            return compare_result;
-        if (auto compare_result = population <=> other.population; compare_result != 0)
-            return compare_result;
-        return free_population <=> other.free_population;
+        return food            < other.food       ||
+               water           < other.water      ||
+               wood            < other.wood       ||
+               population      < other.population ||
+               free_population < other.free_population;
     }
 
     long int food;

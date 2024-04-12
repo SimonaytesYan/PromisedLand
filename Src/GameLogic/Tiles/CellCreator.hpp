@@ -4,11 +4,19 @@
 #include "../../Constants.hpp"
 #include "../Resources.hpp"
 
-#define CELL_LOGIC(name, base_class, appear_res, tick_res, destroy_res)  \
-    class name : public base_class                                       \
+#define CELL_LOGIC(name)                \
+    class name : public Cell            \
+    {                                   \
+    public:                             \
+        name() : Cell()                 \
+        { }                             \
+    }; 
+
+#define BUILDING_LOGIC(name, appear_res, tick_res, destroy_res)          \
+    class name : public Building                                         \
     {                                                                    \
     public:                                                              \
-        name() : base_class()                                            \
+        name() : Building()                                              \
         { }                                                              \
                                                                          \
         Resources getAppearIncome() const override                       \
@@ -22,9 +30,10 @@
     }; 
 
 
-CELL_LOGIC(Grass,    Cell    , Resources( 0,  0,   0, 0,  0), Resources( 0,  0, 0, 0, 0), Resources(0, 0,  0,  0,  0))
-CELL_LOGIC(Water,    Cell    , Resources( 0,  0,   0, 0,  0), Resources( 0,  0, 0, 0, 0), Resources(0, 0,  0,  0,  0))
-CELL_LOGIC(House,    Building, Resources( 0,  0, -15, 5,  5), Resources(-5, -5, 0, 0, 0), Resources(0, 0, 10, -5, -5))
-CELL_LOGIC(Sawmill,  Building, Resources( 0,  0, -10, 0, -2), Resources( 0,  0, 2, 0, 0), Resources(0, 0,  7,  0,  2))
-CELL_LOGIC(Well,     Building, Resources( 0,  0, -10, 0, -2), Resources( 0, 10, 0, 0, 0), Resources(0, 0,  7,  0,  2))
-CELL_LOGIC(Windmill, Building, Resources( 0,  0, -10, 0, -2), Resources(10,  0, 0, 0, 0), Resources(0, 0,  7,  0,  2))
+CELL_LOGIC(Grass)
+CELL_LOGIC(Water)
+
+BUILDING_LOGIC(House,    Resources( 0,  0, -15, 5,  5), Resources(-5, -5, 0, 0, 0), Resources(0, 0, 10, -5, -5))
+BUILDING_LOGIC(Sawmill,  Resources( 0,  0, -10, 0, -2), Resources( 0,  0, 2, 0, 0), Resources(0, 0,  7,  0,  2))
+BUILDING_LOGIC(Well,     Resources( 0,  0, -10, 0, -2), Resources( 0, 10, 0, 0, 0), Resources(0, 0,  7,  0,  2))
+BUILDING_LOGIC(Windmill, Resources( 0,  0, -10, 0, -2), Resources(10,  0, 0, 0, 0), Resources(0, 0,  7,  0,  2))
