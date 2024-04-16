@@ -16,6 +16,7 @@ enum class EventType
     RESOURCES_CHANGED_EVENT,
     BUILD_CELL_EVENT,
     DESTROY_CELL_EVENT,
+    NEW_CITIZEN_EVENT,
 };
 
 struct Event 
@@ -75,6 +76,16 @@ struct DestroyCellEvent : public Event
     {}
 
   CellView* cell_view;
+};
+
+struct NewCitizensEvent : public Event
+{
+  explicit NewCitizensEvent(const long int citizen_cnt)
+    : Event    (EventType::NEW_CITIZEN_EVENT),
+      citizens (citizen_cnt)
+    {}
+
+  long int citizens;
 };
 
 struct Eventable 

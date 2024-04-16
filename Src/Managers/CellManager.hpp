@@ -4,7 +4,6 @@
 
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "../GameLogic/Tiles/CellCreator.hpp"
-#include "../Interlayers/ViewInterlayer.hpp"
 #include "../Graphics/CellView/CellViewCreator.hpp"
 #include "ResourceManager.hpp"
 #include "../Utils/Utils.hpp"

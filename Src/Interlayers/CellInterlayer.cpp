@@ -53,6 +53,9 @@ void CellInterlayer::pushToLogic(const Event* event)
 
         break;
         }
+    case EventType::NEW_CITIZEN_EVENT:
+        
+        break;
     default:
         break;
     }

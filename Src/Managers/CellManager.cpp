@@ -17,9 +17,15 @@ void CellManager::createCell(const Point position)
         new_view_cell = new WaterView(position, *cell_interlayer);
         break;
     case FieldType::House:
+      {
         new_cell      = new House();
         new_view_cell = new HouseView(position, *cell_interlayer);
+
+        NewCitizensEvent new_citizens_event(static_cast<House*>(new_cell)->getAppearIncome().population);
+        cell_interlayer->pushToLogic(&new_citizens_event);
+
         break;
+      }
     case FieldType::Sawmill:
         new_cell      = new Sawmill();
         new_view_cell = new SawmillView(position, *cell_interlayer);
