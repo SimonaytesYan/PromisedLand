@@ -10,7 +10,7 @@ public:
     : resources_bar (resources_bar)
     { }
 
-    void pushToView(const Event* event)
+    void pushToView(const EventPtr event)
     { resources_bar.push(event); }    
 
 private:

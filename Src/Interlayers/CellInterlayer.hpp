@@ -23,8 +23,8 @@ public:
         window = _window;
     }
 
-    void pushToView(const Event* event)  override;
-    void pushToLogic(const Event* event) override;
+    void pushToView(const EventPtr event) override;
+    void pushToLogic(const EventPtr event) override;
 
 private:
     std::vector<CellView*> cell_views;   // CellInterlayer don`t own it

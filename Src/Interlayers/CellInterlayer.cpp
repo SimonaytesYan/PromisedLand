@@ -1,13 +1,13 @@
 #include "CellInterlayer.hpp"
 #include "../Graphics/Widget/Window.hpp"
 
-void CellInterlayer::pushToView(const Event* event)
+void CellInterlayer::pushToView(const EventPtr event)
 {
     switch (event->event_type)
     {
     case EventType::BUILD_CELL_EVENT:
       {
-        const BuildCellEvent* build_event = static_cast<const BuildCellEvent*>(event);
+        const BuildCellEvent* build_event = static_cast<const BuildCellEvent*>(event.get());
         cell_views.push_back(build_event->cell_view);
         break;
       }
@@ -22,7 +22,7 @@ void CellInterlayer::pushToView(const Event* event)
     window->push(event);
 }
 
-void CellInterlayer::pushToLogic(const Event* event)
+void CellInterlayer::pushToLogic(const EventPtr event)
 {
     switch (event->event_type)
     {
@@ -31,13 +31,13 @@ void CellInterlayer::pushToLogic(const Event* event)
         break;
     case EventType::MOUSE_CLICK:
         {
-        const MouseEvent* mouse_event = static_cast<const MouseEvent*>(event);
+        const MouseEvent* mouse_event = static_cast<const MouseEvent*>(event.get());
         cell_manager.createCell(mouse_event->pos);
         break;
         }
     case EventType::DESTROY_CELL_EVENT:
         {
-        const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event);
+        const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event.get());
 
         for (size_t i = 0; i < cell_views.size(); ++i)
         {
@@ -49,7 +49,7 @@ void CellInterlayer::pushToLogic(const Event* event)
             }
         }
 
-        window->push(delete_event);
+        window->push(event);
 
         break;
         }

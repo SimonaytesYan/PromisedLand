@@ -3,55 +3,60 @@
 #include <functional>
 
 #include "Widget.hpp"
-
-typedef void (*Function)(void* args);
-
-class Functor
-{
-public:
-    Functor(Function function, void* args) :
-    func(function),
-    args(args)
-    { }
-
-    void operator()()
-    {
-        func(args);
-    }
-
-    ~Functor()
-    { 
-        // delete args;
-    }
-
-protected:
-    Function func;
-    void*    args;
-};
+#include "../../Utils/Functor.hpp"
 
 class Button : public Widget
 {
 public:
-    Button(Point pos, size_t x_len, size_t y_len, const Functor& func, 
+    Button(Point pos, size_t x_len, size_t y_len, BasicFunctor* func,
            const char* imp_path) :
     Widget   (pos),
     x_len    (x_len),
     y_len    (y_len),
-    on_click (func),
+    on_click (std::move(func)),
     texture  (imp_path)
     { }
-    
+
+    Button(const Button& other) :
+    Widget   (other.pos),
+    x_len    (other.x_len),
+    y_len    (other.y_len),
+    on_click (other.on_click->clone()),
+    texture  (other.texture)
+    { }
+
+    Button(Button&& other) :
+    Widget   (other.pos),
+    x_len    (other.x_len),
+    y_len    (other.y_len),
+    on_click (std::move(other.on_click)),
+    texture  (other.texture)
+    { 
+        other.on_click = nullptr;
+    }
+
+    Button operator=(const Button& other)
+    {
+        delete on_click;
+        
+        x_len    = other.x_len;
+        y_len    = other.y_len;
+        on_click = other.on_click->clone();
+        texture  = other.texture;
+    }
+
+
     void draw(RenderTarget& render_target)
     {
         render_target.drawTexture(pos, texture);
     }
 
-    void push(const Event* event) override
+    void push(const EventPtr event) override
     {
         switch (event->event_type)
         {
             case EventType::MOUSE_CLICK:
-                onClick(static_cast<const MouseEvent*>(event)->pos);
+                onClick(static_cast<const MouseEvent*>(event.get())->pos);
                 break;
             
             default:
@@ -61,12 +66,10 @@ public:
 
     bool onClick(const Point point)
     {
-        // printf("Button::onClick(%lf %lf)\n", pos.x, pos.y);
-        // printf("Button::onClick(%lf %lf)\n", point.x, point.y);
         if (pos.x <= point.x && point.x <= pos.x + x_len &&
             pos.y <= point.y && point.y <= pos.y + y_len)
         {
-            on_click();
+            (*on_click)();
             return true;
         }
         return false;
@@ -75,9 +78,14 @@ public:
     void onTick()
     { }
 
+    ~Button()
+    {
+        delete on_click;
+    }
+
 private:
-    size_t  x_len;
-    size_t  y_len;
-    Texture texture;
-    Functor on_click;
+    size_t        x_len;
+    size_t        y_len;
+    Texture       texture;
+    BasicFunctor* on_click;
 };
