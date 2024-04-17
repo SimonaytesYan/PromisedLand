@@ -87,10 +87,22 @@ public:
             delete event_holder;
     }
 
+    Event* operator->()
+    { return event; }
+
     Event* operator()()
-    { return event_holder->getPtr(); }
+    { return event; }
 
     Event* get()
+    { return event; }
+
+    const Event* operator->() const
+    { return event; }
+
+    const Event* operator()() const
+    { return event; }
+
+    const Event* get() const
     { return event; }
 
     bool active()
