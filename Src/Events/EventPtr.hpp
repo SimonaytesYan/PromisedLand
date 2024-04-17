@@ -59,14 +59,16 @@ public:
       event        (event)
     { 
         fprintf(stderr, "EventPtr(%p)\n", event);
+        event_holder->addRef();
     }
 
     EventPtr(const EventPtr& other) 
     : event_holder (other.event_holder),
       event        (other.event)
     { 
-        fprintf(stderr, "EventPtr(const EventPtr& other, %p)\n", event);
         event_holder->addRef(); 
+        fprintf(stderr, "EventPtr(const EventPtr& other, %p)\n", event);
+        fprintf(stderr, "ref = %zu\n", event_holder->getCounter());
     }
 
     EventPtr(EventPtr&& other) 
