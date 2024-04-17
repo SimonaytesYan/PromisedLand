@@ -79,7 +79,7 @@ private:
 
         buildings.push_back({building_cell, needed_res});
         // calculating on tick resources
-        double effectiveness_coeff = (appear_res * -1 - needed_res).free_population / (-1 * appear_res.free_population);
+        double effectiveness_coeff = (double)((appear_res * -1 - needed_res).free_population) / (double)(-1 * appear_res.free_population);
         printf("LOOK RES: %ld %ld %lf\n", appear_res.free_population, needed_res.free_population, effectiveness_coeff);
         Resources tick_resources   = building_cell->getTickIncome() * effectiveness_coeff;
         tick_income += tick_resources;
