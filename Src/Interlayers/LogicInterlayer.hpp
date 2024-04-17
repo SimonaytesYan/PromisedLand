@@ -4,5 +4,5 @@
 
 struct LogicInterlayer 
 {
-    virtual void pushToView(const Event* event) = 0;
+    virtual void pushToView(const EventPtr event) = 0;
 };

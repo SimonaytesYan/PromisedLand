@@ -21,8 +21,8 @@ public:
         render_target.drawTexture(pos, texture);
     }
 
-    void push(const Event* event) override;
-    void onClick(const Point point, const Event* event);
+    void push(const EventPtr event) override;
+    void onClick(const Point point, const EventPtr event);
 
 private:
     const Texture texture;
