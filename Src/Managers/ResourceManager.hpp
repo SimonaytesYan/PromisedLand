@@ -1,9 +1,10 @@
 #pragma once
 
+#include <vector>
+
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "../Events/Eventable.hpp"
 #include "../Interlayers/ResourceBarInterlayer.hpp"
-#include "../../StlVector/Src/Vector.hpp"
 
 class ResourceManager
 {
@@ -30,21 +31,33 @@ public:
 
     void onBuild(const Cell* new_cell)
     {
-        user_res    += new_cell->getAppearIncome();
-        tick_income += new_cell->getTickIncome();
+        const Building* building_cell = dynamic_cast<const Building*>(new_cell);
+        if (!building_cell) return; // it is not a Building
+
+        calculateResources(building_cell);
 
         informResourceBar();
     }
 
     void onDelete(const Cell* delete_cell)
     {
-        tick_income -= delete_cell->getTickIncome();
+        const Building* building_cell = dynamic_cast<const Building*>(delete_cell);
+        if (!building_cell) return; // it is not a Building
+
+        user_res    += building_cell->getDestroyIncome();
+        tick_income -= building_cell->getTickIncome();
+
         informResourceBar();
     }
 
     Resources getUserRes()
     {
         return user_res;
+    }
+
+    bool hasLost()
+    {
+        return user_res < kZeroResources;
     }
 
 private:
@@ -55,8 +68,35 @@ private:
         resource_bar_interlayer.pushToView(&res_event);
     }
 
+    void calculateResources(const Building* building_cell)
+    {
+        // calculating on build resources
+        Resources appear_res = building_cell->getAppearIncome();
+        Resources result_res = user_res + appear_res;
+        Resources needed_res = Resources::absNegative(result_res);
+        
+        user_res += (appear_res + needed_res);
+
+        buildings.push_back({building_cell, needed_res});
+        // calculating on tick resources
+        double effectiveness_coeff = (double)((appear_res * -1 - needed_res).free_population) / (double)(-1 * appear_res.free_population);
+        printf("LOOK RES: %ld %ld %lf\n", appear_res.free_population, needed_res.free_population, effectiveness_coeff);
+        Resources tick_resources   = building_cell->getTickIncome() * effectiveness_coeff;
+        tick_income += tick_resources;
+    }
+
+    void calculateTickResources(const Building* building_cell)
+    {
+        tick_income += building_cell->getTickIncome();
+    }
+
 private:
     Resources              user_res;
     Resources              tick_income;
     ResourceBarInterlayer& resource_bar_interlayer;
+
+    // "Resources" parameter needed to save resources 
+    // that are needed for building
+    // default: Resources()
+    std::vector<std::pair<const Building*, Resources>> buildings;
 };

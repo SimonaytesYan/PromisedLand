@@ -62,7 +62,6 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 		{
 			Event tick_event(EventType::TICK);
 			game_window.push(&tick_event);
-			// res_manager.push(&tick_event);
 
 			timer_start = timer_end;
 		}
@@ -83,6 +82,12 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 					game_window.push(&click_event);
 				}
 			}
+		}
+
+		if (res_manager.hasLost())
+		{
+			// printf("You have lost!\n");
+			// window.close();
 		}
 
 		rt.clear();

@@ -1,3 +1,8 @@
 #pragma once
 
-class GameObject {};
+class GameObject 
+{
+public:
+
+    virtual ~GameObject() = default;
+};

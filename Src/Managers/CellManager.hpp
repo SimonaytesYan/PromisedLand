@@ -4,10 +4,8 @@
 
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "../GameLogic/Tiles/CellCreator.hpp"
-#include "../Interlayers/ViewInterlayer.hpp"
 #include "../Graphics/CellView/CellViewCreator.hpp"
 #include "ResourceManager.hpp"
-#include "../../StlVector/Src/Vector.hpp"
 #include "../Utils/Utils.hpp"
 
 class CellInterlayer;
@@ -82,8 +80,8 @@ private:
     }
 
 private:
-    std::vector<Cell*>    cells;
-    ResourceManager* res_manager;
-    CellInterlayer*  cell_interlayer;
-    FieldType        cell_type;
+    std::vector<Cell*> cells;
+    ResourceManager*   res_manager;
+    CellInterlayer*    cell_interlayer;
+    FieldType          cell_type;
 };
