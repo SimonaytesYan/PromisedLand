@@ -53,6 +53,7 @@ private:
 class EventPtr
 {   
 public:
+    // Get Event*, allocated with new
     EventPtr(Event* event)
     : event_holder (new EventHolder(event)),
       event        (event_holder->getPtr())
