@@ -56,27 +56,44 @@ public:
     // Get Event*, allocated with new
     EventPtr(Event* event)
     : event_holder (new EventHolder(event)),
-      event        (event_holder->getPtr())
-    { }
-
-    EventPtr(const EventPtr& event_ptr) :
-    event_holder (event_ptr.event_holder)
-    {
-        event_holder->addRef();
+      event        (event)
+    { 
+        fprintf(stderr, "EventPtr(%p)\n", event);
     }
 
-    EventPtr(EventPtr&& event_ptr) :
-    event_holder (event_ptr.event_holder)
-    { }
+    EventPtr(const EventPtr& other) 
+    : event_holder (other.event_holder),
+      event        (other.event)
+    { 
+        fprintf(stderr, "EventPtr(const EventPtr& other, %p)\n", event);
+        event_holder->addRef(); 
+    }
+
+    EventPtr(EventPtr&& other) 
+    : event_holder (other.event_holder),
+      event        (other.event)
+    { event_holder->addRef(); }
     
     EventPtr& operator=(const EventPtr& other)
     {
+        if (other.event_holder == event_holder)
+            return *this;
+
         event_holder->removeRef();
         if (event_holder->getCounter() == 0)
             delete event_holder;
 
         event_holder = other.event_holder;
+        event        = other.event;
         event_holder->addRef();
+
+        return *this;
+    }
+
+    EventPtr& operator=(EventPtr&& other)
+    {
+        Swap(event_holder, other.event_holder);
+        Swap(event,        other.event);
 
         return *this;
     }
@@ -84,8 +101,13 @@ public:
     ~EventPtr()
     {
         event_holder->removeRef();
+        fprintf(stderr, "EventPtr dtor(%p)\n", event);
+        fprintf(stderr, "refs = %zu\n", event_holder->getCounter());
         if (event_holder->getCounter() == 0)
+        {
+
             delete event_holder;
+        }
     }
 
     Event* operator->()

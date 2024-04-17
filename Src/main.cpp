@@ -60,6 +60,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
         auto passed   = std::chrono::duration_cast<std::chrono::milliseconds>(timer_end - timer_start);
 		if (passed.count() >= kMSInClock)
 		{
+			static int tick = 0;
+			fprintf(stderr, "tick = %d\n", tick++);
 			game_window.push(new Event(EventType::TICK));
 
 			timer_start = timer_end;

@@ -25,6 +25,8 @@ struct Event
       : event_type (_event_type)
     {}
 
+    virtual ~Event() = default;
+
     EventType event_type;
 };
 
