@@ -32,8 +32,6 @@ public:
         const size_t field_num = static_cast<size_t>(FieldType::FieldNumber);
         for (size_t i = 0; i < field_num; i++)
         {
-            fprintf(stderr, "BuildingPanel[%zu]\n", i);
-            
             ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(i));
             BasicFunctor* func = new Functor<ButtonArgs>(SetFieldType, args);
 
