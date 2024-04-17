@@ -51,12 +51,12 @@ public:
         render_target.drawTexture(pos, texture);
     }
 
-    void push(const Event* event) override
+    void push(const EventPtr event) override
     {
         switch (event->event_type)
         {
             case EventType::MOUSE_CLICK:
-                onClick(static_cast<const MouseEvent*>(event)->pos);
+                onClick(static_cast<const MouseEvent*>(event.get())->pos);
                 break;
             
             default:

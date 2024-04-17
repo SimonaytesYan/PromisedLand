@@ -49,7 +49,7 @@ public:
             buttons[i].draw(render_target);
     }
 
-    void push(const Event* event)
+    void push(const EventPtr event)
     {
         switch (event->event_type)
         {

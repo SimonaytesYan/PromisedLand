@@ -21,7 +21,7 @@ public:
     Window          (Window&& other) = delete;
     Window operator=(Window&& other) = delete;
 
-    void push(const Event* event) override
+    void push(const EventPtr event) override
     {
         switch (event->event_type)
         {
@@ -30,13 +30,13 @@ public:
             break;
         case EventType::BUILD_CELL_EVENT:
           {  
-            const BuildCellEvent* build_event = static_cast<const BuildCellEvent*>(event);
+            const BuildCellEvent* build_event = static_cast<const BuildCellEvent*>(event.get());
             addChild(build_event->cell_view);
             break;
           }  
         case EventType::DESTROY_CELL_EVENT:
           {  
-            const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event);
+            const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event.get());
             delete_event->cell_view->kill();
 
             break;

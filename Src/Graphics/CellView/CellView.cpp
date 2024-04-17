@@ -1,13 +1,13 @@
 #include "CellView.hpp"
 #include "../../Interlayers/CellInterlayer.hpp"
 
-void CellView::push(const Event* event)
+void CellView::push(const EventPtr event)
 { 
     switch (event->event_type)
     {
     case EventType::MOUSE_CLICK:
         {
-        const MouseEvent* mouse_event = static_cast<const MouseEvent*>(event);
+        const MouseEvent* mouse_event = static_cast<const MouseEvent*>(event.get());
         onClick(mouse_event->pos, event);
         break;
         }
@@ -17,7 +17,7 @@ void CellView::push(const Event* event)
     }
 }
 
-void CellView::onClick(const Point point, const Event* event)
+void CellView::onClick(const Point point, const EventPtr event)
 {
     // printf("CellView::onClick(%d %d)\n", pos.x, pos.y);
     if (pos.x < point.x && point.x < pos.x + kFieldSize &&

@@ -27,9 +27,9 @@ public:
         free_pop_view  .draw(render_target);
     }
 
-    void push(const Event* event) override
+    void push(const EventPtr event) override
     { 
-        const ResourceEvent* res_event = static_cast<const ResourceEvent*>(event);
+        const ResourceEvent* res_event = static_cast<const ResourceEvent*>(event.get());
 
         switch (res_event->event_type)
         {

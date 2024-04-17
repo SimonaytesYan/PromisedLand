@@ -10,9 +10,9 @@ public:
     cell_manager (cell_manager)
     {}
 
-    void pushToLogic(const Event* event) override
+    void pushToLogic(const EventPtr event) override
     {
-        const SelectBuildingEvent* select_event = static_cast<const SelectBuildingEvent*>(event);
+        const SelectBuildingEvent* select_event = static_cast<const SelectBuildingEvent*>(event.get());
 
         switch (select_event->event_type)
         {
