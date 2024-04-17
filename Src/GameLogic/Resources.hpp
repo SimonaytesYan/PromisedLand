@@ -4,6 +4,8 @@
 
 struct Resources : GameObject 
 {
+public:
+
     Resources() :
     food            (0),
     water           (0),
@@ -40,6 +42,20 @@ struct Resources : GameObject
         return *this;
     }
 
+    Resources operator-(const Resources& other){
+        Resources res = *this;
+        res -= other;
+
+        return res;
+    }
+
+    Resources operator+(const Resources& other) const {
+        Resources res = *this;
+        res += other;
+
+        return res;
+    }
+
     bool operator<(const Resources& other) const
     {
         return food            < other.food       ||
@@ -48,6 +64,28 @@ struct Resources : GameObject
                population      < other.population ||
                free_population < other.free_population;
     }
+
+    static Resources absNegative(Resources to_change)
+    {
+        Resources result;
+
+        result.food            = absNegative(to_change.food);
+        result.water           = absNegative(to_change.water);
+        result.wood            = absNegative(to_change.wood);
+        result.population      = absNegative(to_change.population);
+        result.free_population = absNegative(to_change.free_population);
+
+        return result;
+    }
+
+private:
+
+    static long int absNegative(long int other)
+    {
+        return other < 0 ? (-1 * other) : 0;
+    }
+
+public:
 
     long int food;
     long int water;
