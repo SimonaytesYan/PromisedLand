@@ -32,11 +32,13 @@ public:
         const size_t field_num = static_cast<size_t>(FieldType::FieldNumber);
         for (size_t i = 0; i < field_num; i++)
         {
+            fprintf(stderr, "BuildingPanel[%zu]\n", i);
+            
             ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(i));
             BasicFunctor* func = new Functor<ButtonArgs>(SetFieldType, args);
 
-            buttons.PushBack(Button(Point(pos.x, pos.y + 70 * i), kFieldSize, kFieldSize, 
-                                    func, kCellsAssets[i]));
+            buttons.EmplaceBack(Point(pos.x, pos.y + 70 * i), kFieldSize, kFieldSize, 
+                                    func, kCellsAssets[i]);
         }
     }
     

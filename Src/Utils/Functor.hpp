@@ -6,6 +6,10 @@ class BasicFunctor
 {
 public:
     virtual void operator()() = 0;
+
+    virtual BasicFunctor* clone() = 0;
+
+    virtual ~BasicFunctor() = default;
 };
 
 template<class Params>
@@ -17,6 +21,11 @@ public:
     Functor(Function function, Params params) :
     params (params)
     { }
+
+    BasicFunctor* clone()
+    {
+        return static_cast<BasicFunctor*>(new Functor<Params>(func, params));
+    }
 
     void operator()()
     {

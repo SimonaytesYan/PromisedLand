@@ -16,7 +16,36 @@ public:
     on_click (std::move(func)),
     texture  (imp_path)
     { }
-    
+
+    Button(const Button& other) :
+    Widget   (other.pos),
+    x_len    (other.x_len),
+    y_len    (other.y_len),
+    on_click (other.on_click->clone()),
+    texture  (other.texture)
+    { }
+
+    Button(Button&& other) :
+    Widget   (other.pos),
+    x_len    (other.x_len),
+    y_len    (other.y_len),
+    on_click (std::move(other.on_click)),
+    texture  (other.texture)
+    { 
+        other.on_click = nullptr;
+    }
+
+    Button operator=(const Button& other)
+    {
+        delete on_click;
+        
+        x_len    = other.x_len;
+        y_len    = other.y_len;
+        on_click = other.on_click->clone();
+        texture  = other.texture;
+    }
+
+
     void draw(RenderTarget& render_target)
     {
         render_target.drawTexture(pos, texture);
