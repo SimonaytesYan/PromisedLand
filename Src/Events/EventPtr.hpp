@@ -54,7 +54,8 @@ class EventPtr
 {   
 public:
     EventPtr(Event* event)
-    : event_holder (new EventHolder(event))
+    : event_holder (new EventHolder(event)),
+      event        (event_holder->getPtr())
     { }
 
     EventPtr(const EventPtr& event_ptr) :
@@ -90,7 +91,7 @@ public:
     { return event_holder->getPtr(); }
 
     Event* get()
-    { return event_holder->getPtr(); }
+    { return event; }
 
     bool active()
     { return event_holder->getActive(); }
@@ -100,7 +101,6 @@ public:
 
 private:
     EventHolder* event_holder;
-    
-    // TODO Optimization: add field Event*
+    Event*       event;    
 };
 
