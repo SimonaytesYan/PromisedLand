@@ -28,14 +28,15 @@ public:
     }
 
     void push(const EventPtr event) override
-    { 
-        const ResourceEvent* res_event = static_cast<const ResourceEvent*>(event.get());
-
-        switch (res_event->event_type)
+    {
+        switch (event->event_type)
         {
         case EventType::RESOURCES_CHANGED_EVENT:
+        {
+            const ResourceEvent* res_event = static_cast<const ResourceEvent*>(event.get());
             updateValues(res_event->resources);
             break;
+        }
         case EventType::TICK:
         case EventType::MOUSE_CLICK:
         case EventType::SELECT_BUILDING_EVENT:

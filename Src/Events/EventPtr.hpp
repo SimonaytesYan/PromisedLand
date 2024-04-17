@@ -57,19 +57,12 @@ public:
     EventPtr(Event* event)
     : event_holder (new EventHolder(event)),
       event        (event)
-    { 
-        fprintf(stderr, "EventPtr(%p)\n", event);
-        event_holder->addRef();
-    }
+    { event_holder->addRef(); }
 
     EventPtr(const EventPtr& other) 
     : event_holder (other.event_holder),
       event        (other.event)
-    { 
-        event_holder->addRef(); 
-        fprintf(stderr, "EventPtr(const EventPtr& other, %p)\n", event);
-        fprintf(stderr, "ref = %zu\n", event_holder->getCounter());
-    }
+    { event_holder->addRef(); }
 
     EventPtr(EventPtr&& other) 
     : event_holder (other.event_holder),
@@ -103,13 +96,8 @@ public:
     ~EventPtr()
     {
         event_holder->removeRef();
-        fprintf(stderr, "EventPtr dtor(%p)\n", event);
-        fprintf(stderr, "refs = %zu\n", event_holder->getCounter());
         if (event_holder->getCounter() == 0)
-        {
-
             delete event_holder;
-        }
     }
 
     Event* operator->()

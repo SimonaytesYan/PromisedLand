@@ -23,6 +23,7 @@ public:
 
     void push(const EventPtr event) override
     {
+        
         switch (event->event_type)
         {
         case EventType::TICK:
