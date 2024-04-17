@@ -34,8 +34,7 @@ public:
         const Building* building_cell = dynamic_cast<const Building*>(new_cell);
         if (!building_cell) return; // it is not a Building
 
-        calculateUserResources(building_cell);
-        calculateTickResources(building_cell);
+        calculateResources(building_cell);
 
         informResourceBar();
     }
@@ -69,13 +68,9 @@ private:
         resource_bar_interlayer.pushToView(&res_event);
     }
 
-    void calculateProdCoeff()
+    void calculateResources(const Building* building_cell)
     {
-        
-    }
-
-    void calculateUserResources(const Building* building_cell)
-    {
+        // calculating on build resources
         Resources appear_res = building_cell->getAppearIncome();
         Resources result_res = user_res + appear_res;
         Resources needed_res = Resources::absNegative(result_res);
@@ -83,6 +78,11 @@ private:
         user_res += (appear_res + needed_res);
 
         buildings.push_back({building_cell, needed_res});
+        // calculating on tick resources
+        double effectiveness_coeff = (appear_res * -1 - needed_res).free_population / (-1 * appear_res.free_population);
+        printf("LOOK RES: %ld %ld %lf\n", appear_res.free_population, needed_res.free_population, effectiveness_coeff);
+        Resources tick_resources   = building_cell->getTickIncome() * effectiveness_coeff;
+        tick_income += tick_resources;
     }
 
     void calculateTickResources(const Building* building_cell)

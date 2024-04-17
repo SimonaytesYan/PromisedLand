@@ -22,7 +22,8 @@ public:
     free_population (free_population)
     { }
 
-    Resources& operator+=(const Resources& other){
+    Resources& operator+=(const Resources& other)
+    {
         food            += other.food;
         water           += other.water;
         wood            += other.wood;
@@ -32,7 +33,8 @@ public:
         return *this;
     }
 
-    Resources& operator-=(const Resources& other){
+    Resources& operator-=(const Resources& other)
+    {
         food            -= other.food;
         water           -= other.water;
         wood            -= other.wood;
@@ -42,18 +44,44 @@ public:
         return *this;
     }
 
-    Resources operator-(const Resources& other){
+    Resources& operator*=(const double value)
+    {
+        food            *= value;
+        water           *= value;
+        wood            *= value;
+        population      *= value;
+        free_population *= value;
+
+        return *this;
+    }
+
+    Resources operator-(const Resources& other)
+    {
         Resources res = *this;
         res -= other;
 
         return res;
     }
 
-    Resources operator+(const Resources& other) const {
+    Resources operator+(const Resources& other) const 
+    {
         Resources res = *this;
         res += other;
 
         return res;
+    }
+
+    Resources operator*(const double value) const 
+    {
+        Resources res = *this;
+        res *= value;
+
+        return res;
+    }
+
+    Resources operator-() const 
+    {
+        return {-food, -water, -wood, -population, -free_population};
     }
 
     bool operator<(const Resources& other) const
@@ -64,6 +92,17 @@ public:
                population      < other.population ||
                free_population < other.free_population;
     }
+
+    // Example:
+    // denom:      {0, 0, -10, 0, -3} |
+    //                                |=> {0, 0, 0, 0, 2/3} |  
+    // numerator:  {0, 0,   0, 0,  2} |                     |=> {}
+    // applied_to: {0, 0,   2, 0,  0}                       |
+    //                                       числитель            знаменатель      умножаем дроб на это число    
+    // static Resources (Resources numerator, Resources denom, Resources applied_to)
+    // {
+
+    // } 
 
     static Resources absNegative(Resources to_change)
     {

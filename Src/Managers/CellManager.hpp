@@ -80,8 +80,8 @@ private:
     }
 
 private:
-    std::vector<Cell*>    cells;
-    ResourceManager* res_manager;
-    CellInterlayer*  cell_interlayer;
-    FieldType        cell_type;
+    std::vector<Cell*> cells;
+    ResourceManager*   res_manager;
+    CellInterlayer*    cell_interlayer;
+    FieldType          cell_type;
 };

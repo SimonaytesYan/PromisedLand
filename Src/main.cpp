@@ -86,8 +86,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 
 		if (res_manager.hasLost())
 		{
-			printf("You have lost!\n");
-			window.close();
+			// printf("You have lost!\n");
+			// window.close();
 		}
 
 		rt.clear();
