@@ -30,6 +30,9 @@ $(OBJ)CellView.o: $(SRC)Graphics/CellView/CellView.cpp
 # $(OBJ)Window.o: $(SRC)Window.cpp
 # 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
 
+update_submodules:
+	git submodule update --recursive --remote
+
 run:
 	./$(ELF_FILE)
 
