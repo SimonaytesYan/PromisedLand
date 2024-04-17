@@ -21,8 +21,7 @@ void CellManager::createCell(const Point position)
         new_cell      = new House();
         new_view_cell = new HouseView(position, *cell_interlayer);
 
-        NewCitizensEvent new_citizens_event(static_cast<House*>(new_cell)->getAppearIncome().population);
-        cell_interlayer->pushToLogic(&new_citizens_event);
+        cell_interlayer->pushToLogic(new NewCitizensEvent(static_cast<House*>(new_cell)->getAppearIncome().population));
 
         break;
       }
@@ -48,6 +47,5 @@ void CellManager::createCell(const Point position)
     createCell(new_cell);
     res_manager->onBuild(new_cell);
 
-    BuildCellEvent build_event(new_view_cell);
-    cell_interlayer->pushToView(&build_event);
+    cell_interlayer->pushToView(new BuildCellEvent(new_view_cell));
 }

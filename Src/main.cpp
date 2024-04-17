@@ -60,8 +60,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
         auto passed   = std::chrono::duration_cast<std::chrono::milliseconds>(timer_end - timer_start);
 		if (passed.count() >= kMSInClock)
 		{
-			Event tick_event(EventType::TICK);
-			game_window.push(&tick_event);
+			game_window.push(new Event(EventType::TICK));
 
 			timer_start = timer_end;
 		}
@@ -78,8 +77,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 
 				case sf::Event::MouseButtonPressed:
 				{
-					MouseEvent click_event({event.mouseButton.x, event.mouseButton.y});
-					game_window.push(&click_event);
+					game_window.push(new MouseEvent({event.mouseButton.x, event.mouseButton.y}));
 				}
 			}
 		}

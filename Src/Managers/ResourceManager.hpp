@@ -64,8 +64,7 @@ private:
 
     void informResourceBar()
     {
-        ResourceEvent res_event(user_res);
-        resource_bar_interlayer.pushToView(&res_event);
+        resource_bar_interlayer.pushToView(new ResourceEvent(user_res));
     }
 
     void calculateResources(const Building* building_cell)

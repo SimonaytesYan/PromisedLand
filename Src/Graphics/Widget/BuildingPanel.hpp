@@ -67,8 +67,7 @@ public:
 
     void setFieldType(const FieldType field_type)
     {
-        SelectBuildingEvent select_build_event(field_type);
-        interlayer.pushToLogic(&select_build_event);
+        interlayer.pushToLogic(new SelectBuildingEvent(field_type));
     }
 
 private:
