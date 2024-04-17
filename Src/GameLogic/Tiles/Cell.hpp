@@ -10,5 +10,5 @@ class Cell : GameObject
 public:
     explicit Cell() = default;
 
-    virtual FieldType getFieldType() = 0;
+    virtual FieldType getFieldType() const = 0;
 };

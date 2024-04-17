@@ -4,18 +4,18 @@
 #include "../../Constants.hpp"
 #include "../Resources.hpp"
 
-#define CELL_LOGIC(name)                    \
-    class name : public Cell                \
-    {                                       \
-    public:                                 \
-        name() : Cell()                     \
-        { }                                 \
-                                            \
-        FieldType getFieldType() override   \
-        { return FieldType::name; }         \
+#define CELL_LOGIC(name)                        \
+    class name : public Cell                    \
+    {                                           \
+    public:                                     \
+        name() : Cell()                         \
+        { }                                     \
+                                                \
+        FieldType getFieldType() const override \
+        { return FieldType::name; }             \
     }; 
 
-#define BUILDING_LOGIC(name, max_workers, appear_res, tick_res, destroy_res)    \
+#define BUILDING_LOGIC(name, build_mask, max_workers, appear_res, tick_res, destroy_res)    \
     class name : public Building                                                \
     {                                                                           \
     public:                                                                     \
@@ -31,9 +31,11 @@
         Resources getDestroyIncome() const override                             \
         { return destroy_res; }                                                 \
                                                                                 \
-        FieldType getFieldType() override                                       \
+        FieldType getFieldType() const override                                 \
         { return FieldType::name; }                                             \
                                                                                 \
+        Bitmask getBuildMask() const override                                   \
+        { return build_mask; }                                                  \
     };
 
 #include "CellPreforms.hpp"
