@@ -19,7 +19,8 @@ class Functor : public BasicFunctor
 
 public:
     Functor(Function function, Params params) :
-    params (params)
+    params (params),
+    func   (function)
     { }
 
     BasicFunctor* clone()
@@ -29,6 +30,7 @@ public:
 
     void operator()()
     {
+        fprintf(stderr, "Functor::operator() func = %p\n", func);
         func(params);
     }
 
