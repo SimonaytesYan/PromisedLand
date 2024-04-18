@@ -23,6 +23,8 @@ static const int   kMSInClock          = 1000;
 enum class FieldType
 {
     #include "GameLogic/Tiles/CellPreforms.hpp"
+    CellNumber,
+    #include "GameLogic/Tiles/BuildingPreforms.hpp"
     FieldNumber,
     Error
 };
