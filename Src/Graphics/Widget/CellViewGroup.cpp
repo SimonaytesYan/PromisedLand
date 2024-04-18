@@ -7,25 +7,41 @@ void CellViewGroup::push(const EventPtr event)
         case EventType::TICK:
             assert(cell_interlayer);
             cell_interlayer->pushToLogic(event);
+            
             break;
         case EventType::BUILD_CELL_EVENT:
         {  
             const CreateCellViewEvent* build_event = static_cast<const CreateCellViewEvent*>(event.get());
             addCell(build_event->cell_type, build_event->pos);
+            
             break;
         }  
-        case EventType::DESTROY_CELL_EVENT:
+        case EventType::DESTROY_CELL_VIEW_EVENT:
         {  
-            const DestroyCellEvent* delete_event = static_cast<const DestroyCellEvent*>(event.get());
+            const DestroyCellViewEvent* delete_event = static_cast<const DestroyCellViewEvent*>(event.get());
             delete_event->cell_view->kill();
+            
+            size_t index = 0;
+            for (index = 0; index < cell_views.size(); index++)
+            {
+                if (cell_views[index] == delete_event->cell_view)
+                    break;
+            }
+            cell_interlayer->pushToLogic(new DestroyCellLogicEvent(index));
+            
             break;
-        }   
+        }
         default:
             break;
     }
 
     for (auto val : cell_views)
         val->push(event);
+}
+
+void CellViewGroup::pushToLogic(const EventPtr event)
+{
+    cell_interlayer->pushToLogic(event); 
 }
 
 void CellViewGroup::draw(RenderTarget& rt)

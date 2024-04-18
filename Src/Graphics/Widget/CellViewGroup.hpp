@@ -6,23 +6,15 @@
 
 class CellViewGroup : public Widget
 {
+    friend CellInterlayer;
 public:
     CellViewGroup(const Point position)
     : Widget(position)
     { }
 
     void push(const EventPtr event) override;
-
-    void pushToLogic(const EventPtr event)
-    { cell_interlayer->pushToLogic(event); }
-
+    void pushToLogic(const EventPtr event);
     void draw(RenderTarget& rt) override;
-
-    // Put here pointers, created by new.
-    // Here you transfer ownership of cell to CellViewGroup
-    void addCell(CellView* cell_view);
-    void addCell(const FieldType field_type, const Point pos);
-    void addCell(const Texture texture, const Point pos);
     
     void setCellInterlayer(CellInterlayer* _cell_interlayer)
     { cell_interlayer = _cell_interlayer; }
@@ -34,6 +26,12 @@ public:
     }
 
 protected:
+    // Put here pointers, created by new.
+    // Here you transfer ownership of cell to CellViewGroup
+    void addCell(CellView* cell_view);
+    void addCell(const FieldType field_type, const Point pos);
+    void addCell(const Texture texture, const Point pos);
+
     void deleteDeadCells();
 
     std::vector<CellView*> cell_views;   // CellViewGroup own it

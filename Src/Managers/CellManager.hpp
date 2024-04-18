@@ -12,6 +12,8 @@ class CellInterlayer;
 
 class CellManager
 {
+    friend CellInterlayer;
+
 public:
     explicit CellManager(CellInterlayer* _cell_interlayer)
       : cells           (),
@@ -63,7 +65,6 @@ public:
         res_manager->onTick();
     }
 
-    void createCell(const Point position);
 
     void deleteCell(const size_t index)
     {
@@ -74,6 +75,7 @@ public:
     }
 
 private:
+    void createCell(const Point position);
     void createCell(Cell* new_cell)
     {
         cells.push_back(new_cell);

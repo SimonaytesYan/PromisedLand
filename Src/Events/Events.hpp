@@ -15,7 +15,8 @@ enum class EventType
     SELECT_BUILDING_EVENT,
     RESOURCES_CHANGED_EVENT,
     BUILD_CELL_EVENT,
-    DESTROY_CELL_EVENT,
+    DESTROY_CELL_LOGIC_EVENT,
+    DESTROY_CELL_VIEW_EVENT,
     NEW_CITIZEN_EVENT,
 };
 
@@ -71,10 +72,20 @@ struct CreateCellViewEvent : public Event
   Point     pos;
 };
 
-struct DestroyCellEvent : public Event
+struct DestroyCellLogicEvent : public Event
 {
-  explicit DestroyCellEvent(CellView* _cell_view)
-    : Event     (EventType::DESTROY_CELL_EVENT),
+  explicit DestroyCellLogicEvent(size_t index_in_vector)
+    : Event     (EventType::DESTROY_CELL_LOGIC_EVENT),
+      index_in_vector (index_in_vector)
+    {}
+
+  size_t index_in_vector;
+};
+
+struct DestroyCellViewEvent : public Event
+{
+  explicit DestroyCellViewEvent(CellView* _cell_view)
+    : Event     (EventType::DESTROY_CELL_VIEW_EVENT),
       cell_view (_cell_view)
     {}
 

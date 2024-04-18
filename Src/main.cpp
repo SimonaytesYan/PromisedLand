@@ -11,7 +11,7 @@
 #include "Utils/RenderTarget.hpp"
 #include "Graphics/Widget/Window.hpp"
 
-void generateField(CellViewGroup& cell_view_group, CellInterlayer& cell_int, const sf::Vector2u window_size)
+void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
 {
 	// leave space for controls below
 	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
@@ -24,7 +24,7 @@ void generateField(CellViewGroup& cell_view_group, CellInterlayer& cell_int, con
 			const int cell_x    = i * kFieldSize;
 			const int cell_y    = j * kFieldSize;
 
-			cell_view_group.addCell(FieldType::Grass, {cell_x, cell_y});
+			cell_int.createCell(FieldType::Grass, {cell_x, cell_y});
 		}
 	}
 }
@@ -56,7 +56,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 
 	cell_view_group->setCellInterlayer(&cell_interlayer);
 
-	generateField(*cell_view_group, cell_interlayer, window.getSize());
+	generateField(cell_interlayer, window.getSize());
 
     auto timer_start = std::chrono::system_clock::now(); 
     while (window.isOpen())
