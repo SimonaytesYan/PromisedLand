@@ -93,17 +93,6 @@ public:
                free_population < other.free_population;
     }
 
-    // Example:
-    // denom:      {0, 0, -10, 0, -3} |
-    //                                |=> {0, 0, 0, 0, 2/3} |  
-    // numerator:  {0, 0,   0, 0,  2} |                     |=> {}
-    // applied_to: {0, 0,   2, 0,  0}                       |
-    //                                       числитель            знаменатель      умножаем дроб на это число    
-    // static Resources (Resources numerator, Resources denom, Resources applied_to)
-    // {
-
-    // } 
-
     static Resources absNegative(Resources to_change)
     {
         Resources result;
