@@ -179,11 +179,14 @@ private:
     void recalcLeaveCitizenResources(BuildingProperties& building, long int& available_pop)
     {
         long int max_workers    = building.ptr->getMaxWorkers();
+        if (max_workers == 0) return;
+        
         long int cur_workers    = building.ptr->getCurWorkers();
         long int left_workers   = std::min(available_pop, cur_workers);
         long int future_workers = cur_workers - left_workers;
 
         tick_income -= building.tick_income;
+
 
         double efficiency_coeff = static_cast<double>(future_workers) / static_cast<double>(max_workers);
         building.tick_income    = building.ptr->getTickIncome() * efficiency_coeff;
