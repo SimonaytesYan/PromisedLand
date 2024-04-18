@@ -72,13 +72,13 @@ public:
 
     void deleteCell(const size_t index)
     {
-        res_manager->onDelete(cells[index]);
-
         if (cells[index]->getFieldType() == FieldType::House)
         {
             House* house = static_cast<House*>(cells[index]);
             res_manager->onCitizenLeave(house->getDestroyIncome().population * -1);
         }
+
+        res_manager->onDelete(cells[index]);
 
         delete cells[index];
         cells.erase(cells.begin() + index);
