@@ -11,3 +11,18 @@ void CellManager::createCell(const Point position)
     createCell(new_cell);
     res_manager->onBuild(new_cell);
 }
+
+void CellManager::tryBuildCell(const size_t index, const Point position)
+{
+    Cell* new_building = Cell::createInstance(cell_type);
+    if (getBit(static_cast<Building*>    (new_building)->getBuildMask(), 
+               static_cast<unsigned char>(cells[index]->getFieldType())))
+    {
+        deleteCell(index);
+        createCell(position);
+
+        cell_interlayer->pushToView(new RebuildEvent(index, cell_type));
+    }
+    else
+        delete new_building;
+}

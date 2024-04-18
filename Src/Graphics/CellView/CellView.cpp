@@ -53,10 +53,7 @@ void CellView::onClick(const Point point, const EventPtr event)
     if (pos.x < point.x && point.x < pos.x + kFieldSize &&
         pos.y < point.y && point.y < pos.y + kFieldSize)
     {
-        parent.push(new DestroyCellViewEvent(this));
-
-        MouseClickEvent* mouse_event = new MouseClickEvent(pos);
-        parent.pushToLogic(mouse_event);
+        parent.pushToLogic(new TryBuildEvent(index_in_cell_group, pos));
     }
 }
 

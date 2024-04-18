@@ -64,6 +64,7 @@ public:
     }
 
 private:
+    void tryBuildCell(const size_t index, const Point position);
     void createCell(const Point position);
     void createCell(Cell* new_cell)
     { cells.push_back(new_cell); }

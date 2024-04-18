@@ -31,6 +31,15 @@ void CellViewGroup::push(const EventPtr event)
             
             break;
         }
+        case EventType::REBUILD_EVENT:
+        {
+            const RebuildEvent* rebuild_event = static_cast<const RebuildEvent*>(event.get());
+            
+            cell_views[rebuild_event->index]->kill();
+            addCell(rebuild_event->cell_type, cell_views[rebuild_event->index]->pos);
+            break;
+        }
+
         default:
             break;
     }
