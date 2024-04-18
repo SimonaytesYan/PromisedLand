@@ -7,27 +7,23 @@
 #include "../Graphics/CellView/CellViewCreator.hpp"
 #include "../Managers/CellManager.hpp"
 
-class Window;
-
 class CellInterlayer : public ViewInterlayer, public LogicInterlayer
 {
 public:
     explicit CellInterlayer(CellManager& cell_manager)
-      : cell_manager (cell_manager),
-        cell_views   (),
-        window       (nullptr)
+      : cell_manager    (cell_manager),
+        cell_view_group (nullptr)
     { }
-
-    void setWindow(Window* _window)
-    {
-        window = _window;
-    }
 
     void pushToView(const EventPtr event) override;
     void pushToLogic(const EventPtr event) override;
 
+    void setCellViewGroup(CellViewGroup* new_cell_view_group)
+    { cell_view_group = new_cell_view_group; }
+
+    void createCell(const FieldType filed_type, const Point pos);
+
 private:
-    std::vector<CellView*> cell_views;   // CellInterlayer don`t own it
-    CellManager&           cell_manager;
-    Window*                window;
+    CellManager&   cell_manager;
+    CellViewGroup* cell_view_group;
 };

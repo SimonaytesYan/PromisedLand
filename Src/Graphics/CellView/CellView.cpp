@@ -1,4 +1,5 @@
 #include "CellView.hpp"
+#include "../Widget/CellViewGroup.hpp"
 #include "../../Interlayers/CellInterlayer.hpp"
 
 Color CellView::kChosenCellColor = {255, 255, 255, 128};
@@ -30,11 +31,10 @@ void CellView::onClick(const Point point, const EventPtr event)
     if (pos.x < point.x && point.x < pos.x + kFieldSize &&
         pos.y < point.y && point.y < pos.y + kFieldSize)
     {
-        DestroyCellEvent* delete_event = new DestroyCellEvent(this);
-        interlayer.pushToLogic(delete_event);
+        parent.push(new DestroyCellViewEvent(this));
 
         MouseClickEvent* mouse_event = new MouseClickEvent(pos);
-        interlayer.pushToLogic(mouse_event);
+        parent.pushToLogic(mouse_event);
     }
 }
 

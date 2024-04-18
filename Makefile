@@ -9,8 +9,8 @@ BIN = Bin/
 OBJ = Obj/
 ELF_FILE = $(BIN)run
 
-compile: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellView.o
-	$(COMPILER) $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellView.o -o $(ELF_FILE)
+compile: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellView.o $(OBJ)CellViewGroup.o
+	$(COMPILER) $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellViewGroup.o $(OBJ)CellView.o -o $(ELF_FILE)
 
 $(OBJ)RenderTarget.o: $(SRC)Utils/RenderTarget.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Utils/RenderTarget.cpp $(SFML_FLAGS) -o $(OBJ)RenderTarget.o
@@ -20,6 +20,9 @@ $(OBJ)Utils.o: $(SRC)Utils/Utils.cpp
 
 $(OBJ)CellInterlayer.o: $(SRC)Interlayers/CellInterlayer.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Interlayers/CellInterlayer.cpp -o $(OBJ)CellInterlayer.o
+
+$(OBJ)CellViewGroup.o: $(SRC)Graphics/Widget/CellViewGroup.cpp
+	$(COMPILER) -c $(FLAGS) $(SRC)Graphics/Widget/CellViewGroup.cpp -o $(OBJ)CellViewGroup.o
 
 $(OBJ)CellManager.o: $(SRC)Managers/CellManager.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Managers/CellManager.cpp -o $(OBJ)CellManager.o

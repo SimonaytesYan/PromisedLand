@@ -16,7 +16,8 @@ enum class EventType
     SELECT_BUILDING_EVENT,
     RESOURCES_CHANGED_EVENT,
     BUILD_CELL_EVENT,
-    DESTROY_CELL_EVENT,
+    DESTROY_CELL_LOGIC_EVENT,
+    DESTROY_CELL_VIEW_EVENT,
     NEW_CITIZEN_EVENT,
 };
 
@@ -71,20 +72,31 @@ struct ResourceEvent : public Event
   Resources resources;
 };
 
-struct BuildCellEvent : public Event
+struct CreateCellViewEvent : public Event
 {
-  explicit BuildCellEvent(CellView* _cell_view)
+  explicit CreateCellViewEvent(const FieldType cell_type, const Point pos)
     : Event     (EventType::BUILD_CELL_EVENT),
-      cell_view (_cell_view)
+      cell_type (cell_type),
+      pos       (pos)
     {}
-
-  CellView* cell_view;
+  FieldType cell_type;
+  Point     pos;
 };
 
-struct DestroyCellEvent : public Event
+struct DestroyCellLogicEvent : public Event
 {
-  explicit DestroyCellEvent(CellView* _cell_view)
-    : Event     (EventType::DESTROY_CELL_EVENT),
+  explicit DestroyCellLogicEvent(size_t index_in_vector)
+    : Event     (EventType::DESTROY_CELL_LOGIC_EVENT),
+      index_in_vector (index_in_vector)
+    {}
+
+  size_t index_in_vector;
+};
+
+struct DestroyCellViewEvent : public Event
+{
+  explicit DestroyCellViewEvent(CellView* _cell_view)
+    : Event     (EventType::DESTROY_CELL_VIEW_EVENT),
       cell_view (_cell_view)
     {}
 

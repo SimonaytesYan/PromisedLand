@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Cell.hpp"
+#include "../../Utils/Bitmask.hpp"
 
 class Building : public Cell 
 {
@@ -26,6 +27,11 @@ public:
     {
         return kZeroResources;
     }
+
+    // 1 in n-th bit if this Building could    be build on the n-th FieldType
+    // 0 in n-th bit if this Building couldn`t be build on the n-th FieldType
+    virtual Bitmask getBuildMask() const
+    { return kMaxBitmask; }
 
 private:
     long int max_workers;

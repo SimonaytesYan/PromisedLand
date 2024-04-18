@@ -13,14 +13,19 @@ static const int   kTextSize           = 20;
 static const int   kMSInClock          = 1000;
 
 //=============CELL TYPES=============
+
+#define CELL_LOGIC(name, ...)       \
+    name,
+
+#define BUILDING_LOGIC(name, ...)   \
+    name,
+
 enum class FieldType
 {
-    Grass,
-    Water,
-    House,
-    Sawmill,
-    Well,
-    Windmill,
+    #include "GameLogic/Tiles/CellPreforms.hpp"
     FieldNumber,
     Error
 };
+
+#undef CELL_LOGIC
+#undef BUILDING_LOGIC
