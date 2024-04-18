@@ -4,6 +4,28 @@
 
 Color CellView::kChosenCellColor = {255, 255, 255, 128};
 
+#define CELL_LOGIC(name)  \
+    case FieldType::name:                       \
+        return new name##View(pos, cell_view_group);
+
+#define BUILDING_LOGIC(name, ...) CELL_LOGIC(name)
+
+CellView* CellView::createInstance(const FieldType field_type, const Point pos, 
+                                   CellViewGroup& cell_view_group)
+{
+    switch (field_type)
+    {
+        #include "../../GameLogic/Tiles/CellPreforms.hpp"
+        #include "../../GameLogic/Tiles/BuildingPreforms.hpp"
+
+        default:
+            return nullptr;
+    }
+}
+
+#undef CELL_LOGIC
+#undef BUILDING_LOGIC
+
 void CellView::push(const EventPtr event)
 { 
     switch (event->event_type)
