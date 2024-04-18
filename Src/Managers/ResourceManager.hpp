@@ -12,8 +12,7 @@ private:
 
     struct BuildingProperties
     {
-        const Building* ptr;
-        Resources needed_res;
+        Building* ptr;
         Resources tick_income;
     };
 
@@ -43,7 +42,7 @@ public:
         const Building* building_cell = dynamic_cast<const Building*>(new_cell);
         if (!building_cell) return; // it is not a Building
 
-        calculateOnBuildResources(building_cell);
+        calculateOnBuildResources(const_cast<Building*>(building_cell));
 
         informResourceBar();
     }
@@ -52,10 +51,7 @@ public:
     {
         for (auto& building : buildings)
         {
-            if (building.needed_res.free_population > 0)
-            {
-                recalcNewCitizenResources(building, citizen_cnt);
-            }
+            recalcNewCitizenResources(building, citizen_cnt);
 
             if (citizen_cnt == 0)
             {
@@ -70,7 +66,6 @@ public:
     {
         for (auto& building : buildings)
         {
-            printf("Counter: %ld\n", citizen_cnt);
             recalcLeaveCitizenResources(building, citizen_cnt);
 
             if (citizen_cnt == 0)
@@ -106,37 +101,93 @@ private:
 
     void informResourceBar()
     {
-        // int cnt = 0;
-        // for (auto& building : buildings)
-        // {
-        //     std::cout << cnt++ << "\nNeeded:\n" << building.needed_res << "Tick:\n" << building.tick_income << "\n\n";
-        // }
         resource_bar_interlayer.pushToView(new ResourceEvent(user_res));
     }
 
-    void calculateOnBuildResources(const Building* building_cell)
+    void calculateOnBuildResources(Building* building_cell)
     {
-        
-    }
+        Resources appear_res = building_cell->getAppearIncome();
+        user_res += appear_res;
 
-    void calculateBuildTickResources(const Resources appear_res, const Resources need_res, const Building* building_cell)
-    {
-        
+        double    efficiency_coeff = 1.0;
+        long int  max_workers      = building_cell->getMaxWorkers();
+
+        if (appear_res.free_population == 0)
+        {
+            if (user_res.free_population < 0)
+            {
+                long int worker_overdraft = user_res.free_population * -1;
+                user_res.free_population  = 0;
+
+                building_cell->setCurWorkers(max_workers - worker_overdraft);
+                efficiency_coeff = static_cast<double>(building_cell->getCurWorkers()) / static_cast<double>(max_workers);
+            }
+            else 
+            {
+                // all working slots are occupied
+                building_cell->setCurWorkers(max_workers);
+                user_res.free_population -= max_workers;
+            }
+        }
+
+        Resources building_tick_income = building_cell->getTickIncome() * efficiency_coeff;
+        tick_income += building_tick_income;
+
+        buildings.push_back({building_cell, building_tick_income});
     }
 
     void calculateOnDeleteResources(const Building* delete_building)
     {
-        
+        user_res                 += delete_building->getDestroyIncome();
+        user_res.free_population += delete_building->getCurWorkers();
+
+        auto building_it = findBuildingByPtr(delete_building);
+
+        tick_income -= building_it->tick_income;
+
+        buildings.erase(building_it);
     }
 
     void recalcNewCitizenResources(BuildingProperties& building, long int& available_pop)
     {
-        
+        long int max_workers    = building.ptr->getMaxWorkers();
+        if (max_workers == 0) return;
+
+        long int cur_workers    = building.ptr->getCurWorkers();
+        long int new_workers    = std::min(available_pop, max_workers - cur_workers);
+        long int future_workers = cur_workers + new_workers;
+
+        tick_income -= building.tick_income;
+
+        double efficiency_coeff = static_cast<double>(future_workers) / static_cast<double>(max_workers);
+        building.tick_income    = building.ptr->getTickIncome() * efficiency_coeff;
+
+        tick_income += building.tick_income;
+
+        building.ptr->setCurWorkers(future_workers);
+
+        available_pop            -= new_workers;
+        user_res.free_population -= new_workers;
     }
 
     void recalcLeaveCitizenResources(BuildingProperties& building, long int& available_pop)
     {
-        
+        long int max_workers    = building.ptr->getMaxWorkers();
+        long int cur_workers    = building.ptr->getCurWorkers();
+        long int left_workers   = std::min(available_pop, cur_workers);
+        long int future_workers = cur_workers - left_workers;
+
+        tick_income -= building.tick_income;
+
+        double efficiency_coeff = static_cast<double>(future_workers) / static_cast<double>(max_workers);
+        building.tick_income    = building.ptr->getTickIncome() * efficiency_coeff;
+
+        tick_income += building.tick_income;
+
+        building.ptr->setCurWorkers(future_workers);
+
+        available_pop            -= left_workers;
+        user_res.free_population += left_workers;
     }
 
     std::vector<BuildingProperties>::iterator findBuildingByPtr(const Building* building)
