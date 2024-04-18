@@ -13,19 +13,30 @@ public:
     CellView(const Texture texture, Point pos, const FieldType field_type, CellInterlayer& interlayer) 
     : Widget     (pos),
       texture    (texture),
-      interlayer (interlayer)
+      interlayer (interlayer),
+      is_chosen  (false)
     { }
 
     void draw(RenderTarget& render_target) override
     {
         render_target.drawTexture(pos, texture);
+        if (is_chosen) 
+        {
+            render_target.drawRect(pos, {kFieldSize, kFieldSize}, kChosenCellColor);
+        }
     }
 
     void push(const EventPtr event) override;
     void onClick(const Point point, const EventPtr event);
+    void onMouseMove(const Point point);
 
 private:
-    const Texture texture;
+
+    static Color kChosenCellColor;
+
+private:
+    const Texture   texture;
     CellInterlayer& interlayer;
+    bool            is_chosen;
 };
 

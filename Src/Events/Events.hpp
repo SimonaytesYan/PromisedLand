@@ -10,6 +10,7 @@ enum class EventType
     // PHYSICAL EVENTS
     TICK,
     MOUSE_CLICK,
+    MOUSE_MOVE,
 
     // VIRTUAL EVENTS
     SELECT_BUILDING_EVENT,
@@ -30,10 +31,20 @@ struct Event
     EventType event_type;
 };
 
-struct MouseEvent : public Event
+struct MouseClickEvent : public Event
 {
-    MouseEvent(Point pos)
+    MouseClickEvent(Point pos)
     : Event(EventType::MOUSE_CLICK),
+      pos (pos)
+    { }
+
+    Point pos;
+};
+
+struct MouseMoveEvent : public Event
+{
+    MouseMoveEvent(Point pos)
+    : Event(EventType::MOUSE_MOVE),
       pos (pos)
     { }
 

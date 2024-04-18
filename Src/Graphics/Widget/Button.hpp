@@ -56,7 +56,7 @@ public:
         switch (event->event_type)
         {
             case EventType::MOUSE_CLICK:
-                onClick(static_cast<const MouseEvent*>(event.get())->pos);
+                onClick(static_cast<const MouseClickEvent*>(event.get())->pos);
                 break;
             
             default:

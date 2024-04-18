@@ -80,7 +80,7 @@ public:
 
     void createCell(const Point position, const FieldType cell_type)
     {
-        cell_interlayer->pushToLogic(new MouseEvent(position));
+        cell_interlayer->pushToLogic(new MouseClickEvent(position));
     }
 
     ~Window()

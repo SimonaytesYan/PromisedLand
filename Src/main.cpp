@@ -78,7 +78,12 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 
 				case sf::Event::MouseButtonPressed:
 				{
-					game_window.push(new MouseEvent({event.mouseButton.x, event.mouseButton.y}));
+					game_window.push(new MouseClickEvent({event.mouseButton.x, event.mouseButton.y}));
+				}
+
+				case sf::Event::MouseMoved:
+				{
+					game_window.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
 				}
 			}
 		}

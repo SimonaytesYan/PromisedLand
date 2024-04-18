@@ -31,7 +31,7 @@ void CellInterlayer::pushToLogic(const EventPtr event)
         break;
     case EventType::MOUSE_CLICK:
         {
-        const MouseEvent* mouse_event = static_cast<const MouseEvent*>(event.get());
+        const MouseClickEvent* mouse_event = static_cast<const MouseClickEvent*>(event.get());
         cell_manager.createCell(mouse_event->pos);
         break;
         }
