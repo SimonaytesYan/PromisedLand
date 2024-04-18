@@ -38,6 +38,4 @@ void CellManager::createCell(const Point position)
 
     createCell(new_cell);
     res_manager->onBuild(new_cell);
-
-    cell_interlayer->pushToView(new CreateCellViewEvent(cell_type, position));
 }

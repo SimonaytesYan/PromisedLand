@@ -18,6 +18,7 @@ void CellInterlayer::pushToLogic(const EventPtr event)
         {
             const MouseEvent* mouse_event = static_cast<const MouseEvent*>(event.get());
             cell_manager.createCell(mouse_event->pos);
+            cell_view_group->addCell(cell_manager.cell_type, mouse_event->pos);
             break;
         }
         case EventType::DESTROY_CELL_LOGIC_EVENT:
