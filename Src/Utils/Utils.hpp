@@ -2,8 +2,13 @@
 
 #include <cstdarg>
 #include <cstdio>
+#include <stdlib.h>
 
 #include "../Constants.hpp"
+
+bool bernoulliTrial(const double p);
+
+size_t getRandFromInterval(const size_t left, const size_t right);
 
 void mPrint(FILE* ostream, const char* const fmt, ...);
 

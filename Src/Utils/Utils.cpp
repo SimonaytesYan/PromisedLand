@@ -9,3 +9,13 @@ void mPrint(FILE* ostream, const char* const fmt, ...)
 
     va_end(args);
 }
+
+bool bernoulliTrial(const double p)
+{
+    return ((double)rand() / (double)RAND_MAX) < p;
+}
+
+size_t getRandFromInterval(const size_t left, const size_t right)
+{
+    return (rand() % (right - left)) + left;
+}
