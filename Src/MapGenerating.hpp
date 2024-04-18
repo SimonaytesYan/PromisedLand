@@ -3,7 +3,8 @@
 #include "Constants.hpp"
 #include "Interlayers/CellInterlayer.hpp"
 
-const double kDfsCoef = 0.9;
+const double kDfsRiverCoef  = 0.99;
+const double kDfsForestCoef = 0.995;
 
 const Point kTransition[] = {{ 1,  0}, 
                              {-1,  0}, 
@@ -46,7 +47,7 @@ void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
 
 void generateRiver(std::vector<std::vector<FieldType>>& field)
 {
-    dfsGenerating(field, FieldType::Water, 0, getRandFromInterval(1, field.size()), kDfsCoef);
+    dfsGenerating(field, FieldType::Water, 0, getRandFromInterval(1, field.size()), kDfsRiverCoef);
 }
 
 void generateForest(std::vector<std::vector<FieldType>>& field)
@@ -59,7 +60,7 @@ void generateForest(std::vector<std::vector<FieldType>>& field)
     while(field[y_start][x_start] != FieldType::Grass)
     { }
 
-    dfsGenerating(field, FieldType::Forest, x_start, y_start, kDfsCoef);
+    dfsGenerating(field, FieldType::Forest, x_start, y_start, kDfsForestCoef);
 }
 
 void dfsGenerating(std::vector<std::vector<FieldType>>& field, 
@@ -85,7 +86,7 @@ void dfsGenerating(std::vector<std::vector<FieldType>>& field,
         {
             dfsGenerating(field, field_type,
                           x + kTransition[i].x, y + kTransition[i].y,
-                          generate_chance * kDfsCoef);
+                          generate_chance * generate_chance);
         }
     }
 }
