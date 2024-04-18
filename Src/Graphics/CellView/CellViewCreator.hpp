@@ -3,11 +3,11 @@
 #include "CellView.hpp"
 
 static const char* kCellsAssets[] = {"Assets/field.png",
-                              "Assets/water.png",
-                              "Assets/house.png",
-                              "Assets/sawmill.png",
-                              "Assets/well.png",
-                              "Assets/windmill.png"};
+                                     "Assets/water.png",
+                                     "Assets/house.png",
+                                     "Assets/sawmill.png",
+                                     "Assets/well.png",
+                                     "Assets/windmill.png"};
 
 #define CELL_VIEW(name, texture_path, field_type)                     \
     class name : public CellView                                      \

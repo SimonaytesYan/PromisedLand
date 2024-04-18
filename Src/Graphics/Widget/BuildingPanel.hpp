@@ -29,14 +29,15 @@ public:
     Widget     (pos),
     interlayer (interlayer)
     {
-        const size_t field_num = static_cast<size_t>(FieldType::FieldNumber);
-        for (size_t i = 0; i < field_num; i++)
+        const size_t building_start = static_cast<size_t>(FieldType::CellNumber) + 1;
+        const size_t field_num      = static_cast<size_t>(FieldType::FieldNumber);
+        for (size_t i = building_start; i < field_num; i++)
         {
             ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(i));
             BasicFunctor* func = new Functor<ButtonArgs>(SetFieldType, args);
 
             buttons.EmplaceBack(Point(pos.x, pos.y + 70 * i), kFieldSize, kFieldSize, 
-                                    func, kCellsAssets[i]);
+                                    func, kCellsAssets[i - 1]);
         }
     }
     

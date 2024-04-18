@@ -39,6 +39,7 @@
     };
 
 #include "CellPreforms.hpp"
+#include "BuildingPreforms.hpp"
 
 #undef CELL_LOGIN
 #undef BUILDING_LOGIC
