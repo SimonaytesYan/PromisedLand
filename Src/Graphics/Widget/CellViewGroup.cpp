@@ -88,30 +88,5 @@ void CellViewGroup::addCell(const Texture texture, const Point pos)
 
 void CellViewGroup::addCell(const FieldType field_type, const Point pos)
 {
-    switch (field_type)
-    {
-        case FieldType::Grass:
-            addCell(new GrassView(pos, *this));
-            break;
-        case FieldType::Forest:
-            addCell(new ForestView(pos, *this));
-            break;
-        case FieldType::Water:
-            addCell(new WaterView(pos, *this));
-            break;
-        case FieldType::House:
-            addCell(new HouseView(pos, *this));
-            break;
-        case FieldType::Sawmill:
-            addCell(new SawmillView(pos, *this));
-            break;
-        case FieldType::Well:
-            addCell(new WellView(pos, *this));
-            break;
-        case FieldType::Windmill:
-            addCell(new WindmillView(pos, *this));
-            break;
-        default:
-            break;
-    }
+    addCell(CellView::createInstance(field_type, pos, *this));
 }
