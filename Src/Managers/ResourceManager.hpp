@@ -107,12 +107,14 @@ private:
     void calculateOnBuildResources(Building* building_cell)
     {
         Resources appear_res = building_cell->getAppearIncome();
-        user_res += appear_res;
 
         double    efficiency_coeff = 1.0;
         long int  max_workers      = building_cell->getMaxWorkers();
 
-        if (appear_res.free_population == 0)
+        user_res                 += appear_res;
+        user_res.free_population -= max_workers;
+
+        if (max_workers > 0)
         {
             if (user_res.free_population < 0)
             {
@@ -126,7 +128,6 @@ private:
             {
                 // all working slots are occupied
                 building_cell->setCurWorkers(max_workers);
-                user_res.free_population -= max_workers;
             }
         }
 
