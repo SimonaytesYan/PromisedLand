@@ -3,8 +3,9 @@
 #include "Constants.hpp"
 #include "Interlayers/CellInterlayer.hpp"
 
-const double kDfsRiverCoef  = 0.99;
-const double kDfsForestCoef = 0.995;
+const double kDfsRiverCoef               = 0.99;
+const double kIslandsFrequencyOccurrence = 0.1;
+const double kDfsForestCoef              = 0.995;
 
 const Point kTransition[] = {{ 1,  0}, 
                              {-1,  0}, 
@@ -48,6 +49,19 @@ void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
 void generateRiver(std::vector<std::vector<FieldType>>& field)
 {
     dfsGenerating(field, FieldType::Water, 0, getRandFromInterval(1, field.size()), kDfsRiverCoef);
+
+    for (size_t i = 0; i < field.size(); i++)
+    {
+        for (size_t j = 0; j < field[i].size(); j++)
+        {
+            if (field[i][j] == FieldType::Water)
+            {
+                if (bernoulliTrial(kIslandsFrequencyOccurrence))
+                    field[i][j] = FieldType::Island;
+            }
+        }
+    }
+
 }
 
 void generateForest(std::vector<std::vector<FieldType>>& field)
