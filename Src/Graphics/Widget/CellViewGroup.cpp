@@ -80,12 +80,6 @@ void CellViewGroup::addCell(CellView* cell_view)
     cell_view->setIndexInCellGroup(cell_views.size() - 1);
 }
 
-void CellViewGroup::addCell(const Texture texture, const Point pos)
-{
-    const size_t index = cell_views.size();
-    cell_views.push_back(new CellView(texture, pos, *this, index));
-}
-
 void CellViewGroup::addCell(const FieldType field_type, const Point pos)
 {
     addCell(CellView::createInstance(field_type, pos, *this));
