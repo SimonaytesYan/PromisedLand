@@ -1,2 +1,4 @@
 CELL_LOGIC(Grass)
 CELL_LOGIC(Water)
+CELL_LOGIC(Forest)
+CELL_LOGIC(Island)

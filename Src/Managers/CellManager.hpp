@@ -40,25 +40,17 @@ public:
     ~CellManager()
     {
         for (size_t i = 0; i < cells.size(); ++i)
-        {
-            delete cells[i];
-        }
+        { delete cells[i]; }
     }
 
     void setResourceManager(ResourceManager* _res_manager)
-    {
-        res_manager = _res_manager;
-    }
+    { res_manager = _res_manager; }
 
     void setCellInterlayer(CellInterlayer* _cell_interlayer)
-    {
-        cell_interlayer = _cell_interlayer;
-    }
+    { cell_interlayer = _cell_interlayer; }
 
     void setCellType(const FieldType _cell_type)
-    {
-        cell_type = _cell_type;
-    }
+    { cell_type = _cell_type; }
 
     void onTick()
     {
@@ -85,11 +77,10 @@ public:
     }
 
 private:
+    void tryBuildCell(const size_t index, const Point position);
     void createCell(const Point position);
     void createCell(Cell* new_cell)
-    {
-        cells.push_back(new_cell);
-    }
+    { cells.push_back(new_cell); }
 
 private:
     std::vector<Cell*> cells;

@@ -30,7 +30,6 @@ public:
 
     void operator()()
     {
-        fprintf(stderr, "Functor::operator() func = %p\n", func);
         func(params);
     }
 

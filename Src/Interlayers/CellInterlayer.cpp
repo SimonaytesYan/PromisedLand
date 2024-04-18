@@ -14,11 +14,10 @@ void CellInterlayer::pushToLogic(const EventPtr event)
         case EventType::TICK:
             cell_manager.onTick();
             break;
-        case EventType::MOUSE_CLICK:
+        case EventType::TRY_BUILD_EVENT:
         {
-            const MouseClickEvent* mouse_event = static_cast<const MouseClickEvent*>(event.get());
-            cell_manager.createCell(mouse_event->pos);
-            cell_view_group->addCell(cell_manager.cell_type, mouse_event->pos);
+            const TryBuildEvent* try_build_event = static_cast<const TryBuildEvent*>(event.get());
+            cell_manager.tryBuildCell(try_build_event->index, try_build_event->position);
             break;
         }
         case EventType::DESTROY_CELL_LOGIC_EVENT:

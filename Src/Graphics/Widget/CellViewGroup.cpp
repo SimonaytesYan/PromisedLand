@@ -31,6 +31,15 @@ void CellViewGroup::push(const EventPtr event)
             
             break;
         }
+        case EventType::REBUILD_EVENT:
+        {
+            const RebuildEvent* rebuild_event = static_cast<const RebuildEvent*>(event.get());
+            
+            cell_views[rebuild_event->index]->kill();
+            addCell(rebuild_event->cell_type, cell_views[rebuild_event->index]->pos);
+            break;
+        }
+
         default:
             break;
     }
@@ -80,35 +89,7 @@ void CellViewGroup::addCell(CellView* cell_view)
     cell_view->setIndexInCellGroup(cell_views.size() - 1);
 }
 
-void CellViewGroup::addCell(const Texture texture, const Point pos)
-{
-    const size_t index = cell_views.size();
-    cell_views.push_back(new CellView(texture, pos, *this, index));
-}
-
 void CellViewGroup::addCell(const FieldType field_type, const Point pos)
 {
-    switch (field_type)
-    {
-        case FieldType::Grass:
-            addCell(new GrassView(pos, *this));
-            break;
-        case FieldType::Water:
-            addCell(new WaterView(pos, *this));
-            break;
-        case FieldType::House:
-            addCell(new HouseView(pos, *this));
-            break;
-        case FieldType::Sawmill:
-            addCell(new SawmillView(pos, *this));
-            break;
-        case FieldType::Well:
-            addCell(new WellView(pos, *this));
-            break;
-        case FieldType::Windmill:
-            addCell(new WindmillView(pos, *this));
-            break;
-        default:
-            break;
-    }
+    addCell(CellView::createInstance(field_type, pos, *this));
 }

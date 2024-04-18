@@ -30,7 +30,6 @@ protected:
     // Here you transfer ownership of cell to CellViewGroup
     void addCell(CellView* cell_view);
     void addCell(const FieldType field_type, const Point pos);
-    void addCell(const Texture texture, const Point pos);
 
     void deleteDeadCells();
 

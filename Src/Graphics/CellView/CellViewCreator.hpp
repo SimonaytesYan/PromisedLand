@@ -2,25 +2,33 @@
 
 #include "CellView.hpp"
 
-static const char* kCellsAssets[] = {"Assets/field.png",
-                                     "Assets/water.png",
-                                     "Assets/house.png",
-                                     "Assets/sawmill.png",
-                                     "Assets/well.png",
-                                     "Assets/windmill.png"};
+#define CREATE_STRING(str) #str
+#define GET_ASSERT_PATH(name) CREATE_STRING(Assets/name.png)
 
-#define CELL_VIEW(name, texture_path, field_type)                     \
-    class name : public CellView                                      \
+#define CELL_LOGIC(name)          GET_ASSERT_PATH(name),
+#define BUILDING_LOGIC(name, ...) GET_ASSERT_PATH(name),
+
+static const char* kCellsAssets[] = {
+    #include "../../GameLogic/Tiles/CellPreforms.hpp"
+    #include "../../GameLogic/Tiles/BuildingPreforms.hpp"
+};
+
+#undef CELL_LOGIC
+#undef BUILDING_LOGIC
+
+#define CELL_LOGIC(name)                                              \
+    class name##View : public CellView                                \
     {                                                                 \
     public:                                                           \
-        name (Point pos, CellViewGroup& parent) :                     \
-        CellView (Texture(texture_path), pos, parent)                 \
+        name##View (Point pos, CellViewGroup& parent) :               \
+        CellView (Texture(GET_ASSERT_PATH(name)), pos, parent)        \
         { }                                                           \
     };
 
-CELL_VIEW(GrassView,    kCellsAssets[0], FieldType::Grass);
-CELL_VIEW(WaterView,    kCellsAssets[1], FieldType::Water);
-CELL_VIEW(HouseView,    kCellsAssets[2], FieldType::House);
-CELL_VIEW(SawmillView,  kCellsAssets[3], FieldType::Sawmill);
-CELL_VIEW(WellView,     kCellsAssets[4], FieldType::Well);
-CELL_VIEW(WindmillView, kCellsAssets[5], FieldType::Windmill);
+#define BUILDING_LOGIC(name, ...) CELL_LOGIC(name)
+
+#include "../../GameLogic/Tiles/CellPreforms.hpp"
+#include "../../GameLogic/Tiles/BuildingPreforms.hpp"
+
+#undef CELL_LOGIC
+#undef BUILDING_LOGIC

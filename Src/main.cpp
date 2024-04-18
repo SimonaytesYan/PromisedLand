@@ -10,24 +10,7 @@
 #include "Constants.hpp"
 #include "Utils/RenderTarget.hpp"
 #include "Graphics/Widget/Window.hpp"
-
-void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
-{
-	// leave space for controls below
-	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
-	const int y_cell_cnt = (window_size.y - kControlPanelH) / kFieldSize;
-
-	for (int i = 0; i <= x_cell_cnt; ++i) 
-	{
-		for (int j = 0; j <= y_cell_cnt; ++j) 
-		{
-			const int cell_x    = i * kFieldSize;
-			const int cell_y    = j * kFieldSize;
-
-			cell_int.createCell(FieldType::Grass, {cell_x, cell_y});
-		}
-	}
-}
+#include "MapGenerating.hpp"
 
 void runGameCycle(sf::RenderWindow& window, RenderTarget& rt) 
 {

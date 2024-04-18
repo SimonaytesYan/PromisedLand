@@ -19,6 +19,8 @@ enum class EventType
     DESTROY_CELL_LOGIC_EVENT,
     DESTROY_CELL_VIEW_EVENT,
     NEW_CITIZEN_EVENT,
+    REBUILD_EVENT,
+    TRY_BUILD_EVENT,
 };
 
 struct Event 
@@ -111,4 +113,28 @@ struct NewCitizensEvent : public Event
     {}
 
   long int citizens;
+};
+
+struct TryBuildEvent : public Event
+{
+  explicit TryBuildEvent(const size_t index, const Point position)
+    : Event    (EventType::TRY_BUILD_EVENT),
+      index    (index),
+      position (position)
+    {}
+
+  size_t index;
+  Point  position; 
+};
+
+struct RebuildEvent : public Event
+{
+  explicit RebuildEvent(const size_t index, const FieldType field_type)
+    : Event     (EventType::REBUILD_EVENT),
+      index     (index),
+      cell_type (field_type)
+    {}
+
+  size_t    index;
+  FieldType cell_type;
 };
