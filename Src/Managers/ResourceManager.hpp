@@ -97,6 +97,11 @@ public:
         return user_res < kZeroResources;
     }
 
+    bool tryBuild(Building* building)
+    {
+        return (building->getAppearIncome().wood * -1) <= user_res.wood;
+    }
+
 private:
 
     void informResourceBar()
