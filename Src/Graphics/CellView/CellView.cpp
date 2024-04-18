@@ -1,4 +1,5 @@
 #include "CellView.hpp"
+#include "../Widget/CellViewGroup.hpp"
 #include "../../Interlayers/CellInterlayer.hpp"
 
 void CellView::push(const EventPtr event)
@@ -24,9 +25,9 @@ void CellView::onClick(const Point point, const EventPtr event)
         pos.y < point.y && point.y < pos.y + kFieldSize)
     {
         DestroyCellEvent* delete_event = new DestroyCellEvent(this);
-        interlayer.pushToLogic(delete_event);
+        parent.pushToLogic(delete_event);
 
         MouseEvent* mouse_event = new MouseEvent(pos);
-        interlayer.pushToLogic(mouse_event);
+        parent.pushToLogic(mouse_event);
     }
 }

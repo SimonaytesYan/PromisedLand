@@ -7,7 +7,7 @@ void CellInterlayer::pushToView(const EventPtr event)
     {
     case EventType::BUILD_CELL_EVENT:
       {
-        const BuildCellEvent* build_event = static_cast<const BuildCellEvent*>(event.get());
+        const CreateCellViewEvent* build_event = static_cast<const CreateCellViewEvent*>(event.get());
         cell_views.push_back(build_event->cell_view);
         break;
       }

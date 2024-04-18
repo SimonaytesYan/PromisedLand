@@ -60,14 +60,13 @@ struct ResourceEvent : public Event
   Resources resources;
 };
 
-struct BuildCellEvent : public Event
+struct CreateCellViewEvent : public Event
 {
-  explicit BuildCellEvent(CellView* _cell_view)
+  explicit CreateCellViewEvent(const FieldType cell_type)
     : Event     (EventType::BUILD_CELL_EVENT),
-      cell_view (_cell_view)
+      cell_type (cell_type)
     {}
-
-  CellView* cell_view;
+  FieldType cell_type;
 };
 
 struct DestroyCellEvent : public Event
