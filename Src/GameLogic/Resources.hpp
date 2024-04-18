@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "GameObject.hpp"
 
 struct Resources : GameObject 
@@ -91,6 +93,13 @@ public:
                wood            < other.wood       ||
                population      < other.population ||
                free_population < other.free_population;
+    }
+
+    friend std::ostream &operator<<(std::ostream& output, const Resources& res) 
+    { 
+         output << "Food: " << res.food << "\nWater: " << res.water << "\nWood: " << res.wood 
+                << "\nPop: " << res.population << "\nFree pop: " << res.free_population << "\n";
+         return output;            
     }
 
     static Resources absNegative(Resources to_change)

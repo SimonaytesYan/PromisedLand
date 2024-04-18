@@ -74,6 +74,12 @@ public:
     {
         res_manager->onDelete(cells[index]);
 
+        if (cells[index]->getFieldType() == FieldType::House)
+        {
+            House* house = static_cast<House*>(cells[index]);
+            res_manager->onCitizenLeave(house->getDestroyIncome().population * -1);
+        }
+
         delete cells[index];
         cells.erase(cells.begin() + index);
     }
