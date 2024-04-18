@@ -65,6 +65,10 @@ public:
         res_manager->onTick();
     }
 
+    void onNewCitizenArrival(const long int citizen_cnt)
+    {
+        res_manager->onNewCitizenArrival(citizen_cnt);
+    }
 
     void deleteCell(const size_t index)
     {

@@ -28,7 +28,11 @@ void CellInterlayer::pushToLogic(const EventPtr event)
             break;
         }
         case EventType::NEW_CITIZEN_EVENT:
+        {
+            const NewCitizensEvent* new_cit_event = static_cast<const NewCitizensEvent*>(event.get());
+            cell_manager.onNewCitizenArrival(new_cit_event->citizens);
             break;
+        }
         default:
             break;
     }
