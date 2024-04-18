@@ -25,6 +25,7 @@ void CellView::onClick(const Point point, const EventPtr event)
         pos.y < point.y && point.y < pos.y + kFieldSize)
     {
         DestroyCellEvent* delete_event = new DestroyCellEvent(this);
+        parent.push(delete_event);
         parent.pushToLogic(delete_event);
 
         MouseEvent* mouse_event = new MouseEvent(pos);

@@ -62,11 +62,13 @@ struct ResourceEvent : public Event
 
 struct CreateCellViewEvent : public Event
 {
-  explicit CreateCellViewEvent(const FieldType cell_type)
+  explicit CreateCellViewEvent(const FieldType cell_type, const Point pos)
     : Event     (EventType::BUILD_CELL_EVENT),
-      cell_type (cell_type)
+      cell_type (cell_type),
+      pos       (pos)
     {}
   FieldType cell_type;
+  Point     pos;
 };
 
 struct DestroyCellEvent : public Event

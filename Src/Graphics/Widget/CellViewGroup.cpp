@@ -11,7 +11,7 @@ void CellViewGroup::push(const EventPtr event)
         case EventType::BUILD_CELL_EVENT:
         {  
             const CreateCellViewEvent* build_event = static_cast<const CreateCellViewEvent*>(event.get());
-            addCell(build_event->cell_view);
+            addCell(build_event->cell_type, build_event->pos);
             break;
         }  
         case EventType::DESTROY_CELL_EVENT:
@@ -55,5 +55,33 @@ void CellViewGroup::deleteDeadCells()
         const size_t cell_views_size = cell_views.size();
         for (size_t index = 0; index < cell_views_size; index++)
             cell_views[index]->setIndexInCellGroup(index);
+    }
+}
+
+
+void CellViewGroup::addCell(const FieldType field_type, const Point pos)
+{
+    switch (field_type)
+    {
+        case FieldType::Grass:
+            addCell(new GrassView(pos, *this));
+            break;
+        case FieldType::Water:
+            addCell(new WaterView(pos, *this));
+            break;
+        case FieldType::House:
+            addCell(new HouseView(pos, *this));
+            break;
+        case FieldType::Sawmill:
+            addCell(new SawmillView(pos, *this));
+            break;
+        case FieldType::Well:
+            addCell(new WellView(pos, *this));
+            break;
+        case FieldType::Windmill:
+            addCell(new WindmillView(pos, *this));
+            break;
+        default:
+            break;
     }
 }

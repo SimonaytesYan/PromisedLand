@@ -18,6 +18,12 @@ public:
 
     void draw(RenderTarget& rt) override;
 
+    void addCell(const Texture texture, const Point pos)
+    {
+        const size_t index = cell_views.size();
+        cell_views.push_back(new CellView(texture, pos, *this, index));
+    }
+
     // Put here pointers, created by new.
     // Here you transfer ownership of cell to CellViewGroup
     void addCell(CellView* cell_view)
@@ -25,13 +31,7 @@ public:
         cell_views.push_back(cell_view);
         cell_view->setIndexInCellGroup(cell_views.size() - 1);
     }
-
-    void addCell(const Texture texture, const Point pos)
-    {
-        const size_t index = cell_views.size();
-        cell_views.push_back(new CellView(texture, pos, *this, index));
-    }
-
+    
     void setCellInterlayer(CellInterlayer* _cell_interlayer)
     { cell_interlayer = _cell_interlayer; }
 
@@ -43,6 +43,7 @@ public:
 
 protected:
     void deleteDeadCells();
+    void addCell(const FieldType field_type, const Point pos);
 
     std::vector<CellView*> cell_views;   // CellViewGroup own it
     CellInterlayer*        cell_interlayer;
