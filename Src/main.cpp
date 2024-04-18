@@ -5,12 +5,13 @@
 
 #include "Graphics/Widget/BuildingPanel.hpp"
 #include "Interlayers/CellInterlayer.hpp"
+#include "Graphics/Widget/CellViewGroup.hpp"
 #include "Graphics/CellView/CellViewCreator.hpp"
 #include "Constants.hpp"
 #include "Utils/RenderTarget.hpp"
 #include "Graphics/Widget/Window.hpp"
 
-void generateField(Window& window, CellInterlayer& cell_int, const sf::Vector2u window_size)
+void generateField(CellViewGroup& cell_view_group, CellInterlayer& cell_int, const sf::Vector2u window_size)
 {
 	// leave space for controls below
 	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
@@ -22,8 +23,8 @@ void generateField(Window& window, CellInterlayer& cell_int, const sf::Vector2u 
 		{
 			const int cell_x    = i * kFieldSize;
 			const int cell_y    = j * kFieldSize;
-			
-			window.createCell({cell_x, cell_y}, FieldType::Grass);
+
+			cell_view_group.addCell(FieldType::Grass, {cell_x, cell_y});
 		}
 	}
 }
@@ -35,6 +36,9 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 	ResourceBar* res_bar = new ResourceBar(window.getSize().x, window.getSize().y - kControlPanelH / 2, kStartResources);
 	game_window.addChild(res_bar);
 
+	CellViewGroup* cell_view_group = new CellViewGroup({0, 0});
+	game_window.addChild(cell_view_group);
+
 	// Interlayer + Manager initialisation
 	ResourceBarInterlayer   res_bar_inter       (*res_bar);
 	ResourceManager         res_manager         (res_bar_inter);
@@ -42,16 +46,17 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 	CellInterlayer          cell_interlayer     (cell_manager);
 	BuildingPanelInterlayer build_pan_interlayer(cell_manager);
 
-	cell_interlayer.setWindow(&game_window);
+	BuildingPanel* build_panel = new BuildingPanel({window.getSize().x - kControlPanelW / 2, kControlPanelYStart}, build_pan_interlayer);
+	game_window.addChild(build_panel);
+
+	cell_interlayer.setCellViewGroup(cell_view_group);
 
 	cell_manager.setCellInterlayer(&cell_interlayer);
 	cell_manager.setCellType      (FieldType::Grass);
 
-	BuildingPanel* build_panel = new BuildingPanel({window.getSize().x - kControlPanelW / 2, kControlPanelYStart}, build_pan_interlayer);
-	game_window.addChild(build_panel);
+	cell_view_group->setCellInterlayer(&cell_interlayer);
 
-	game_window.setCellInterlayer(&cell_interlayer);
-	generateField(game_window, cell_interlayer, window.getSize());
+	generateField(*cell_view_group, cell_interlayer, window.getSize());
 
     auto timer_start = std::chrono::system_clock::now(); 
     while (window.isOpen())

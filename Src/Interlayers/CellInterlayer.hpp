@@ -20,7 +20,7 @@ public:
     void pushToView(const EventPtr event) override;
     void pushToLogic(const EventPtr event) override;
 
-    void SetCellViewGroup(CellViewGroup* new_cell_view_group)
+    void setCellViewGroup(CellViewGroup* new_cell_view_group)
     { cell_view_group = new_cell_view_group; }
 
 private:
