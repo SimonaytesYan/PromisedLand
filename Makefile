@@ -7,10 +7,12 @@ COMPILER      = g++
 SRC = Src/
 BIN = Bin/
 OBJ = Obj/
-ELF_FILE = $(BIN)run
 
-compile: create_folders $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellView.o $(OBJ)CellViewGroup.o
-	$(COMPILER) $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellViewGroup.o $(OBJ)CellView.o -o $(ELF_FILE)
+ELF_FILE = $(BIN)run
+OBJECTS  = $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellView.o $(OBJ)CellViewGroup.o $(OBJ)Cell.o
+
+compile: create_folders $(OBJECTS)
+	$(COMPILER) $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJECTS) -o $(ELF_FILE)
 
 $(OBJ)RenderTarget.o: $(SRC)Utils/RenderTarget.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Utils/RenderTarget.cpp $(SFML_FLAGS) -o $(OBJ)RenderTarget.o
@@ -30,6 +32,10 @@ $(OBJ)CellManager.o: $(SRC)Managers/CellManager.cpp
 $(OBJ)CellView.o: $(SRC)Graphics/CellView/CellView.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Graphics/CellView/CellView.cpp -o $(OBJ)CellView.o
 	
+$(OBJ)Cell.o: $(SRC)GameLogic/Tiles/Cell.cpp
+	$(COMPILER) -c $(FLAGS) $(SRC)GameLogic/Tiles/Cell.cpp -o $(OBJ)Cell.o
+	
+
 # $(OBJ)Window.o: $(SRC)Window.cpp
 # 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
 
