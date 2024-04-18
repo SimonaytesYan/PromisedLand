@@ -14,6 +14,8 @@ void CellManager::createCell(const Point position)
 
 void CellManager::tryBuildCell(const size_t index, const Point position)
 {
+    if (cell_type <= FieldType::CellNumber || FieldType::FieldNumber <= cell_type)
+        return;
     Cell* new_building = Cell::createInstance(cell_type);
     
     const unsigned char on_which_build    = static_cast<unsigned char>(cells[index]->getFieldType());
