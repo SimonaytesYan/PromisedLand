@@ -7,6 +7,9 @@ void CellManager::createCell(const Point position)
 
     switch (cell_type)
     {
+    case FieldType::Forest:
+        new_cell = new Grass();
+        break;
     case FieldType::Grass:
         new_cell = new Grass();
         break;

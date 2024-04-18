@@ -93,6 +93,9 @@ void CellViewGroup::addCell(const FieldType field_type, const Point pos)
         case FieldType::Grass:
             addCell(new GrassView(pos, *this));
             break;
+        case FieldType::Forest:
+            addCell(new ForestView(pos, *this));
+            break;
         case FieldType::Water:
             addCell(new WaterView(pos, *this));
             break;
