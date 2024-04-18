@@ -34,7 +34,6 @@ void CellInterlayer::pushToLogic(const EventPtr event)
     }
 }
 
-
 void CellInterlayer::createCell(const FieldType filed_type, const Point pos)
 {
     cell_manager.setCellType(filed_type);
