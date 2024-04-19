@@ -5,7 +5,7 @@
 
 const double kDfsRiverCoef               = 0.9;
 const double kIslandsFrequencyOccurrence = 0.1;
-const double kDfsForestCoef              = 0.7;
+const double kDfsForestCoef              = 0.8;
 
 const Point kTransition[] = {{ 1,  0}, 
                              {-1,  0}, 

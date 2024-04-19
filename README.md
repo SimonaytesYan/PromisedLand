@@ -1,31 +1,6 @@
-# TODO:
-* CellView
-
-* EventManager
-
-# DONE:
-* BuildingPanel
-* BuildingPanelInterlayer
-* Widget
-* Buttons
-* CellInterlayer
-* ResourceBarInterlayer
-
-
-Codes style:
-
-* class Class 
-* void functionName()
-* int local_var;
-* int kGlobalVar;
-* #define DEFINE_NAME
-
-
-```c++
-    class Field
-    {
-        virtual void draw();
-    //==================EVENTS============= 
-        virtual bool onClick(int x, int y);
-    };
-```
+# Alpha 2.0
+## What new
+* Wold generation
+* Add limitation for building place for every buildings
+* Add icons on resource bar
+* Producer building(windmill, well, sawmill) now need people to work. More people - more efficiency
