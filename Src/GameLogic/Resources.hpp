@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "GameObject.hpp"
 
 struct Resources : GameObject 
@@ -93,16 +95,12 @@ public:
                free_population < other.free_population;
     }
 
-    // Example:
-    // denom:      {0, 0, -10, 0, -3} |
-    //                                |=> {0, 0, 0, 0, 2/3} |  
-    // numerator:  {0, 0,   0, 0,  2} |                     |=> {}
-    // applied_to: {0, 0,   2, 0,  0}                       |
-    //                                       числитель            знаменатель      умножаем дроб на это число    
-    // static Resources (Resources numerator, Resources denom, Resources applied_to)
-    // {
-
-    // } 
+    friend std::ostream &operator<<(std::ostream& output, const Resources& res) 
+    { 
+         output << "Food: " << res.food << "\nWater: " << res.water << "\nWood: " << res.wood 
+                << "\nPop: " << res.population << "\nFree pop: " << res.free_population << "\n";
+         return output;            
+    }
 
     static Resources absNegative(Resources to_change)
     {

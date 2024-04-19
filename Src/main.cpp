@@ -12,7 +12,7 @@
 #include "Graphics/Widget/Window.hpp"
 #include "MapGenerating.hpp"
 
-void runGameCycle(sf::RenderWindow& window, RenderTarget& rt) 
+void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& background) 
 {
 	Window game_window({0, 0});
 
@@ -78,15 +78,16 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt)
 
 		if (res_manager.hasLost())
 		{
-			// printf("You have lost!\n");
-			// window.close();
+			printf("You have lost!\n");
+			window.close();
 		}
 
 		rt.clear();
 		window.clear();
+		window.draw(background);
 
 		game_window.draw(rt);
-
+		
 		rt.display(window);
 		window.display();
     }
@@ -99,5 +100,10 @@ int main()
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 	RenderTarget main_rt(window.getSize());
 
-	runGameCycle(window, main_rt);
+	sf::Texture texture;
+	texture.loadFromFile("Assets/Background.png");
+	sf::Sprite sprite(texture);
+	window.draw(sprite);
+
+	runGameCycle(window, main_rt, sprite);
 }

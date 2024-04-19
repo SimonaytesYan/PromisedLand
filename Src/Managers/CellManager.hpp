@@ -53,10 +53,23 @@ public:
     { cell_type = _cell_type; }
 
     void onTick()
-    { res_manager->onTick(); }
+    {
+        res_manager->onTick();
+    }
+
+    void onNewCitizenArrival(const long int citizen_cnt)
+    {
+        res_manager->onNewCitizenArrival(citizen_cnt);
+    }
 
     void deleteCell(const size_t index)
     {
+        if (cells[index]->getFieldType() == FieldType::House)
+        {
+            House* house = static_cast<House*>(cells[index]);
+            res_manager->onCitizenLeave(house->getDestroyIncome().population * -1);
+        }
+
         res_manager->onDelete(cells[index]);
 
         delete cells[index];

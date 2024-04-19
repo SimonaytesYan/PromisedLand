@@ -3,9 +3,9 @@
 #include "Constants.hpp"
 #include "Interlayers/CellInterlayer.hpp"
 
-const double kDfsRiverCoef               = 0.99;
+const double kDfsRiverCoef               = 0.9;
 const double kIslandsFrequencyOccurrence = 0.1;
-const double kDfsForestCoef              = 0.995;
+const double kDfsForestCoef              = 0.8;
 
 const Point kTransition[] = {{ 1,  0}, 
                              {-1,  0}, 
@@ -15,6 +15,10 @@ const Point kTransition[] = {{ 1,  0},
 void dfsGenerating(std::vector<std::vector<FieldType>>& field, 
                    const FieldType field_type,
                    const int x, const int y, const double generate_chance);
+void dfsRiverGeneration(std::vector<std::vector<FieldType>>& field, 
+                        const FieldType field_type,
+                        const int x, const int y, const double generate_chance, 
+                        const size_t prev_index);
 void generateRiver(std::vector<std::vector<FieldType>>& field);
 void generateForest(std::vector<std::vector<FieldType>>& field);
 void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size);
@@ -48,7 +52,8 @@ void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
 
 void generateRiver(std::vector<std::vector<FieldType>>& field)
 {
-    dfsGenerating(field, FieldType::Water, 0, getRandFromInterval(1, field.size()), kDfsRiverCoef);
+    dfsRiverGeneration(field, FieldType::Water, 0, getRandFromInterval(1, field.size()), 
+                       kDfsRiverCoef, -1);
 
     for (size_t i = 0; i < field.size(); i++)
     {
@@ -72,7 +77,10 @@ void generateForest(std::vector<std::vector<FieldType>>& field)
     size_t y_start = getRandFromInterval(1, field.size());
     size_t x_start = getRandFromInterval(1, field[0].size());
     while(field[y_start][x_start] != FieldType::Grass)
-    { }
+    { 
+        y_start = getRandFromInterval(1, field.size());
+        x_start = getRandFromInterval(1, field[0].size());
+    }
 
     dfsGenerating(field, FieldType::Forest, x_start, y_start, kDfsForestCoef);
 }
@@ -91,8 +99,9 @@ void dfsGenerating(std::vector<std::vector<FieldType>>& field,
     if (y < 0 || field.size() <= y)
         return;
 
-    if (field[y][x] == FieldType::Grass)
-        field[y][x] = field_type;
+    if (field[y][x] != FieldType::Grass)
+        return;
+    field[y][x] = field_type;
 
     for (size_t i = 0; i < sizeof(kTransition) / sizeof(kTransition[0]); i++)
     {
@@ -100,7 +109,43 @@ void dfsGenerating(std::vector<std::vector<FieldType>>& field,
         {
             dfsGenerating(field, field_type,
                           x + kTransition[i].x, y + kTransition[i].y,
-                          generate_chance * generate_chance);
+                          generate_chance * 0.95);
         }
     }
 }
+
+void dfsRiverGeneration(std::vector<std::vector<FieldType>>& field, 
+                        const FieldType field_type,
+                        const int x, const int y, const double generate_chance, 
+                        const size_t prev_index)
+{
+    if (field.size() == 0)
+        return;
+    if (generate_chance < 0.1)
+        return;
+
+    if (x < 0 || field[0].size() <= x)
+        return;
+    if (y < 0 || field.size() <= y)
+        return;
+
+    if (field[y][x] != FieldType::Grass)
+        return;
+    field[y][x] = field_type;
+
+    size_t counter = 0;
+    for (size_t i = 0; i < sizeof(kTransition) / sizeof(kTransition[0]); i++)
+    {
+        if (prev_index == i && (bernoulliTrial(generate_chance) || bernoulliTrial(generate_chance)) || 
+            (prev_index != i && bernoulliTrial(generate_chance)))
+        {
+            dfsRiverGeneration(field, field_type,
+                               x + kTransition[i].x, y + kTransition[i].y,
+                               generate_chance * 0.95, i);
+            counter++;
+            if (counter == 2)
+                break;
+        }
+    }
+}
+
