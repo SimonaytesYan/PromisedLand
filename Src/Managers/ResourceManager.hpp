@@ -99,7 +99,8 @@ public:
 
     bool tryBuild(FieldType building_type)
     {
-        return (Building::getAppearIncome(building_type).wood * -1) <= user_res.wood;
+        return (Building::getAppearIncome(building_type).wood  * -1) <= user_res.wood &&
+               (Building::getAppearIncome(building_type).stone * -1) <= user_res.stone;
     }
 
 private:
