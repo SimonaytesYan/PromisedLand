@@ -14,11 +14,8 @@ void CellManager::createCell(const Point position)
 
 void CellManager::tryBuildCell(const size_t index, const Point position)
 {
-    Cell* new_building = Cell::createInstance(cell_type);
-    
     const unsigned char on_which_build = static_cast<unsigned char>(cells[index]->getFieldType());
-    const Bitmask       build_mask     = static_cast<Building*>    (new_building)->getBuildMask();
-    delete new_building;
+    const Bitmask       build_mask     = Building::getBuildMask(cell_type);
     
     if (getBit(build_mask, on_which_build))
     {
