@@ -7,6 +7,9 @@ class Building : public Cell
 {
 public:
 
+    static Bitmask   getBuildMask(FieldType field_type);
+    static Resources getAppearIncome(FieldType field_type);
+
     explicit Building(const long int _max_workers = 0)
       :  Cell        (),
          max_workers (_max_workers),
@@ -14,19 +17,13 @@ public:
     {}
 
     virtual Resources getAppearIncome() const
-    {
-        return kZeroResources;
-    }
+    { return kZeroResources; }
 
     virtual Resources getTickIncome() const
-    {
-        return kZeroResources;
-    }
+    { return kZeroResources; }
 
     virtual Resources getDestroyIncome() const
-    {
-        return kZeroResources;
-    }
+    { return kZeroResources; }
 
     // 1 in n-th bit if this Building could    be build on the n-th FieldType
     // 0 in n-th bit if this Building couldn`t be build on the n-th FieldType

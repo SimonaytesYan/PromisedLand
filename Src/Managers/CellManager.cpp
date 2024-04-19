@@ -14,16 +14,13 @@ void CellManager::createCell(const Point position)
 
 void CellManager::tryBuildCell(const size_t index, const Point position)
 {
-    Cell* new_building = Cell::createInstance(cell_type);
-    
-    const unsigned char on_which_build    = static_cast<unsigned char>(cells[index]->getFieldType());
-          Building*     building_instance = static_cast<Building*>(new_building);
-    const Bitmask       build_mask        = building_instance->getBuildMask();
-    
-    bool able_to_build = res_manager->tryBuild(building_instance);
+    if (cell_type <= FieldType::CellNumber || FieldType::FieldNumber <= cell_type)
+        return;
 
-    delete new_building;
-
+    const unsigned char on_which_build = static_cast<unsigned char>(cells[index]->getFieldType());
+    const Bitmask       build_mask     = Building::getBuildMask(cell_type);    
+    
+    bool able_to_build = res_manager->tryBuild(cell_type);
     if (!able_to_build) return;
     
     if (getBit(build_mask, on_which_build))
