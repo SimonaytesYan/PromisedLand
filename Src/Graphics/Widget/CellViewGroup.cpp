@@ -21,12 +21,7 @@ void CellViewGroup::push(const EventPtr event)
             const DestroyCellViewEvent* delete_event = static_cast<const DestroyCellViewEvent*>(event.get());
             delete_event->cell_view->kill();
             
-            size_t index = 0;
-            for (index = 0; index < cell_views.size(); index++)
-            {
-                if (cell_views[index] == delete_event->cell_view)
-                    break;
-            }
+            const size_t index = delete_event->cell_view->index_in_cell_group;
             cell_interlayer->pushToLogic(new DestroyCellLogicEvent(index));
             
             break;
