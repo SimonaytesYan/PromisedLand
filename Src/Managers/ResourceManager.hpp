@@ -99,7 +99,8 @@ public:
 
     bool tryBuild(Building* building)
     {
-        return (building->getAppearIncome().wood * -1) <= user_res.wood;
+        return (building->getAppearIncome().wood  * -1) <= user_res.wood &&
+               (building->getAppearIncome().stone * -1) <= user_res.stone;
     }
 
 private:
