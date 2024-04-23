@@ -2,7 +2,6 @@
 
 #include "Widget.hpp"
 #include "Button.hpp"
-#include "../CellView/CellViewCreator.hpp"
 #include "../../../StlVector/Src/Vector.hpp"
 #include "../../Interlayers/BuldingPanelInterlayer.hpp"
 #include "../../Utils/Functor.hpp"

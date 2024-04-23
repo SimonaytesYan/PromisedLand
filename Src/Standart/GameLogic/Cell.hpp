@@ -1,21 +1,22 @@
 #pragma once
 
-#include "GameObject.hpp"
 #include "Resources.hpp"
+
+using FieldType = size_t;
 
 class Cell : GameObject 
 {
 public:
 
-    explicit Cell(const size_t _field_type)
+    explicit Cell(const FieldType _field_type)
       :  field_type (_field_type)
     {}
 
-    virtual size_t getFieldType() const 
+    virtual FieldType getFieldType() const 
     {
         return field_type;
     }
 
 protected:
-    size_t field_type;
+    FieldType field_type;
 };

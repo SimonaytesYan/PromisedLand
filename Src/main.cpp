@@ -6,7 +6,6 @@
 #include "Graphics/Widget/BuildingPanel.hpp"
 #include "Interlayers/CellInterlayer.hpp"
 #include "Graphics/Widget/CellViewGroup.hpp"
-#include "Graphics/CellView/CellViewCreator.hpp"
 #include "Constants.hpp"
 #include "Utils/RenderTarget.hpp"
 #include "Graphics/Widget/Window.hpp"
@@ -35,7 +34,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& backgr
 	cell_interlayer.setCellViewGroup(cell_view_group);
 
 	cell_manager.setCellInterlayer(&cell_interlayer);
-	cell_manager.setCellType      (FieldType::Grass);
+	cell_manager.setCellType      (0);
 
 	cell_view_group->setCellInterlayer(&cell_interlayer);
 
@@ -98,7 +97,7 @@ int main()
 	srand(time(nullptr));
 
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
-	RenderTarget main_rt(window.getSize());
+	RenderTarget main_rt(Point(window.getSize().x, window.getSize().y));
 
 	sf::Texture texture;
 	texture.loadFromFile("Assets/Background.png");

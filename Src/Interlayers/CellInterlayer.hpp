@@ -4,7 +4,6 @@
 
 #include "ViewInterlayer.hpp"
 #include "LogicInterlayer.hpp"
-#include "../Graphics/CellView/CellViewCreator.hpp"
 #include "../Managers/CellManager.hpp"
 
 class CellInterlayer : public ViewInterlayer, public LogicInterlayer
@@ -21,7 +20,7 @@ public:
     void setCellViewGroup(CellViewGroup* new_cell_view_group)
     { cell_view_group = new_cell_view_group; }
 
-    void createCell(const FieldType filed_type, const Point pos);
+    void createCell(const size_t filed_type, const Point pos);
 
 private:
     CellManager&   cell_manager;
