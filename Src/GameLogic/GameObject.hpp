@@ -1,8 +1,3 @@
 #pragma once
 
-class GameObject 
-{
-public:
-
-    virtual ~GameObject() = default;
-};
+#include "../Standart/GameLogic/GameObject.hpp"
