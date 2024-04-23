@@ -19,11 +19,6 @@ public:
         return unique_cells[field_type]->createCell(field_type);
     } 
 
-    static Building* createBuilding(const FieldType field_type, const long int max_workers = 0)
-    {
-        return unique_cells[field_type]->createBuilding(field_type, max_workers);
-    } 
-
     static Bitmask getBuildMask(const FieldType field_type)
     {
         return unique_cells[field_type]->getBuildMask();

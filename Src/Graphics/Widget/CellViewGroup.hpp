@@ -3,6 +3,7 @@
 #include "Widget.hpp"
 #include "../CellView/CellView.hpp"
 #include "../../Interlayers/CellInterlayer.hpp"
+#include "../../CellLoader/CellKeeper.hpp"
 
 class CellViewGroup : public Widget
 {

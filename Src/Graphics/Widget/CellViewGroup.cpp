@@ -87,5 +87,5 @@ void CellViewGroup::addCell(CellView* cell_view)
 void CellViewGroup::addCell(const FieldType field_type, const Point pos)
 {
     // TODO:
-    // addCell(CellView::createInstance(field_type, pos, *this));
+    // addCell(CellKeeper::createInstance(field_type, pos, *this));
 }
