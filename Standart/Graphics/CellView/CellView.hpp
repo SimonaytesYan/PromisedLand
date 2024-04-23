@@ -41,8 +41,8 @@ public:
     }
 
     void push(const EventPtr event) override;
-    void onClick(const Point point, const EventPtr event);
-    void onMouseMove(const Point point);
+    virtual void onClick(const Point point, const EventPtr event);
+    virtual void onMouseMove(const Point point);
 
 private:
     void setIndexInCellGroup(size_t index)

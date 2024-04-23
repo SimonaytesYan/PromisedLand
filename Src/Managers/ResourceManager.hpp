@@ -102,7 +102,6 @@ public:
 
     bool tryBuild(FieldType building_type)
     {
-        // TODO:
         return (CellKeeper::getAppearIncome(building_type).wood  * -1) <= user_res.wood &&
                (CellKeeper::getAppearIncome(building_type).stone * -1) <= user_res.stone;
     }

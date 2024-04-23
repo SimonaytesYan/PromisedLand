@@ -4,19 +4,38 @@
 #include "GameLogic/Cell.hpp"
 #include "Graphics/CellView/CellView.hpp"
 #include "Utils/Bitmask.hpp"
+#include "Utils/GraphicPrimitives.hpp"
 #include "GameLogic/Resources.hpp"
 
-enum GameObjectType
+enum class CellType
 {
     CELL,
-    BUILDING
+    BUILDING,
+    ERROR
+};
+
+enum class ReservedTypes
+{
+    // CELLS
+    GRASS,
+    WATER,
+    FOREST,
+    ISLAND,
+
+    // BUILDINGS
+    HOUSE,
+    SAWMILL,
+    WELL,
+    WINDMILL,
+    MINE
 };
 
 struct CellInterface
 {
-    virtual GameObjectType getType        () = 0;
-    virtual Cell*          createCell     (const FieldType field_type) = 0;
-    virtual CellView*      createCellView () = 0;
-    virtual Bitmask        getBuildMask   () = 0;
-    virtual Resources      getAppearIncome() = 0;
+    virtual CellType       getType        ()                                                = 0;
+    virtual Cell*          createCell     (const FieldType field_type)                      = 0;
+    virtual CellView*      createCellView (const Point pos, CellViewGroup& cell_view_group) = 0;
+    virtual Bitmask        getBuildMask   ()                                                = 0;
+    virtual Resources      getAppearIncome()                                                = 0;
+    virtual size_t         getId          ()                                                = 0;
 };

@@ -62,12 +62,11 @@ public:
 
     void deleteCell(const size_t index)
     {
-        // TODO:
-        // if (cells[index]->getFieldType() == FieldType::House)
-        // {
-        //     House* house = static_cast<House*>(cells[index]);
-        //     res_manager->onCitizenLeave(house->getDestroyIncome().population * -1);
-        // }
+        if (cells[index]->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
+        {
+            Building* house = static_cast<Building*>(cells[index]);
+            res_manager->onCitizenLeave(house->getDestroyIncome().population * -1);
+        }
 
         res_manager->onDelete(cells[index]);
 

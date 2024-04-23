@@ -1,5 +1,7 @@
 #include "CellViewGroup.hpp"
 
+#include "../../Interlayers/CellInterlayer.hpp"
+
 void CellViewGroup::push(const EventPtr event)
 {        
     switch (event->event_type)
