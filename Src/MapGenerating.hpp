@@ -31,10 +31,9 @@ void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
 	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
 	const int y_cell_cnt = (window_size.y - kControlPanelH) / kFieldSize;
 
-    // TODO:
     std::vector<std::vector<FieldType>> field(x_cell_cnt + 1, 
                                               std::vector<FieldType>(y_cell_cnt + 1, 
-                                                                     0));
+                                                                     static_cast<size_t>(ReservedTypes::GRASS)));
 
     generateRiver(field);
     generateForest(field);
@@ -53,20 +52,17 @@ void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
 
 void generateRiver(std::vector<std::vector<FieldType>>& field)
 {
-    // TODO:
-    dfsRiverGeneration(field, 1, 0, getRandFromInterval(1, field.size()), 
+    dfsRiverGeneration(field, static_cast<size_t>(ReservedTypes::WATER), 0, getRandFromInterval(1, field.size()), 
                        kDfsRiverCoef, -1);
 
     for (size_t i = 0; i < field.size(); i++)
     {
         for (size_t j = 0; j < field[i].size(); j++)
         {
-            // TODO:
-            if (field[i][j] == 1)
+            if (field[i][j] == static_cast<size_t>(ReservedTypes::WATER))
             {
-                // TODO:
                 if (bernoulliTrial(kIslandsFrequencyOccurrence))
-                    field[i][j] = 3;
+                    field[i][j] = static_cast<size_t>(ReservedTypes::ISLAND);
             }
         }
     }
@@ -80,15 +76,14 @@ void generateForest(std::vector<std::vector<FieldType>>& field)
 
     size_t y_start = getRandFromInterval(1, field.size());
     size_t x_start = getRandFromInterval(1, field[0].size());
-    // TODO:
-    while(field[y_start][x_start] != 0)
+
+    while(field[y_start][x_start] != static_cast<size_t>(ReservedTypes::GRASS))
     { 
         y_start = getRandFromInterval(1, field.size());
         x_start = getRandFromInterval(1, field[0].size());
     }
 
-    // TODO:
-    dfsGenerating(field, 1, x_start, y_start, kDfsForestCoef);
+    dfsGenerating(field, static_cast<size_t>(ReservedTypes::FOREST), x_start, y_start, kDfsForestCoef);
 }
 
 void dfsGenerating(std::vector<std::vector<FieldType>>& field, 
@@ -105,8 +100,7 @@ void dfsGenerating(std::vector<std::vector<FieldType>>& field,
     if (y < 0 || field.size() <= y)
         return;
 
-    // TODO:
-    if (field[y][x] != 0)
+    if (field[y][x] != static_cast<size_t>(ReservedTypes::GRASS))
         return;
     field[y][x] = field_type;
 
@@ -136,8 +130,7 @@ void dfsRiverGeneration(std::vector<std::vector<FieldType>>& field,
     if (y < 0 || field.size() <= y)
         return;
 
-    // TODO: change
-    if (field[y][x] != 0)
+    if (field[y][x] != static_cast<size_t>(ReservedTypes::GRASS))
         return;
     field[y][x] = field_type;
 

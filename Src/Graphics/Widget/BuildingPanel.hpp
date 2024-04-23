@@ -6,6 +6,7 @@
 #include "../../../StlVector/Src/Vector.hpp"
 #include "../../Interlayers/BuldingPanelInterlayer.hpp"
 #include "../../Utils/Functor.hpp"
+#include "../../CellLoader/CellKeeper.hpp"
 
 class BuildingPanel;
 
@@ -30,14 +31,17 @@ public:
     interlayer (interlayer)
     {
         // TODO:
-        const size_t building_start = static_cast<size_t>(0) + 1;
-        const size_t field_num      = static_cast<size_t>(1);
-        for (size_t i = building_start; i < field_num; i++)
+        std::vector<CellInterface*> building_interfaces;
+        CellKeeper::getBuildings(building_interfaces);
+
+        for (const auto building_int : building_interfaces)
         {
-            ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(i));
+            size_t building_id = building_int->getId();
+
+            ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(building_id));
             BasicFunctor* func = new Functor<ButtonArgs>(SetFieldType, args);
 
-            buttons.EmplaceBack(Point(pos.x, pos.y + 70 * i), kFieldSize, kFieldSize, 
+            buttons.EmplaceBack(Point(pos.x, pos.y + 70 * building_id), kFieldSize, kFieldSize, 
                                     func, "Forest.png");
         }
     }

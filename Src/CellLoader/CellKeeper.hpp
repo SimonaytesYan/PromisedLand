@@ -40,6 +40,17 @@ public:
         return unique_cells[findByInterfaceId(field_type)]->getAppearIncome();
     }
 
+    static void getBuildings(std::vector<CellInterface*>& buildings)
+    {
+        for (const auto cell_int : unique_cells)
+        {
+            if (cell_int->getType() == CellType::BUILDING)
+            {
+                buildings.push_back(cell_int);
+            }
+        }
+    }
+
 private:
 
     static long findByInterfaceId(const size_t field_type)
