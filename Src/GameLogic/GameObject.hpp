@@ -1,3 +1,3 @@
 #pragma once
 
-#include "../Standart/GameLogic/GameObject.hpp"
+#include "../../Standart/GameLogic/GameObject.hpp"

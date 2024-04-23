@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Cell.hpp"
-#include "../../Utils/Bitmask.hpp"
+#include "../Utils/Bitmask.hpp"
 
 class Building : public Cell 
 {
