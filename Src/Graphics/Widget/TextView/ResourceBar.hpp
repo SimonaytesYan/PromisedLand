@@ -3,6 +3,7 @@
 #include "../Widget.hpp"
 #include "../../../GameLogic/Resources.hpp"
 #include "TextView.hpp"
+#include "../../../Events/Events.hpp"
 
 class ResourceBar : public Widget
 {

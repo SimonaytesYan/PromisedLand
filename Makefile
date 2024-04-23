@@ -9,7 +9,7 @@ BIN = Bin/
 OBJ = Obj/
 
 ELF_FILE = $(BIN)run
-OBJECTS  = $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellView.o $(OBJ)CellViewGroup.o $(OBJ)Cell.o $(OBJ)Building.o
+OBJECTS  = $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellView.o $(OBJ)CellViewGroup.o
 
 compile: create_folders $(OBJECTS)
 	$(COMPILER) $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJECTS) -o $(ELF_FILE)
@@ -31,12 +31,6 @@ $(OBJ)CellManager.o: $(SRC)Managers/CellManager.cpp
 
 $(OBJ)CellView.o: $(SRC)Graphics/CellView/CellView.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Graphics/CellView/CellView.cpp -o $(OBJ)CellView.o
-	
-$(OBJ)Cell.o: $(SRC)GameLogic/Tiles/Cell.cpp
-	$(COMPILER) -c $(FLAGS) $(SRC)GameLogic/Tiles/Cell.cpp -o $(OBJ)Cell.o
-	
-$(OBJ)Building.o: $(SRC)GameLogic/Tiles/Building.cpp
-	$(COMPILER) -c $(FLAGS) $(SRC)GameLogic/Tiles/Building.cpp -o $(OBJ)Building.o
 	
 
 # $(OBJ)Window.o: $(SRC)Window.cpp

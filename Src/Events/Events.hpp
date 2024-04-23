@@ -3,6 +3,7 @@
 #include "../Standart/Events/Events.hpp"
 #include "../Utils/GraphicPrimitives.hpp"
 #include "../GameLogic/Resources.hpp"
+#include "../GameLogic/Tiles/Cell.hpp"
 
 class CellView;
 

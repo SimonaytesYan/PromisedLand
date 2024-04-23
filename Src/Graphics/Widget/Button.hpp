@@ -2,6 +2,7 @@
 
 #include <functional>
 
+#include "../../Events/Events.hpp"
 #include "Widget.hpp"
 #include "../../Utils/Functor.hpp"
 

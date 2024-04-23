@@ -5,6 +5,8 @@
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "../Events/Eventable.hpp"
 #include "../Interlayers/ResourceBarInterlayer.hpp"
+#include "../GameLogic/Tiles/Building.hpp"
+#include "../Events/Events.hpp"
 
 class ResourceManager
 {
@@ -99,8 +101,10 @@ public:
 
     bool tryBuild(FieldType building_type)
     {
-        return (Building::getAppearIncome(building_type).wood  * -1) <= user_res.wood &&
-               (Building::getAppearIncome(building_type).stone * -1) <= user_res.stone;
+        // TODO:
+        // return (Building::getAppearIncome(building_type).wood  * -1) <= user_res.wood &&
+        //        (Building::getAppearIncome(building_type).stone * -1) <= user_res.stone;
+        return true;
     }
 
 private:
