@@ -11,7 +11,7 @@ struct Texture : public TextureI
 {
     explicit Texture(const char* const img_path);
 
-    sf::Texture sf_texture;
+    sf::Texture test;
 };
 
 class RenderTarget : public RenderTargetI

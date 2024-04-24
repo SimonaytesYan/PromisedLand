@@ -33,6 +33,11 @@ size_t IslandInterface::getId()
     return static_cast<size_t>(ReservedTypes::ISLAND);
 }
 
+const char* IslandInterface::getAsset()
+{
+    return kViewAsset;
+}
+
 #include "../../Standart/Plugin.hpp"
 CellInterface* getCellInterface()
 {

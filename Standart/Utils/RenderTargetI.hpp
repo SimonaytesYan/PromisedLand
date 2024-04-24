@@ -12,7 +12,12 @@ struct TextureI
 {
     explicit TextureI(const char* const img_path)
       :  _img_path (img_path)
-    {}
+    {
+      if (img_path)
+      {
+        sf_texture.loadFromFile(img_path);
+      }
+    }
 
     sf::Texture sf_texture;
     const char* _img_path;

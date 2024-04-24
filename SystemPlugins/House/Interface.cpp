@@ -33,6 +33,11 @@ size_t HouseInterface::getId()
     return static_cast<size_t>(ReservedTypes::HOUSE);
 }
 
+const char* HouseInterface::getAsset()
+{
+    return kViewAsset;
+}
+
 #include "../../Standart/Plugin.hpp"
 CellInterface* getCellInterface()
 {

@@ -33,6 +33,11 @@ size_t GrassInterface::getId()
     return static_cast<size_t>(ReservedTypes::GRASS);
 }
 
+const char* GrassInterface::getAsset()
+{
+    return kViewAsset;
+}
+
 #include "../../Standart/Plugin.hpp"
 CellInterface* getCellInterface()
 {

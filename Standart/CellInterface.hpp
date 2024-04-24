@@ -41,6 +41,7 @@ struct CellInterface
     virtual Bitmask        getBuildMask   ()                                                 = 0;
     virtual Resources      getAppearIncome()                                                 = 0;
     virtual size_t         getId          ()                                                 = 0;
+    virtual const char*    getAsset       ()                                                 = 0;
 
     virtual ~CellInterface() = default;
 };

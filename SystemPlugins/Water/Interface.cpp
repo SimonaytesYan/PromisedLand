@@ -33,6 +33,11 @@ size_t WaterInterface::getId()
     return static_cast<size_t>(ReservedTypes::WATER);
 }
 
+const char* WaterInterface::getAsset()
+{
+    return kViewAsset;
+}
+
 #include "../../Standart/Plugin.hpp"
 CellInterface* getCellInterface()
 {

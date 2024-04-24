@@ -55,6 +55,7 @@ public:
             break;
         }
     }
+
     void onClick(const Point point, const EventPtr event)
     {
         if (pos.x < point.x && point.x < pos.x + kFieldSize &&
@@ -63,6 +64,7 @@ public:
             parent.pushToLogic(new TryBuildEvent(index_in_cell_group, pos));
         }
     }
+    
     void onMouseMove(const Point point)
     {
         if (pos.x < point.x && point.x < pos.x + kFieldSize &&

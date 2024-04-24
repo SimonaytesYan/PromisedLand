@@ -15,10 +15,10 @@
 Texture::Texture(const char* const img_path)
   :  TextureI (img_path)
 {
-    if (img_path)
-    {
-        sf_texture.loadFromFile(img_path);
-    }
+    // if (img_path)
+    // {
+        test.loadFromFile(img_path);
+    // }
 }
 
 RenderTarget::RenderTarget(const Point size)
@@ -94,6 +94,12 @@ void RenderTarget::drawText(const Point pos, const char* const content, const ui
 
 void RenderTarget::drawTexture(const Point pos, const TextureI& texture)
 {
+    // drawRect(pos, {64, 64}, {255, 0, 0});
+    // Texture sf_text(texture._img_path);
+    // fprintf(stderr, "TRY LOAD: %lf %lf %s\n", pos.x, pos.y, texture._img_path);
+    // static sf::Texture ttt;
+    // ttt.loadFromFile(texture._img_path);
+
     sf::Vector2f rect_size = {texture.sf_texture.getSize().x, texture.sf_texture.getSize().y};
     sf::RectangleShape texture_rect(rect_size);
 

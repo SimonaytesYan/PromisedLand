@@ -30,7 +30,6 @@ public:
     Widget     (pos),
     interlayer (interlayer)
     {
-        // TODO:
         std::vector<CellInterface*> building_interfaces;
         CellKeeper::getBuildings(building_interfaces);
 
@@ -42,7 +41,7 @@ public:
             BasicFunctor* func = new Functor<ButtonArgs>(SetFieldType, args);
 
             buttons.EmplaceBack(Point(pos.x, pos.y + 70 * building_id), kFieldSize, kFieldSize, 
-                                    func, "Forest.png");
+                                    func, building_int->getAsset());
         }
     }
     
