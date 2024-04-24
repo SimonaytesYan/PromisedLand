@@ -21,7 +21,7 @@ void loadPlugins()
 	for (const auto& plugin_file : std::filesystem::directory_iterator(kPluginFolder))
 	{
 		void* filt_lib = dlopen(plugin_file.path().c_str(), RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
-        fprintf(stderr, "OPEN: %s\n", dlerror());
+        fprintf(stderr, "OPEN: %p %s\n", filt_lib, dlerror());
         interfaceFun get_inst_func = (interfaceFun)(dlsym(filt_lib, "getCellInterface"));
         fprintf(stderr, "OPEN: %s\n", dlerror());
         CellInterface* plugin = get_inst_func();

@@ -33,6 +33,7 @@ size_t ForestInterface::getId()
     return static_cast<size_t>(ReservedTypes::FOREST);
 }
 
+#include "../../Standart/Plugin.hpp"
 CellInterface* getCellInterface()
 {
     return new ForestInterface();
