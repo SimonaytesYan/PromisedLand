@@ -9,7 +9,7 @@ BIN = Bin/
 OBJ = Obj/
 
 ELF_FILE = $(BIN)run
-OBJECTS  = $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellView.o $(OBJ)CellViewGroup.o $(OBJ)CellKeeper.o
+OBJECTS  = $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellViewGroup.o $(OBJ)CellKeeper.o
 
 compile: create_folders $(OBJECTS)
 	$(COMPILER) $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJECTS) -o $(ELF_FILE)
@@ -28,9 +28,6 @@ $(OBJ)CellViewGroup.o: $(SRC)Graphics/Widget/CellViewGroup.cpp
 
 $(OBJ)CellManager.o: $(SRC)Managers/CellManager.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Managers/CellManager.cpp -o $(OBJ)CellManager.o
-
-$(OBJ)CellView.o: $(SRC)Graphics/CellView/CellView.cpp
-	$(COMPILER) -c $(FLAGS) $(SRC)Graphics/CellView/CellView.cpp -o $(OBJ)CellView.o
 	
 $(OBJ)CellKeeper.o: $(SRC)CellLoader/CellKeeper.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)CellLoader/CellKeeper.cpp -o $(OBJ)CellKeeper.o

@@ -13,7 +13,7 @@ Cell* ForestInterface::createCell()
     return new ForestCell();
 }
 
-CellView* ForestInterface::createCellView(const Point pos, CellViewGroup& cell_view_group)
+CellView* ForestInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
 {
     return new ForestView(pos, cell_view_group);
 }

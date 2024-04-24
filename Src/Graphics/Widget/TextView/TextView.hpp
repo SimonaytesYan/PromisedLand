@@ -23,7 +23,7 @@ public:
 
 private:
     const uint16_t  kTextSize  = 20;
-    const Color kTextColor = Color::White;
+    const Color kTextColor = {255, 255, 255};
 
 private:
     std::string content;

@@ -1,4 +1,6 @@
+#include <dlfcn.h>
 #include <chrono>
+#include <filesystem>
 #include <functional>
 
 #include <SFML/Graphics.hpp>
@@ -10,6 +12,25 @@
 #include "Utils/RenderTarget.hpp"
 #include "Graphics/Widget/Window.hpp"
 #include "MapGenerating.hpp"
+#include "../Standart/Plugin.hpp"
+
+typedef CellInterface* (*interfaceFun)();
+
+void loadPlugins()
+{
+	for (const auto& plugin_file : std::filesystem::directory_iterator(kPluginFolder))
+	{
+		void* filt_lib = dlopen(plugin_file.path().c_str(), RTLD_NOW | RTLD_LOCAL | RTLD_NODELETE);
+        fprintf(stderr, "OPEN: %s\n", dlerror());
+        interfaceFun get_inst_func = (interfaceFun)(dlsym(filt_lib, "getCellInterface"));
+        fprintf(stderr, "OPEN: %s\n", dlerror());
+        CellInterface* plugin = get_inst_func();
+        fprintf(stderr, "OPEN: %s\n", dlerror());
+        dlclose(filt_lib);
+
+        CellKeeper::add(plugin);
+	}
+}
 
 void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& background) 
 {
@@ -94,6 +115,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& backgr
 
 int main()
 {
+	loadPlugins();
 	srand(time(nullptr));
 
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);

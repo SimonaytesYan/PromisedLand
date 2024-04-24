@@ -26,13 +26,13 @@ public:
                              const Point size, 
                              const Color fill_color,
                              const int line_thickness  = 0, 
-                             const Color out_color = Color::Transparent);
+                             const Color out_color = {0, 0, 0, 0});
 
     virtual void drawCircle (const Point lu, 
                              const double radius, 
                              const Color fill_color, 
                              const int line_thickness  = 0, 
-                             const Color out_color = Color::Transparent);
+                             const Color out_color = {0, 0, 0, 0});
 
     virtual void drawText   (const Point pos, const char* const content, const uint16_t char_size, const Color color);
     virtual void drawTexture(const Point pos, const Texture& texture);
@@ -40,7 +40,7 @@ public:
     virtual void display();
     virtual void display(sf::RenderWindow& window);
 
-    virtual void clear(const Color clear_color = Color::Transparent);
+    virtual void clear(const Color clear_color = {0, 0, 0, 0});
 
 private:
     static constexpr char* const kDefaultFont = "Assets/arial.ttf";

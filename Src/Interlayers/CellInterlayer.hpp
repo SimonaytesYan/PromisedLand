@@ -2,12 +2,11 @@
 
 #include <vector>
 
-#include "ViewInterlayer.hpp"
-#include "LogicInterlayer.hpp"
+#include "../../Standart/Interlayers/CellInterlayerI.hpp"
 #include "../Managers/CellManager.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
 
-class CellInterlayer : public ViewInterlayer, public LogicInterlayer
+class CellInterlayer : public CellInterlayerI
 {
 public:
     explicit CellInterlayer(CellManager& cell_manager)
@@ -18,10 +17,10 @@ public:
     void pushToView(const EventPtr event) override;
     void pushToLogic(const EventPtr event) override;
 
-    void setCellViewGroup(CellViewGroup* new_cell_view_group)
+    void setCellViewGroup(CellViewGroup* new_cell_view_group) override
     { cell_view_group = new_cell_view_group; }
 
-    void createCell(const size_t filed_type, const Point pos);
+    void createCell(const size_t filed_type, const Point pos) override;
 
 private:
     CellManager&   cell_manager;

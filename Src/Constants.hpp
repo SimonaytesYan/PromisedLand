@@ -5,6 +5,8 @@
 #define USES_SFML 1
 #endif
 
+static const char* kPluginFolder = "PluginObjects";
+
 static const char* kWindowHeader       = "Promised Lands";
 static const int   kControlPanelH      = 150;
 static const int   kControlPanelW      = 150;

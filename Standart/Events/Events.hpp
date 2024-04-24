@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Utils/GraphicPrimitives.hpp"
+
 enum class EventType 
 {
     // PHYSICAL EVENTS
@@ -27,4 +29,36 @@ struct Event
     virtual ~Event() = default;
 
     EventType event_type;
+};
+
+struct MouseClickEvent : public Event
+{
+    MouseClickEvent(Point pos)
+    : Event(EventType::MOUSE_CLICK),
+      pos (pos)
+    { }
+
+    Point pos;
+};
+
+struct MouseMoveEvent : public Event
+{
+    MouseMoveEvent(Point pos)
+    : Event(EventType::MOUSE_MOVE),
+      pos (pos)
+    { }
+
+    Point pos;
+};
+
+struct TryBuildEvent : public Event
+{
+  explicit TryBuildEvent(const size_t index, const Point position)
+    : Event    (EventType::TRY_BUILD_EVENT),
+      index    (index),
+      position (position)
+    {}
+
+  size_t index;
+  Point  position; 
 };

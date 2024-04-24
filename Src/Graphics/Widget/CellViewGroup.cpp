@@ -1,6 +1,7 @@
 #include "CellViewGroup.hpp"
 
 #include "../../Interlayers/CellInterlayer.hpp"
+#include "../CellView/CellView.hpp"
 
 void CellViewGroup::push(const EventPtr event)
 {        
@@ -23,7 +24,7 @@ void CellViewGroup::push(const EventPtr event)
             const DestroyCellViewEvent* delete_event = static_cast<const DestroyCellViewEvent*>(event.get());
             delete_event->cell_view->kill();
             
-            const size_t index = delete_event->cell_view->index_in_cell_group;
+            const size_t index = delete_event->cell_view->getIndex();
             cell_interlayer->pushToLogic(new DestroyCellLogicEvent(index));
             
             break;
@@ -33,7 +34,7 @@ void CellViewGroup::push(const EventPtr event)
             const RebuildEvent* rebuild_event = static_cast<const RebuildEvent*>(event.get());
             
             cell_views[rebuild_event->index]->kill();
-            addCell(rebuild_event->cell_type, cell_views[rebuild_event->index]->pos);
+            addCell(rebuild_event->cell_type, cell_views[rebuild_event->index]->getPos());
             break;
         }
 
@@ -82,8 +83,10 @@ void CellViewGroup::deleteDeadCells()
 
 void CellViewGroup::addCell(CellView* cell_view)
 { 
-    cell_views.push_back(cell_view);
-    cell_view->setIndexInCellGroup(cell_views.size() - 1);
+    CellView* casted_cell = reinterpret_cast<CellView*>(cell_view);
+
+    cell_views.push_back(casted_cell);
+    casted_cell->setIndexInCellGroup(cell_views.size() - 1);
 }
 
 void CellViewGroup::addCell(const FieldType field_type, const Point pos)

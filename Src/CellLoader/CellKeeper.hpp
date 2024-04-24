@@ -6,6 +6,8 @@
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "../GameLogic/CellInterface.hpp"
 
+class CellViewGroup;
+
 class CellKeeper
 {
 public:
@@ -27,7 +29,7 @@ public:
 
     static CellView* createCellView(const FieldType field_type, const Point pos, CellViewGroup& cell_view_group)
     {
-        return unique_cells[findByInterfaceId(field_type)]->createCellView(pos, cell_view_group);
+        return unique_cells[findByInterfaceId(field_type)]->createCellView(pos, reinterpret_cast<CellViewGroupI&>(cell_view_group));
     } 
 
     static Bitmask getBuildMask(const FieldType field_type)

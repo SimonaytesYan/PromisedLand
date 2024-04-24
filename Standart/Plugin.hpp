@@ -10,6 +10,7 @@
 #include "GameLogic/Resources.hpp"
 
 #include "Graphics/CellView/CellView.hpp"
+#include "Graphics/CellView/CellViewGroupI.hpp"
 #include "Graphics/Renderable.hpp"
 #include "Graphics/Widget.hpp"
 
