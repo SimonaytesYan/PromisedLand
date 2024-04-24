@@ -18,7 +18,7 @@ public:
 
     void push(const EventPtr event) override;
     virtual void pushToLogic(const EventPtr event);
-    void draw(RenderTarget& rt) override;
+    void draw(RenderTargetI& rt) override;
     
     void setCellInterlayer(CellInterlayerI* _cell_interlayer) override
     { cell_interlayer = reinterpret_cast<CellInterlayer*>(_cell_interlayer); }

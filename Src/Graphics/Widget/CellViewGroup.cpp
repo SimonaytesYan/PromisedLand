@@ -51,7 +51,7 @@ void CellViewGroup::pushToLogic(const EventPtr event)
     cell_interlayer->pushToLogic(event); 
 }
 
-void CellViewGroup::draw(RenderTarget& rt)
+void CellViewGroup::draw(RenderTargetI& rt)
 {
     deleteDeadCells();
 

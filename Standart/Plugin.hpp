@@ -16,7 +16,7 @@
 
 #include "Utils/Bitmask.hpp"
 #include "Utils/GraphicPrimitives.hpp"
-#include "Utils/RenderTarget.hpp"
+#include "Utils/RenderTargetI.hpp"
 #include "Utils/Utils.hpp"
 
 #include "CellInterface.hpp"

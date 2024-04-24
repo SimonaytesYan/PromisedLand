@@ -6,6 +6,6 @@ class ForestView : public CellView
 {
 public:
     explicit ForestView(const Point pos, CellViewGroupI& parent)
-      :  CellView (Texture("Assets/Forest.png"), pos, parent)
+      :  CellView (TextureI("Assets/Forest.png"), pos, parent)
     {}
 };

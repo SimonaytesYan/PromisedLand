@@ -46,7 +46,7 @@ public:
         }
     }
     
-    void draw(RenderTarget& render_target) override
+    void draw(RenderTargetI& render_target) override
     {
         const size_t size = buttons.Size();
         for (size_t i = 0; i < size; i++)

@@ -1,11 +1,11 @@
 #pragma once
 
-#include "../Utils/RenderTarget.hpp"
+#include "../Utils/RenderTargetI.hpp"
 
 class Renderable
 {
 public:
-    virtual void draw(RenderTarget& render_target) = 0;
+    virtual void draw(RenderTargetI& render_target) = 0;
 
     virtual ~Renderable() = default;
 };

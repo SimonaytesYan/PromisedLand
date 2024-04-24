@@ -9,7 +9,7 @@ const size_t kFieldSize = 64;
 class CellView : public Widget
 {
 public:
-    CellView(const Texture texture, const Point pos, 
+    CellView(const TextureI texture, const Point pos, 
              CellViewGroupI& parent) 
     : Widget    (pos),
       texture   (texture),
@@ -17,7 +17,7 @@ public:
       is_chosen (false)
     { }
 
-    CellView(const Texture texture, const Point pos, 
+    CellView(const TextureI texture, const Point pos, 
              CellViewGroupI& parent, size_t index_in_cell_group) 
     : Widget              (pos),
       texture             (texture),
@@ -26,7 +26,7 @@ public:
       is_chosen           (false)
     {}
 
-    void draw(RenderTarget& render_target) override
+    void draw(RenderTargetI& render_target) override
     {
         render_target.drawTexture(pos, texture);
         if (is_chosen) 
@@ -93,7 +93,7 @@ public:
 protected:
     const Color kChosenCellColor = {255, 255, 255, 128};
 
-    const Texture   texture;
+    const TextureI  texture;
     CellViewGroupI& parent;
     size_t          index_in_cell_group;
     bool            is_chosen;  

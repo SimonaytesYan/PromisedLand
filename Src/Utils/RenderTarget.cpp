@@ -13,6 +13,7 @@
 // const Color Color::Transparent(  0,   0,   0, 0);
 
 Texture::Texture(const char* const img_path)
+  :  TextureI (img_path)
 {
     if (img_path)
     {
@@ -91,7 +92,7 @@ void RenderTarget::drawText(const Point pos, const char* const content, const ui
     rt.draw(text_to_draw);
 }
 
-void RenderTarget::drawTexture(const Point pos, const Texture& texture)
+void RenderTarget::drawTexture(const Point pos, const TextureI& texture)
 {
     sf::Vector2f rect_size = {texture.sf_texture.getSize().x, texture.sf_texture.getSize().y};
     sf::RectangleShape texture_rect(rect_size);

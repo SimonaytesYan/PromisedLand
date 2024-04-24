@@ -12,7 +12,7 @@ public:
       : Widget  (_pos),
         content (_content) {} 
 
-    void draw(RenderTarget& render_target) override 
+    void draw(RenderTargetI& render_target) override 
     { render_target.drawText(pos, content.c_str(), kTextSize, kTextColor); }
 
     void push(const EventPtr event) override
