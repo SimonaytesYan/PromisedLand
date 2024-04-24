@@ -32,3 +32,8 @@ size_t GrassInterface::getId()
 {
     return static_cast<size_t>(ReservedTypes::GRASS);
 }
+
+CellInterface* getCellInterface()
+{
+    return new GrassInterface();
+}

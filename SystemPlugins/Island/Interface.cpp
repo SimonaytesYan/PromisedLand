@@ -32,3 +32,8 @@ size_t IslandInterface::getId()
 {
     return static_cast<size_t>(ReservedTypes::ISLAND);
 }
+
+CellInterface* getCellInterface()
+{
+    return new IslandInterface();
+}

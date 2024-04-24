@@ -32,3 +32,8 @@ size_t WaterInterface::getId()
 {
     return static_cast<size_t>(ReservedTypes::WATER);
 }
+
+CellInterface* getCellInterface()
+{
+    return new WaterInterface();
+}

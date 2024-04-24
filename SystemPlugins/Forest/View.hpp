@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../Standart/Graphics/CellView/CellView.hpp"
+#include "../../Standart/Graphics/CellView/CellViewI.hpp"
 
-class ForestView : public CellView
+class ForestView : public CellViewI
 {
 public:
     explicit ForestView(const Point pos, CellViewGroup& parent)
