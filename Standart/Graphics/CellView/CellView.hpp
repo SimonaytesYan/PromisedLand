@@ -12,9 +12,6 @@ class CellView : public Widget
     friend CellViewGroup;
 
 public:
-
-    static CellView* createInstance(const FieldType field_type, const Point pos, CellViewGroup& cell_view_group);
-
     CellView(const Texture texture, const Point pos, 
              CellViewGroup& parent) 
     : Widget    (pos),

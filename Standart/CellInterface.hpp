@@ -33,9 +33,11 @@ enum class ReservedTypes
 struct CellInterface
 {
     virtual CellType       getType        ()                                                = 0;
-    virtual Cell*          createCell     (const FieldType field_type)                      = 0;
+    virtual Cell*          createCell     ()                                                = 0;
     virtual CellView*      createCellView (const Point pos, CellViewGroup& cell_view_group) = 0;
     virtual Bitmask        getBuildMask   ()                                                = 0;
     virtual Resources      getAppearIncome()                                                = 0;
     virtual size_t         getId          ()                                                = 0;
+
+    virtual ~CellInterface() = default;
 };

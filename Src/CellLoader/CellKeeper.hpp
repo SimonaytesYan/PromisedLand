@@ -22,7 +22,7 @@ public:
 
     static Cell* createCell(const FieldType field_type)
     {
-        return unique_cells[findByInterfaceId(field_type)]->createCell(field_type);
+        return unique_cells[findByInterfaceId(field_type)]->createCell();
     } 
 
     static CellView* createCellView(const FieldType field_type, const Point pos, CellViewGroup& cell_view_group)
