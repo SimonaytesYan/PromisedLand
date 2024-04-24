@@ -5,7 +5,7 @@
 class GrassView : public CellView
 {
 public:
-    explicit GrassView(const Point pos, CellViewGroup& parent)
-      :  CellView (Texture("Assets/Grass.png"), pos, parent)
+    explicit GrassView(const Point pos, CellViewGroupI& parent)
+      :  CellView (TextureI("Assets/Grass.png"), pos, parent)
     {}
 };

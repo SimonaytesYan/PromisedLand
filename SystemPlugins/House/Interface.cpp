@@ -13,7 +13,7 @@ Cell* HouseInterface::createCell()
     return new HouseCell();
 }
 
-CellView* HouseInterface::createCellView(const Point pos, CellViewGroup& cell_view_group)
+CellView* HouseInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
 {
     return new HouseView(pos, cell_view_group);
 }
@@ -33,6 +33,7 @@ size_t HouseInterface::getId()
     return static_cast<size_t>(ReservedTypes::HOUSE);
 }
 
+#include "../../Standart/Plugin.hpp"
 CellInterface* getCellInterface()
 {
     return new HouseInterface();

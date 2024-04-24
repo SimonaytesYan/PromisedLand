@@ -5,7 +5,7 @@
 class WaterView : public CellView
 {
 public:
-    explicit WaterView(const Point pos, CellViewGroup& parent)
-      :  CellView (Texture("Assets/Water.png"), pos, parent)
+    explicit WaterView(const Point pos, CellViewGroupI& parent)
+      :  CellView (TextureI("Assets/Water.png"), pos, parent)
     {}
 };

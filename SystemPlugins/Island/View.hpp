@@ -5,7 +5,7 @@
 class IslandView : public CellView
 {
 public:
-    explicit IslandView(const Point pos, CellViewGroup& parent)
-      :  CellView (Texture("Assets/Island.png"), pos, parent)
+    explicit IslandView(const Point pos, CellViewGroupI& parent)
+      :  CellView (TextureI("Assets/Island.png"), pos, parent)
     {}
 };

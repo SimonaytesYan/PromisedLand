@@ -13,7 +13,7 @@ Cell* GrassInterface::createCell()
     return new GrassCell();
 }
 
-CellView* GrassInterface::createCellView(const Point pos, CellViewGroup& cell_view_group)
+CellView* GrassInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
 {
     return new GrassView(pos, cell_view_group);
 }
@@ -33,6 +33,7 @@ size_t GrassInterface::getId()
     return static_cast<size_t>(ReservedTypes::GRASS);
 }
 
+#include "../../Standart/Plugin.hpp"
 CellInterface* getCellInterface()
 {
     return new GrassInterface();

@@ -13,7 +13,7 @@ Cell* WaterInterface::createCell()
     return new WaterCell();
 }
 
-CellView* WaterInterface::createCellView(const Point pos, CellViewGroup& cell_view_group)
+CellView* WaterInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
 {
     return new WaterView(pos, cell_view_group);
 }
@@ -33,6 +33,7 @@ size_t WaterInterface::getId()
     return static_cast<size_t>(ReservedTypes::WATER);
 }
 
+#include "../../Standart/Plugin.hpp"
 CellInterface* getCellInterface()
 {
     return new WaterInterface();

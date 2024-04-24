@@ -5,7 +5,7 @@
 class HouseView : public CellView
 {
 public:
-    explicit HouseView(const Point pos, CellViewGroup& parent)
-      :  CellView (Texture("Assets/House.png"), pos, parent)
+    explicit HouseView(const Point pos, CellViewGroupI& parent)
+      :  CellView (TextureI("Assets/House.png"), pos, parent)
     {}
 };

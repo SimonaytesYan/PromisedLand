@@ -13,7 +13,7 @@ Cell* IslandInterface::createCell()
     return new IslandCell();
 }
 
-CellView* IslandInterface::createCellView(const Point pos, CellViewGroup& cell_view_group)
+CellView* IslandInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
 {
     return new IslandView(pos, cell_view_group);
 }
@@ -33,6 +33,7 @@ size_t IslandInterface::getId()
     return static_cast<size_t>(ReservedTypes::ISLAND);
 }
 
+#include "../../Standart/Plugin.hpp"
 CellInterface* getCellInterface()
 {
     return new IslandInterface();
