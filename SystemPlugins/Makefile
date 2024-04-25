@@ -8,19 +8,41 @@ LIB_BUILDER   = gcc
 NAME = Sawmill
 LIB_PATH = ../PluginObjects/
 
-all: create_cell_o create_view_o create_interface_o create_so rm_o
+SOURCES = "Forest" "House" "Island" "Mine" "Sawmill" "Water" "Well" "Windmill"
 
-create_cell_o:
+all: loop
+
+loop: $(SOURCES)
+
+$(SOURCES):
+	$(eval NAME=$(word 1,$(subst _, ,$@)))
+	@echo "Building... "$(NAME)
+	$(call make_lib)
+
+define make_lib 					
+	$(call create_cell_o) 
+	$(call create_view_o) 			
+	$(call create_interface_o)
+	$(call create_so)
+	$(call rm_o)					
+endef
+
+define create_cell_o 	
 	$(COMPILER) -g -c $(FLAGS) -o $(NAME)Cell.o $(NAME)/Cell.cpp $(SFML_FLAGS) -fPIC
+endef
 
-create_view_o:
+define create_view_o	
 	$(COMPILER) -g -c $(FLAGS) -o $(NAME)View.o $(NAME)/View.cpp $(SFML_FLAGS) -fPIC
+endef
 
-create_interface_o:
+define create_interface_o	
 	$(COMPILER) -g -c $(FLAGS) -o $(NAME)Interface.o $(NAME)/Interface.cpp $(SFML_FLAGS) -fPIC
+endef
 
-create_so:
+define create_so	
 	$(LIB_BUILDER) -shared -o $(LIB_PATH)$(NAME).so $(NAME)Cell.o $(NAME)View.o $(NAME)Interface.o
+endef
 
-rm_o:
+define rm_o 	
 	rm *.o
+endef
