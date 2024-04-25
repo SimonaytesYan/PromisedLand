@@ -53,6 +53,14 @@ public:
         }
     }
 
+    static void destroy()
+    {
+        for (const auto cell_int : unique_cells)
+        {
+            delete cell_int;
+        }
+    }
+
 private:
 
     static long findByInterfaceId(const size_t field_type)

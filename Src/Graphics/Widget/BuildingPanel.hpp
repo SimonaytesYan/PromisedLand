@@ -33,15 +33,16 @@ public:
         std::vector<CellInterface*> building_interfaces;
         CellKeeper::getBuildings(building_interfaces);
 
+        size_t build_cnt = 0;
         for (const auto building_int : building_interfaces)
         {
-            size_t building_id = building_int->getId();
-
-            ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(building_id));
+            ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(building_int->getId()));
             BasicFunctor* func = new Functor<ButtonArgs>(SetFieldType, args);
 
-            buttons.EmplaceBack(Point(pos.x, pos.y + 70 * building_id), kFieldSize, kFieldSize, 
+            buttons.EmplaceBack(Point(pos.x, pos.y + 70 * build_cnt), kFieldSize, kFieldSize, 
                                     func, building_int->getAsset());
+
+            build_cnt++;
         }
     }
     

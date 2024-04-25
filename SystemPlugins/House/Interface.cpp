@@ -20,12 +20,12 @@ CellView* HouseInterface::createCellView(const Point pos, CellViewGroupI& cell_v
 
 Bitmask HouseInterface::getBuildMask() 
 {
-    return ~((1 << 1) | (1 << 2) | (1 << 3));
+    return kBuildMask;
 }
 
 Resources HouseInterface::getAppearIncome() 
 {
-    return Resources(0,  0, -15, 5,  5, 0);
+    return kAppearIncome;
 }
 
 size_t HouseInterface::getId() 

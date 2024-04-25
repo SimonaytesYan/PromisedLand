@@ -5,7 +5,7 @@ SFML_FLAGS    = -lsfml-graphics -lsfml-window -lsfml-system
 COMPILER      = g++
 LIB_BUILDER   = gcc
 
-NAME = Water
+NAME = Sawmill
 LIB_PATH = ../PluginObjects/
 
 all: create_cell_o create_view_o create_interface_o create_so rm_o

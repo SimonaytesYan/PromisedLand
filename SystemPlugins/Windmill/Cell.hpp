@@ -2,15 +2,15 @@
 
 #include "../../Standart/GameLogic/Building.hpp"
 
-static const Resources kAppearIncome  = Resources( 0,  0, -15,  5,  5, 0);
-static const Resources kTickIncome    = Resources(-5, -5,   0,  0,  0, 0);
-static const Resources kDestroyIncome = Resources( 0,  0,  10, -5, -5, 0);
+static const Resources kAppearIncome  = Resources( 0,  0, -10, 0, 0, 0);
+static const Resources kTickIncome    = Resources(10,  0,   0, 0, 0, 0);
+static const Resources kDestroyIncome = Resources( 0,  0,   7, 0, 0, 0);
 static const Bitmask   kBuildMask     = ~((1 << 1) | (1 << 2) | (1 << 3));
 
-class HouseCell : public Building
+class WindmillCell : public Building
 {
 public:
-    explicit HouseCell();
+    explicit WindmillCell();
 
     Resources getAppearIncome() const override;
     Resources getTickIncome() const override;
