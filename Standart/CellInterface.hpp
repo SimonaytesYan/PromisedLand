@@ -30,7 +30,8 @@ enum class ReservedTypes
     SAWMILL,
     WELL,
     WINDMILL,
-    MINE
+    MINE,
+    WASTELAND
 };
 
 struct CellInterface

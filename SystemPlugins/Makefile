@@ -5,10 +5,10 @@ SFML_FLAGS    = -lsfml-graphics -lsfml-window -lsfml-system
 COMPILER      = g++
 LIB_BUILDER   = gcc
 
-NAME = Sawmill
+NAME = Wasteland
 LIB_PATH = ../PluginObjects/
 
-SOURCES = "Forest" "House" "Island" "Mine" "Sawmill" "Water" "Well" "Windmill"
+SOURCES = "Forest" "House" "Island" "Mine" "Sawmill" "Water" "Well" "Windmill" "Wasteland"
 
 all: loop
 
@@ -17,6 +17,9 @@ loop: $(SOURCES)
 $(SOURCES):
 	$(eval NAME=$(word 1,$(subst _, ,$@)))
 	@echo "Building... "$(NAME)
+	$(call make_lib)
+
+single:
 	$(call make_lib)
 
 define make_lib 					
