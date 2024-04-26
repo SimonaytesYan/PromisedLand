@@ -1,45 +1,45 @@
 #pragma once
 
-#include <cstdint>
-
 #include <SFML/Graphics.hpp>
+#include <cstdint>
 
 #include "GraphicPrimitives.hpp"
 #include "Utils.hpp"
+#include "../../Standart/Utils/RenderTargetI.hpp"
 
-struct Texture 
+struct Texture : public TextureI
 {
     explicit Texture(const char* const img_path);
 
-    sf::Texture sf_texture;
+    sf::Texture test;
 };
 
-class RenderTarget
+class RenderTarget : public RenderTargetI
 {
 public:
     explicit RenderTarget(const Point size);
 
-    void setPixel   (const Point pos , const Color color);
-    void drawLine   (const Point pos1, const Point pos2, const Color color);
+    void setPixel   (const Point pos , const Color color) override;
+    void drawLine   (const Point pos1, const Point pos2, const Color color) override;
     void drawRect   (const Point lu, 
-                     const Point size, 
-                     const Color fill_color,
-                     const int line_thickness  = 0, 
-                     const Color out_color = Color::Transparent);
+                             const Point size, 
+                             const Color fill_color,
+                             const int line_thickness  = 0, 
+                             const Color out_color = {0, 0, 0, 0}) override;
 
     void drawCircle (const Point lu, 
-                     const double radius, 
-                     const Color fill_color, 
-                     const int line_thickness  = 0, 
-                     const Color out_color = Color::Transparent);
+                             const double radius, 
+                             const Color fill_color, 
+                             const int line_thickness  = 0, 
+                             const Color out_color = {0, 0, 0, 0}) override;
 
-    void drawText   (const Point pos, const char* const content, const uint16_t char_size, const Color color);
-    void drawTexture(const Point pos, const Texture& texture);
+    void drawText   (const Point pos, const char* const content, const uint16_t char_size, const Color color) override;
+    void drawTexture(const Point pos, const TextureI& texture) override;
 
-    void display();
-    void display(sf::RenderWindow& window);
+    void display() override;
+    void display(sf::RenderWindow& window) override;
 
-    void clear(const Color clear_color = Color::Transparent);
+    void clear(const Color clear_color = {0, 0, 0, 0}) override;
 
 private:
     static constexpr char* const kDefaultFont = "Assets/arial.ttf";

@@ -2,10 +2,11 @@
 
 #include "Widget.hpp"
 #include "Button.hpp"
-#include "../CellView/CellViewCreator.hpp"
+#include "../CellView/CellView.hpp"
 #include "../../../StlVector/Src/Vector.hpp"
 #include "../../Interlayers/BuldingPanelInterlayer.hpp"
 #include "../../Utils/Functor.hpp"
+#include "../../CellLoader/CellKeeper.hpp"
 
 class BuildingPanel;
 
@@ -29,19 +30,23 @@ public:
     Widget     (pos),
     interlayer (interlayer)
     {
-        const size_t building_start = static_cast<size_t>(FieldType::CellNumber) + 1;
-        const size_t field_num      = static_cast<size_t>(FieldType::FieldNumber);
-        for (size_t i = building_start; i < field_num; i++)
+        std::vector<CellInterface*> building_interfaces;
+        CellKeeper::getBuildings(building_interfaces);
+
+        size_t build_cnt = 0;
+        for (const auto building_int : building_interfaces)
         {
-            ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(i));
+            ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(building_int->getId()));
             BasicFunctor* func = new Functor<ButtonArgs>(SetFieldType, args);
 
-            buttons.EmplaceBack(Point(pos.x, pos.y + 70 * i), kFieldSize, kFieldSize, 
-                                    func, kCellsAssets[i - 1]);
+            buttons.EmplaceBack(Point(pos.x, pos.y + 70 * build_cnt), kFieldSize, kFieldSize, 
+                                    func, building_int->getAsset());
+
+            build_cnt++;
         }
     }
     
-    void draw(RenderTarget& render_target) override
+    void draw(RenderTargetI& render_target) override
     {
         const size_t size = buttons.Size();
         for (size_t i = 0; i < size; i++)

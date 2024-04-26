@@ -12,7 +12,7 @@ public:
       : Widget  (_pos),
         content (_content) {} 
 
-    void draw(RenderTarget& render_target) override 
+    void draw(RenderTargetI& render_target) override 
     { render_target.drawText(pos, content.c_str(), kTextSize, kTextColor); }
 
     void push(const EventPtr event) override
@@ -23,7 +23,7 @@ public:
 
 private:
     const uint16_t  kTextSize  = 20;
-    const Color kTextColor = Color::White;
+    const Color kTextColor = {255, 255, 255};
 
 private:
     std::string content;

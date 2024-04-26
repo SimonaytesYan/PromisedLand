@@ -1,21 +1,24 @@
+#include <SFML/Graphics.hpp>
+
 #include "RenderTarget.hpp"
 
-const Color Color::Black      (sf::Color::Black);
-const Color Color::White      (sf::Color::White);
-const Color Color::Red        (sf::Color::Red);
-const Color Color::Green      (sf::Color::Green);
-const Color Color::Blue       (sf::Color::Blue);
-const Color Color::Yellow     (sf::Color::Yellow);
-const Color Color::Magenta    (sf::Color::Magenta);
-const Color Color::Cyan       (sf::Color::Cyan);
-const Color Color::Transparent(sf::Color::Transparent);
+// const Color Color::Black      (  0,   0,   0);
+// const Color Color::White      (255, 255, 255);
+// const Color Color::Red        (255,   0,   0);
+// const Color Color::Green      (  0, 255,   0);
+// const Color Color::Blue       (  0,   0, 255);
+// const Color Color::Yellow     (255, 255,   0);
+// const Color Color::Magenta    (214,   0, 110);
+// const Color Color::Cyan       (  0, 255, 255);
+// const Color Color::Transparent(  0,   0,   0, 0);
 
 Texture::Texture(const char* const img_path)
+  :  TextureI (img_path)
 {
-    if (img_path)
-    {
-        sf_texture.loadFromFile(img_path);
-    }
+    // if (img_path)
+    // {
+        test.loadFromFile(img_path);
+    // }
 }
 
 RenderTarget::RenderTarget(const Point size)
@@ -28,8 +31,8 @@ void RenderTarget::setPixel(const Point pos, const Color color)
 {
     sf::VertexArray point(sf::Points, 1);
 
-    point[0].position = pos;
-    point[0].color    = color;
+    point[0].position = {pos.x, pos.y};
+    point[0].color    = {color.r, color.g, color.b, color.a};
 
     rt.draw(point);
 }
@@ -38,11 +41,11 @@ void RenderTarget::drawLine(const Point pos1, const Point pos2, const Color colo
 {
     sf::VertexArray line(sf::LinesStrip, 2);
 
-    line[0].position = pos1;
-    line[0].color    = color;
+    line[0].position = {pos1.x, pos1.y};
+    line[0].color    = {color.r, color.g, color.b, color.a};
 
-    line[1].position = pos2;
-    line[1].color    = color;
+    line[1].position = {pos2.x, pos2.y};
+    line[1].color    = {color.r, color.g, color.b, color.a};
 
     rt.draw(line);
 }
@@ -53,11 +56,11 @@ void RenderTarget::drawRect(const Point lu,
                             const int line_thickness, 
                             const Color out_color)
 {
-    sf::RectangleShape rect(size);
+    sf::RectangleShape rect({size.x, size.y});
 
-    rect.setPosition        (lu);
-    rect.setFillColor       (fill_color);
-    rect.setOutlineColor    (out_color);
+    rect.setPosition        ({lu.x, lu.y});
+    rect.setFillColor       ({fill_color.r, fill_color.g, fill_color.b, fill_color.a});
+    rect.setOutlineColor    ({out_color.r, out_color.g, out_color.b, out_color.a});
     rect.setOutlineThickness(line_thickness);
 
     rt.draw(rect);
@@ -71,10 +74,10 @@ void RenderTarget::drawCircle (const Point lu,
 {
     sf::CircleShape circle(radius);
 
-    circle.setPosition        (lu);
-    circle.setFillColor       (fill_color);
+    circle.setPosition        ({lu.x, lu.y});
+    circle.setFillColor       ({fill_color.r, fill_color.g, fill_color.b, fill_color.a});
     circle.setOutlineThickness(line_thickness);
-    circle.setOutlineColor    (out_color);
+    circle.setOutlineColor    ({out_color.r, out_color.g, out_color.b, out_color.a});
 
     rt.draw(circle);
 }
@@ -83,18 +86,24 @@ void RenderTarget::drawText(const Point pos, const char* const content, const ui
 {    
     sf::Text text_to_draw = sf::Text(content, font, char_size);
 
-    text_to_draw.setFillColor(color);
-    text_to_draw.setPosition (pos);
+    text_to_draw.setFillColor({color.r, color.g, color.b, color.a});
+    text_to_draw.setPosition ({pos.x, pos.y});
 
     rt.draw(text_to_draw);
 }
 
-void RenderTarget::drawTexture(const Point pos, const Texture& texture)
+void RenderTarget::drawTexture(const Point pos, const TextureI& texture)
 {
+    // drawRect(pos, {64, 64}, {255, 0, 0});
+    // Texture sf_text(texture._img_path);
+    // fprintf(stderr, "TRY LOAD: %lf %lf %s\n", pos.x, pos.y, texture._img_path);
+    // static sf::Texture ttt;
+    // ttt.loadFromFile(texture._img_path);
+
     sf::Vector2f rect_size = {texture.sf_texture.getSize().x, texture.sf_texture.getSize().y};
     sf::RectangleShape texture_rect(rect_size);
 
-    texture_rect.setPosition(pos);
+    texture_rect.setPosition({pos.x, pos.y});
     texture_rect.setTexture (&texture.sf_texture);
 
     rt.draw(texture_rect);
@@ -117,5 +126,5 @@ void RenderTarget::display(sf::RenderWindow& window)
 
 void RenderTarget::clear(const Color clear_color)
 {
-    rt.clear(clear_color);
+    rt.clear({clear_color.r, clear_color.g, clear_color.b, clear_color.a});
 }

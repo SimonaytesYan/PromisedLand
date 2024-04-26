@@ -1,6 +1,7 @@
 #include "CellInterlayer.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
 #include "../Graphics/Widget/Window.hpp"
+#include "../Events/Events.hpp"
 
 void CellInterlayer::pushToView(const EventPtr event)
 {

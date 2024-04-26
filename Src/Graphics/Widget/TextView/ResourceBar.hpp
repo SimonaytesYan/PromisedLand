@@ -3,6 +3,7 @@
 #include "../Widget.hpp"
 #include "../../../GameLogic/Resources.hpp"
 #include "TextView.hpp"
+#include "../../../Events/Events.hpp"
 
 class ResourceBar : public Widget
 {
@@ -13,18 +14,20 @@ public:
         water_view       ({width / text_view_cnt + 50,     y_start}),
         wood_view        ({width / text_view_cnt * 2 + 50, y_start}),
         population_view  ({width / text_view_cnt * 3 + 50, y_start}),
-        free_pop_view    ({width / text_view_cnt * 4 + 50, y_start})
+        free_pop_view    ({width / text_view_cnt * 4 + 50, y_start}),
+        stone_view       ({width / text_view_cnt * 5 + 50, y_start})
     {
         updateValues(start_res);
     }
 
-    void draw(RenderTarget& render_target) override
+    void draw(RenderTargetI& render_target) override
     {
         food_view      .draw(render_target);
         water_view     .draw(render_target);
         wood_view      .draw(render_target);
         population_view.draw(render_target);
         free_pop_view  .draw(render_target);
+        stone_view     .draw(render_target);
     }
 
     void push(const EventPtr event) override
@@ -53,14 +56,16 @@ public:
         wood_view      .setContent(std::to_string(resources.wood));
         population_view.setContent(std::to_string(resources.population));
         free_pop_view  .setContent(std::to_string(resources.free_population));
+        stone_view     .setContent(std::to_string(resources.stone));
     }
 
 private:
-    const int text_view_cnt = 5;
+    const int text_view_cnt = 6;
 private:
     TextView food_view;
     TextView water_view;
     TextView wood_view;
     TextView population_view;
     TextView free_pop_view;
+    TextView stone_view;
 };

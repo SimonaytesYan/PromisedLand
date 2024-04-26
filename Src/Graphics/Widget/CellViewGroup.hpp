@@ -1,23 +1,27 @@
 #pragma once
 
-#include "Widget.hpp"
-#include "../CellView/CellView.hpp"
-#include "../../Interlayers/CellInterlayer.hpp"
+#include <vector>
 
-class CellViewGroup : public Widget
+#include "../../../Standart/Graphics/CellView/CellViewGroupI.hpp"
+
+class CellInterlayer;
+class CellView;
+
+class CellViewGroup : public CellViewGroupI
 {
     friend CellInterlayer;
+
 public:
     CellViewGroup(const Point position)
-    : Widget(position)
+    : CellViewGroupI (position)
     { }
 
     void push(const EventPtr event) override;
-    void pushToLogic(const EventPtr event);
-    void draw(RenderTarget& rt) override;
+    virtual void pushToLogic(const EventPtr event);
+    void draw(RenderTargetI& rt) override;
     
-    void setCellInterlayer(CellInterlayer* _cell_interlayer)
-    { cell_interlayer = _cell_interlayer; }
+    void setCellInterlayer(CellInterlayerI* _cell_interlayer) override
+    { cell_interlayer = reinterpret_cast<CellInterlayer*>(_cell_interlayer); }
 
     ~CellViewGroup()
     {
@@ -28,10 +32,10 @@ public:
 protected:
     // Put here pointers, created by new.
     // Here you transfer ownership of cell to CellViewGroup
-    void addCell(CellView* cell_view);
-    void addCell(const FieldType field_type, const Point pos);
+    void addCell(CellView* cell_view) override;
+    void addCell(const FieldType field_type, const Point pos) override;
 
-    void deleteDeadCells();
+    void deleteDeadCells() override;
 
     std::vector<CellView*> cell_views;   // CellViewGroup own it
     CellInterlayer*        cell_interlayer;

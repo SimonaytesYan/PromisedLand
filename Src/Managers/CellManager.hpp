@@ -3,8 +3,6 @@
 #include <vector>
 
 #include "../GameLogic/Tiles/Cell.hpp"
-#include "../GameLogic/Tiles/CellCreator.hpp"
-#include "../Graphics/CellView/CellViewCreator.hpp"
 #include "ResourceManager.hpp"
 #include "../Utils/Utils.hpp"
 
@@ -19,14 +17,14 @@ public:
       : cells           (),
         res_manager     (nullptr),
         cell_interlayer (_cell_interlayer),
-        cell_type       (FieldType::Error) 
+        cell_type       () 
     {}
 
     explicit CellManager(ResourceManager* _res_manager = nullptr, CellInterlayer* _cell_interlayer = nullptr)
       : cells           (),
         res_manager     (_res_manager),
         cell_interlayer (_cell_interlayer),
-        cell_type       (FieldType::Error) 
+        cell_type       () 
     {}
 
     // Non-copyable
@@ -64,9 +62,9 @@ public:
 
     void deleteCell(const size_t index)
     {
-        if (cells[index]->getFieldType() == FieldType::House)
+        if (cells[index]->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
         {
-            House* house = static_cast<House*>(cells[index]);
+            Building* house = static_cast<Building*>(cells[index]);
             res_manager->onCitizenLeave(house->getDestroyIncome().population * -1);
         }
 

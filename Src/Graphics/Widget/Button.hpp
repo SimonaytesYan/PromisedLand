@@ -2,8 +2,10 @@
 
 #include <functional>
 
+#include "../../Events/Events.hpp"
 #include "Widget.hpp"
 #include "../../Utils/Functor.hpp"
+#include "../../Utils/RenderTarget.hpp"
 
 class Button : public Widget
 {
@@ -46,7 +48,7 @@ public:
     }
 
 
-    void draw(RenderTarget& render_target)
+    void draw(RenderTargetI& render_target)
     {
         render_target.drawTexture(pos, texture);
     }

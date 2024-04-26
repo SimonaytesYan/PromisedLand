@@ -26,7 +26,7 @@ public:
             val->push(event);
     }
 
-    void draw(RenderTarget& rt) override
+    void draw(RenderTargetI& rt) override
     {
         auto begin_iterator = children.begin() - 1;
         auto end_iterator   = children.end()   - 1;
