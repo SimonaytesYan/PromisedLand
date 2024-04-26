@@ -10,7 +10,7 @@ Resources WastelandCell::getAppearIncome() const
   return kAppearIncome;
 }
 
-Resources WastelandCell::getTickIncome() const
+Resources WastelandCell::getTickIncome()
 {
   return kTickIncome;
 }

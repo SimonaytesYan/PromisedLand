@@ -5,7 +5,7 @@ SFML_FLAGS    = -lsfml-graphics -lsfml-window -lsfml-system
 COMPILER      = g++
 LIB_BUILDER   = gcc
 
-NAME = Wasteland
+NAME = House
 LIB_PATH = ../PluginObjects/
 
 SOURCES = "Forest" "House" "Island" "Mine" "Sawmill" "Water" "Well" "Windmill" "Wasteland"

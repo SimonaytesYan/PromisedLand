@@ -10,7 +10,7 @@ Resources WindmillCell::getAppearIncome() const
   return kAppearIncome;
 }
 
-Resources WindmillCell::getTickIncome() const
+Resources WindmillCell::getTickIncome()
 {
   return kTickIncome;
 }

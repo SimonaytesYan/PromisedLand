@@ -36,6 +36,25 @@ public:
 
     void onTick()
     {
+        // for (const auto house : houses)
+        // {
+        //     Resources house_res = house->getTickIncome();
+        //     // user_res.free_population += house_res.free_population;
+        //     // user_res.population      += house_res.population;
+
+        //     if (house_res.population > 0)
+        //     {
+        //         onNewCitizenArrival(house_res.population);
+        //         user_res += house_res;
+        //     }
+        //     else if (house_res.population < 0)
+        //     {
+        //         onCitizenLeave(house_res.population * -1);
+        //         // user_res += house_res;
+        //         // std::cout << house_res << '\n';
+        //     }
+        // }
+
         user_res += tick_income;
         informResourceBar();
     }
@@ -144,11 +163,21 @@ private:
         tick_income += building_tick_income;
 
         buildings.push_back({building_cell, building_tick_income});
+        tryAddHouse(building_cell);
+    }
+
+    void tryAddHouse(Building* building)
+    {
+        if (building->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
+        {
+            houses.push_back(building);
+        }
     }
 
     void calculateOnDeleteResources(const Building* delete_building)
     {
         user_res                 += delete_building->getDestroyIncome();
+        printf("DELETE: %ld %ld\n", user_res.population, delete_building->getDestroyIncome().population);
         user_res.free_population += delete_building->getCurWorkers();
 
         auto building_it = findBuildingByPtr(delete_building);
@@ -156,6 +185,25 @@ private:
         tick_income -= building_it->tick_income;
 
         buildings.erase(building_it);
+        tryDeleteHouse(delete_building);
+    }
+
+    void tryDeleteHouse(const Building* delete_building)
+    {
+        if (delete_building->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
+        {
+                  auto it     = houses.begin();
+            const auto end_it = houses.end();
+
+            for (; it != end_it; ++it)
+            {
+                if (*it == delete_building)
+                {
+                    houses.erase(it);
+                    break;
+                }
+            }
+        }
     }
 
     void recalcNewCitizenResources(BuildingProperties& building, long int& available_pop)
@@ -190,7 +238,6 @@ private:
         long int future_workers = cur_workers - left_workers;
 
         tick_income -= building.tick_income;
-
 
         double efficiency_coeff = static_cast<double>(future_workers) / static_cast<double>(max_workers);
         building.tick_income    = building.ptr->getTickIncome() * efficiency_coeff;
@@ -228,4 +275,5 @@ private:
     // that are needed for building
     // default: Resources()
     std::vector<BuildingProperties> buildings;
+    std::vector<Building*>          houses;
 };

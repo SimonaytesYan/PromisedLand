@@ -10,7 +10,7 @@ Resources MineCell::getAppearIncome() const
   return kAppearIncome;
 }
 
-Resources MineCell::getTickIncome() const
+Resources MineCell::getTickIncome()
 {
   return kTickIncome;
 }

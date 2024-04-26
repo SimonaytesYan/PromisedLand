@@ -10,7 +10,7 @@ Resources SawmillCell::getAppearIncome() const
   return kAppearIncome;
 }
 
-Resources SawmillCell::getTickIncome() const
+Resources SawmillCell::getTickIncome()
 {
   return kTickIncome;
 }

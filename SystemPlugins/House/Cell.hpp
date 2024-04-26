@@ -13,7 +13,14 @@ public:
     explicit HouseCell();
 
     Resources getAppearIncome() const override;
-    Resources getTickIncome() const override;
+    Resources getTickIncome() override;
     Resources getDestroyIncome() const override;
     Bitmask   getBuildMask() const override;
+
+private:
+    static const unsigned kBirthTicks  = 2;
+    static const unsigned kRandomCoeff = 1;
+
+    long int tick_count;
+    long int cur_citizens;
 };
