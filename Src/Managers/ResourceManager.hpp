@@ -68,11 +68,10 @@ public:
 
     void onCitizenLeave(long int citizen_cnt)
     {
-        for (auto building : buildings)
-        {
-            recalcLeaveCitizenResources(building, citizen_cnt);
-            if (citizen_cnt == 0) break;
-        }
+        long int start_citizen = citizen_cnt;
+        killCitizen(citizen_cnt);
+
+        user_res.free_population += (start_citizen - citizen_cnt);
 
         informResourceBar();
     }
@@ -192,7 +191,7 @@ private:
 
     void onNewCitizen(long int& citizen_cnt)
     {
-        for (auto building : buildings)
+        for (auto& building : buildings)
         {
             recalcNewCitizenResources(building, citizen_cnt);
             if (citizen_cnt == 0) break;
@@ -207,7 +206,6 @@ private:
         long int cur_workers = building.ptr->getCurWorkers();
         long int new_workers = std::min(available_pop, max_workers - cur_workers);
         if (new_workers == 0) return;
-        printf("NEW WORKERS: %ld\n", new_workers);
         
         available_pop -= new_workers;
         cur_workers   += new_workers;
@@ -219,13 +217,36 @@ private:
         building.tick_income = building.ptr->getTickIncome() * effectiveness_coeff;
 
         tick_income += building.tick_income;
-        std::cout << "Effectiveness coeff: " << effectiveness_coeff << '\n';
-        std::cout << "MANAGER:\n" << tick_income << '\n';
+    }
+
+    void killCitizen(long int& citizen_cnt)
+    {
+        for (auto& building : buildings)
+        {
+            recalcLeaveCitizenResources(building, citizen_cnt);
+            if (citizen_cnt == 0) break;
+        }
     }
 
     void recalcLeaveCitizenResources(BuildingProperties& building, long int& available_pop)
     {
-        
+        long int max_workers = building.ptr->getMaxWorkers();
+        if (max_workers == 0) return;
+
+        long int cur_workers    = building.ptr->getCurWorkers();
+        long int killed_workers = std::min(available_pop, cur_workers);
+        if (killed_workers == 0) return;
+
+        available_pop -= killed_workers;
+        cur_workers   -= killed_workers;
+        building.ptr->setCurWorkers(cur_workers);
+
+        tick_income -= building.tick_income;
+
+        double effectiveness_coeff = static_cast<double>(cur_workers) / static_cast<double>(max_workers);
+        building.tick_income = building.ptr->getTickIncome() * effectiveness_coeff;
+
+        tick_income += building.tick_income;
     }
 
     std::vector<BuildingProperties>::iterator findBuildingByPtr(const Building* building)
