@@ -98,13 +98,13 @@ private:
         Resources appear_res = building_cell->getAppearIncome();
         user_res += appear_res;
 
-        Resources building_tick_income = calculateTickResources(building_cell, building_cell->getTickIncome());
+        Resources building_tick_income = calculateBuildTickResources(building_cell, building_cell->getTickIncome());
 
         buildings.push_back({building_cell, building_tick_income});
         tryAddHouse(building_cell);
     }
 
-    Resources calculateTickResources(Building* building_cell, Resources default_tick)
+    Resources calculateBuildTickResources(Building* building_cell, Resources default_tick)
     {
         long max_workers = building_cell->getMaxWorkers();
         if (max_workers == 0) 
@@ -137,10 +137,22 @@ private:
 
     void calculateOnDeleteResources(const Building* delete_building)
     {
-        
+        Resources destroy_res = delete_building->getDestroyIncome();
+        user_res += destroy_res;
 
-        // buildings.erase(building_it);
+        auto building_it = findBuildingByPtr(delete_building);
+
+        tick_income -= building_it->tick_income;
+
+        calculateDeleteFreePopulation(delete_building);
+
+        buildings.erase(building_it);
         tryDeleteHouse(delete_building);
+    }
+
+    void calculateDeleteFreePopulation(const Building* delete_building)
+    {
+        user_res.free_population += delete_building->getCurWorkers();
     }
 
     void tryDeleteHouse(const Building* delete_building)
