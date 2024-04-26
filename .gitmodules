@@ -1,3 +1,6 @@
 [submodule "StlVector"]
 	path = StlVector
 	url = https://github.com/SimonaytesYan/StlVector
+[submodule "JitCompiler"]
+	path = JitCompiler
+	url = https://github.com/SimonaytesYan/BinaryTranslator
