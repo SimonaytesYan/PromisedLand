@@ -126,3 +126,17 @@ int main()
 	runGameCycle(window, main_rt, sprite);
 	CellKeeper::destroy();
 }
+
+void RunScript(const char* script_file)
+{
+	// Compile to virtual machine
+	char compile_command[] = "cd JitCompiler && make run_lang FILE=\"%s\"";
+	sprintf(compile_command, script_file);
+	system(compile_command);
+
+	// Jit compile + run
+	const char binary_file[] = "JitComiler"
+	#include "JitCompiler/Src/"
+	// Run
+
+}

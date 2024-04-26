@@ -36,7 +36,7 @@ $(OBJ)CellKeeper.o: $(SRC)CellLoader/CellKeeper.cpp
 # 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
 
 update_submodules:
-	git submodule update --recursive --remote
+	git submodule update --init --recursive --remote
 
 run:
 	./$(ELF_FILE)
