@@ -19,6 +19,12 @@ private:
         Resources tick_income;
     };
 
+    struct HouseProperties
+    {
+        Building* ptr;
+        long int  citizen;
+    };
+
 public:
     explicit ResourceManager(ResourceBarInterlayer& _res_bar_int)
       : user_res                (kStartResources),
@@ -52,11 +58,22 @@ public:
 
     void onNewCitizenArrival(long int citizen_cnt)
     {
+        long int start_citizen_cnt = citizen_cnt;
+        onNewCitizen(citizen_cnt);
+
+        user_res.free_population -= (start_citizen_cnt - citizen_cnt);
+
         informResourceBar();
     }
 
     void onCitizenLeave(long int citizen_cnt)
     {
+        for (auto building : buildings)
+        {
+            recalcLeaveCitizenResources(building, citizen_cnt);
+            if (citizen_cnt == 0) break;
+        }
+
         informResourceBar();
     }
 
@@ -101,7 +118,7 @@ private:
         Resources building_tick_income = calculateBuildTickResources(building_cell, building_cell->getTickIncome());
 
         buildings.push_back({building_cell, building_tick_income});
-        tryAddHouse(building_cell);
+        tryAddHouse(building_cell, appear_res.population);
     }
 
     Resources calculateBuildTickResources(Building* building_cell, Resources default_tick)
@@ -127,11 +144,11 @@ private:
         return building_tick_income;
     }
 
-    void tryAddHouse(Building* building)
+    void tryAddHouse(Building* building, long int citizen)
     {
         if (building->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
         {
-            houses.push_back(building);
+            houses.push_back({building, citizen});
         }
     }
 
@@ -164,7 +181,7 @@ private:
 
             for (; it != end_it; ++it)
             {
-                if (*it == delete_building)
+                if (it->ptr == delete_building)
                 {
                     houses.erase(it);
                     break;
@@ -173,9 +190,37 @@ private:
         }
     }
 
+    void onNewCitizen(long int& citizen_cnt)
+    {
+        for (auto building : buildings)
+        {
+            recalcNewCitizenResources(building, citizen_cnt);
+            if (citizen_cnt == 0) break;
+        }
+    }
+
     void recalcNewCitizenResources(BuildingProperties& building, long int& available_pop)
     {
+        long int max_workers = building.ptr->getMaxWorkers();
+        if (max_workers == 0) return;
+
+        long int cur_workers = building.ptr->getCurWorkers();
+        long int new_workers = std::min(available_pop, max_workers - cur_workers);
+        if (new_workers == 0) return;
+        printf("NEW WORKERS: %ld\n", new_workers);
         
+        available_pop -= new_workers;
+        cur_workers   += new_workers;
+        building.ptr->setCurWorkers(cur_workers);
+
+        tick_income -= building.tick_income;
+
+        double effectiveness_coeff = static_cast<double>(cur_workers) / static_cast<double>(max_workers);
+        building.tick_income = building.ptr->getTickIncome() * effectiveness_coeff;
+
+        tick_income += building.tick_income;
+        std::cout << "Effectiveness coeff: " << effectiveness_coeff << '\n';
+        std::cout << "MANAGER:\n" << tick_income << '\n';
     }
 
     void recalcLeaveCitizenResources(BuildingProperties& building, long int& available_pop)
@@ -208,5 +253,5 @@ private:
     // that are needed for building
     // default: Resources()
     std::vector<BuildingProperties> buildings;
-    std::vector<Building*>          houses;
+    std::vector<HouseProperties>    houses;
 };
