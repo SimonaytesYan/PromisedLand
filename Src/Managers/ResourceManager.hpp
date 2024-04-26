@@ -36,25 +36,6 @@ public:
 
     void onTick()
     {
-        // for (const auto house : houses)
-        // {
-        //     Resources house_res = house->getTickIncome();
-        //     // user_res.free_population += house_res.free_population;
-        //     // user_res.population      += house_res.population;
-
-        //     if (house_res.population > 0)
-        //     {
-        //         onNewCitizenArrival(house_res.population);
-        //         user_res += house_res;
-        //     }
-        //     else if (house_res.population < 0)
-        //     {
-        //         onCitizenLeave(house_res.population * -1);
-        //         // user_res += house_res;
-        //         // std::cout << house_res << '\n';
-        //     }
-        // }
-
         user_res += tick_income;
         informResourceBar();
     }
@@ -71,31 +52,11 @@ public:
 
     void onNewCitizenArrival(long int citizen_cnt)
     {
-        for (auto& building : buildings)
-        {
-            recalcNewCitizenResources(building, citizen_cnt);
-
-            if (citizen_cnt == 0)
-            {
-                break;
-            }
-        }
-
         informResourceBar();
     }
 
     void onCitizenLeave(long int citizen_cnt)
     {
-        for (auto& building : buildings)
-        {
-            recalcLeaveCitizenResources(building, citizen_cnt);
-
-            if (citizen_cnt == 0)
-            {
-                break;
-            }
-        }
-
         informResourceBar();
     }
 
@@ -135,35 +96,35 @@ private:
     void calculateOnBuildResources(Building* building_cell)
     {
         Resources appear_res = building_cell->getAppearIncome();
+        user_res += appear_res;
 
-        double    efficiency_coeff = 1.0;
-        long int  max_workers      = building_cell->getMaxWorkers();
-
-        user_res                 += appear_res;
-        user_res.free_population -= max_workers;
-
-        if (max_workers > 0)
-        {
-            if (user_res.free_population < 0)
-            {
-                long int worker_overdraft = user_res.free_population * -1;
-                user_res.free_population  = 0;
-
-                building_cell->setCurWorkers(max_workers - worker_overdraft);
-                efficiency_coeff = static_cast<double>(building_cell->getCurWorkers()) / static_cast<double>(max_workers);
-            }
-            else 
-            {
-                // all working slots are occupied
-                building_cell->setCurWorkers(max_workers);
-            }
-        }
-
-        Resources building_tick_income = building_cell->getTickIncome() * efficiency_coeff;
-        tick_income += building_tick_income;
+        Resources building_tick_income = calculateTickResources(building_cell, building_cell->getTickIncome());
 
         buildings.push_back({building_cell, building_tick_income});
         tryAddHouse(building_cell);
+    }
+
+    Resources calculateTickResources(Building* building_cell, Resources default_tick)
+    {
+        long max_workers = building_cell->getMaxWorkers();
+        if (max_workers == 0) 
+        {
+            tick_income += default_tick;
+            return default_tick; 
+        }
+
+        long available_workers = user_res.free_population;
+        long cur_workers       = std::min(available_workers, building_cell->getMaxWorkers());
+
+        user_res.free_population -= cur_workers;
+        building_cell->setCurWorkers(cur_workers);
+
+        double effectiveness_coeff     = static_cast<double>(cur_workers) / static_cast<double>(max_workers);
+        Resources building_tick_income = default_tick * effectiveness_coeff;
+
+        tick_income += building_tick_income;
+
+        return building_tick_income;
     }
 
     void tryAddHouse(Building* building)
@@ -176,15 +137,9 @@ private:
 
     void calculateOnDeleteResources(const Building* delete_building)
     {
-        user_res                 += delete_building->getDestroyIncome();
-        printf("DELETE: %ld %ld\n", user_res.population, delete_building->getDestroyIncome().population);
-        user_res.free_population += delete_building->getCurWorkers();
+        
 
-        auto building_it = findBuildingByPtr(delete_building);
-
-        tick_income -= building_it->tick_income;
-
-        buildings.erase(building_it);
+        // buildings.erase(building_it);
         tryDeleteHouse(delete_building);
     }
 
@@ -208,46 +163,12 @@ private:
 
     void recalcNewCitizenResources(BuildingProperties& building, long int& available_pop)
     {
-        long int max_workers    = building.ptr->getMaxWorkers();
-        if (max_workers == 0) return;
-
-        long int cur_workers    = building.ptr->getCurWorkers();
-        long int new_workers    = std::min(available_pop, max_workers - cur_workers);
-        long int future_workers = cur_workers + new_workers;
-
-        tick_income -= building.tick_income;
-
-        double efficiency_coeff = static_cast<double>(future_workers) / static_cast<double>(max_workers);
-        building.tick_income    = building.ptr->getTickIncome() * efficiency_coeff;
-
-        tick_income += building.tick_income;
-
-        building.ptr->setCurWorkers(future_workers);
-
-        available_pop            -= new_workers;
-        user_res.free_population -= new_workers;
+        
     }
 
     void recalcLeaveCitizenResources(BuildingProperties& building, long int& available_pop)
     {
-        long int max_workers    = building.ptr->getMaxWorkers();
-        if (max_workers == 0) return;
         
-        long int cur_workers    = building.ptr->getCurWorkers();
-        long int left_workers   = std::min(available_pop, cur_workers);
-        long int future_workers = cur_workers - left_workers;
-
-        tick_income -= building.tick_income;
-
-        double efficiency_coeff = static_cast<double>(future_workers) / static_cast<double>(max_workers);
-        building.tick_income    = building.ptr->getTickIncome() * efficiency_coeff;
-
-        tick_income += building.tick_income;
-
-        building.ptr->setCurWorkers(future_workers);
-
-        available_pop            -= left_workers;
-        user_res.free_population += left_workers;
     }
 
     std::vector<BuildingProperties>::iterator findBuildingByPtr(const Building* building)
