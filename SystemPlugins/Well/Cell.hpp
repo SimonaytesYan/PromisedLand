@@ -13,7 +13,7 @@ public:
     explicit WellCell();
 
     Resources getAppearIncome() const override;
-    Resources getTickIncome() const override;
+    Resources getTickIncome() override;
     Resources getDestroyIncome() const override;
     Bitmask   getBuildMask() const override;
 };

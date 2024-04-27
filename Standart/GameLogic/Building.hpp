@@ -19,7 +19,7 @@ public:
     virtual Resources getAppearIncome() const
     { return kZeroResources; }
 
-    virtual Resources getTickIncome() const
+    virtual Resources getTickIncome()
     { return kZeroResources; }
 
     virtual Resources getDestroyIncome() const

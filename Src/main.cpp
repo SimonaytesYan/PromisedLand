@@ -112,8 +112,9 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& backgr
 
 int main()
 {
-	loadPlugins();
 	srand(time(nullptr));
+
+	loadPlugins();
 
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 	RenderTarget main_rt(Point(window.getSize().x, window.getSize().y));

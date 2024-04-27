@@ -10,7 +10,7 @@ Resources WellCell::getAppearIncome() const
   return kAppearIncome;
 }
 
-Resources WellCell::getTickIncome() const
+Resources WellCell::getTickIncome()
 {
   return kTickIncome;
 }
