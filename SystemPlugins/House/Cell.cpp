@@ -19,11 +19,11 @@ Resources HouseCell::getTickIncome()
   if (cur_citizens == 0) return kTickIncome;
 
   Resources tick_income = kTickIncome;
-  printf("TICK Plugin: %u %d\n", cur_citizens, tick_count);
+
   if (tick_count == kBirthTicks)
   {
     int rand_coeff = rand() % kRandomCoeff;
-    printf("TICK PLUGIN SUCCESS: %d\n", rand_coeff);
+
     if (rand_coeff == 0)
     {
       tick_income.population      = -1;
@@ -43,7 +43,7 @@ Resources HouseCell::getTickIncome()
   {
     tick_count++;
   }
-  std::cout << tick_income << '\n';
+
   return tick_income;
 }
 

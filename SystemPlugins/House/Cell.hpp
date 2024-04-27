@@ -18,8 +18,8 @@ public:
     Bitmask   getBuildMask() const override;
 
 private:
-    static const unsigned kBirthTicks  = 2;
-    static const unsigned kRandomCoeff = 1;
+    static const unsigned kBirthTicks  = 1;
+    static const unsigned kRandomCoeff = 2;
 
     long int tick_count;
     long int cur_citizens;

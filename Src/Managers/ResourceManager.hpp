@@ -42,6 +42,42 @@ public:
 
     void onTick()
     {
+        for (const auto house : houses)
+        {
+            Resources house_res = house.ptr->getTickIncome();
+
+            if (house_res.population > 0)
+            {
+                long int pop = house_res.population;
+                onNewCitizen(pop);
+
+                user_res.population      += house_res.population;
+                user_res.free_population += pop;
+            }
+            else if (house_res.population < 0)
+            {
+                long int pop = house_res.population * -1;
+
+                if (user_res.free_population >= pop)
+                {
+                    user_res.population      -= pop;
+                    user_res.free_population -= pop;
+                }
+                else
+                {
+                    killCitizen(pop);
+
+                    user_res.population      += house_res.population;
+                    user_res.free_population -= ((house_res.population * -1) - pop);
+                    printf("KILL RESMAN: %d\n", ((house_res.population * -1) - pop));
+                    if (user_res.free_population < 0)
+                    {
+                        user_res.free_population = 0;
+                    }
+                }
+            }
+        }
+
         user_res += tick_income;
         informResourceBar();
     }
