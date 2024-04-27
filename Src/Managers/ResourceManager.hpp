@@ -22,7 +22,9 @@ private:
     struct HouseProperties
     {
         Building* ptr;
-        long int  citizen;
+        long int  default_citizen;
+        Resources current_tick_income;
+        Resources default_tick_income;
     };
 
 public:
@@ -42,7 +44,7 @@ public:
 
     void onTick()
     {
-        for (const auto house : houses)
+        for (auto house : houses)
         {
             Resources house_res = house.ptr->getTickIncome();
 
@@ -53,6 +55,9 @@ public:
 
                 user_res.population      += house_res.population;
                 user_res.free_population += pop;
+
+                house.ptr->setCurWorkers(house.ptr->getCurWorkers() + house_res.population);
+                recalculateHouseIncome(house);
             }
             else if (house_res.population < 0)
             {
@@ -69,12 +74,15 @@ public:
 
                     user_res.population      += house_res.population;
                     user_res.free_population -= ((house_res.population * -1) - pop);
-                    printf("KILL RESMAN: %d\n", ((house_res.population * -1) - pop));
+
                     if (user_res.free_population < 0)
                     {
                         user_res.free_population = 0;
                     }
                 }
+
+                house.ptr->setCurWorkers(house.ptr->getCurWorkers() + house_res.population);
+                recalculateHouseIncome(house);
             }
         }
 
@@ -153,7 +161,7 @@ private:
         Resources building_tick_income = calculateBuildTickResources(building_cell, building_cell->getTickIncome());
 
         buildings.push_back({building_cell, building_tick_income});
-        tryAddHouse(building_cell, appear_res.population);
+        tryAddHouse(building_cell, appear_res.population, building_tick_income);
     }
 
     Resources calculateBuildTickResources(Building* building_cell, Resources default_tick)
@@ -179,11 +187,12 @@ private:
         return building_tick_income;
     }
 
-    void tryAddHouse(Building* building, long int citizen)
+    void tryAddHouse(Building* building, long int citizen, Resources default_tick)
     {
         if (building->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
         {
-            houses.push_back({building, citizen});
+            houses.push_back({building, citizen, default_tick, default_tick});
+            (houses.end() - 1)->ptr->setCurWorkers(citizen);
         }
     }
 
@@ -283,6 +292,16 @@ private:
         building.tick_income = building.ptr->getTickIncome() * effectiveness_coeff;
 
         tick_income += building.tick_income;
+    }
+
+    void recalculateHouseIncome(HouseProperties& house)
+    {
+        tick_income -= house.current_tick_income;
+
+        double effectiveness_coeff = static_cast<double>(house.ptr->getCurWorkers()) / static_cast<double>(house.default_citizen);
+        house.current_tick_income  = house.default_tick_income * effectiveness_coeff;
+
+        tick_income += house.current_tick_income;
     }
 
     std::vector<BuildingProperties>::iterator findBuildingByPtr(const Building* building)

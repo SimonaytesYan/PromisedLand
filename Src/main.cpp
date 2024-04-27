@@ -93,11 +93,11 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& backgr
 			}
 		}
 
-		// if (res_manager.hasLost())
-		// {
-		// 	printf("You have lost!\n");
-		// 	window.close();
-		// }
+		if (res_manager.hasLost())
+		{
+			printf("You have lost!\n");
+			window.close();
+		}
 
 		rt.clear();
 		window.clear();

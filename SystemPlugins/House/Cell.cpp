@@ -53,7 +53,6 @@ Resources HouseCell::getDestroyIncome() const
 
   destroy_res.population      = -1 * cur_citizens;
   destroy_res.free_population = -1 * cur_citizens;
-  printf("KILL: %ld\n", destroy_res.population);
 
   return destroy_res;
 }
