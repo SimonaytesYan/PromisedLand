@@ -205,15 +205,8 @@ private:
 
         tick_income -= building_it->tick_income;
 
-        calculateDeleteFreePopulation(delete_building);
-
         buildings.erase(building_it);
         tryDeleteHouse(delete_building);
-    }
-
-    void calculateDeleteFreePopulation(const Building* delete_building)
-    {
-        user_res.free_population += delete_building->getCurWorkers();
     }
 
     void tryDeleteHouse(const Building* delete_building)
