@@ -34,7 +34,7 @@ $(OBJ)CellKeeper.o: create_folders $(SRC)CellLoader/CellKeeper.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)CellLoader/CellKeeper.cpp -o $(OBJ)CellKeeper.o
 
 $(OBJ)MapSaveLoad.o: create_folders $(SRC)Map/MapSaveLoad.cpp
-	cd JitCompiler && make && cd ..
+	cd JitCompiler && make
 	echo "JitCompiler + make success"
 	$(COMPILER) -c $(FLAGS) $(SRC)Map/MapSaveLoad.cpp -o $(OBJ)MapSaveLoad.o
 

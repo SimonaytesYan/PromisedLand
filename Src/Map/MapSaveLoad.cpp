@@ -21,7 +21,11 @@ void RunScript(const char* script_file)
 	
 	FILE* binary_fp = fopen(binary_file, "-r");
 	MyHeader binary_header = {};
-    CheckMyHeaderFromFile(&binary_header, binary_fp);
+    if (CheckMyHeaderFromFile(&binary_header, binary_fp) != 0)
+	{
+		printf("Not correct file ");
+		return;
+	}
 
 	TranslateAndRun(binary_file, file_size, binary_header);	
 }
