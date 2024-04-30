@@ -1,0 +1,17 @@
+var a;
+var b;
+
+function f(c)
+begin
+    if c > 0 then
+    begin
+        return c * call f(c - 1);
+    end
+    return 1;
+end
+
+begin
+    a = 10;
+    a = call f(a);
+    out a;
+end

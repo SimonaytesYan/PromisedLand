@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Constants.hpp"
-#include "Interlayers/CellInterlayer.hpp"
+#include "../Constants.hpp"
+#include "../Interlayers/CellInterlayer.hpp"
 
 const double kDfsRiverCoef               = 0.9;
 const double kIslandsFrequencyOccurrence = 0.1;

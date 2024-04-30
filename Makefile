@@ -9,28 +9,34 @@ BIN = Bin/
 OBJ = Obj/
 
 ELF_FILE = $(BIN)run
-OBJECTS  = $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellViewGroup.o $(OBJ)CellKeeper.o
+OBJECTS  = $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellViewGroup.o $(OBJ)CellKeeper.o $(OBJ)MapSaveLoad.o
+JIT_COMPILER_OBJ = JitCompiler/Obj/Stdlib.o JitCompiler/Obj/Translation.o JitCompiler/Obj/CommandSystem.o
 
 compile: create_folders $(OBJECTS)
-	$(COMPILER) $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJECTS) -o $(ELF_FILE)
+	$(COMPILER) $(FLAGS) $(SFML_FLAGS) $(SRC)main.cpp $(OBJECTS) $(JIT_COMPILER_OBJ) -o $(ELF_FILE)
 
-$(OBJ)RenderTarget.o: $(SRC)Utils/RenderTarget.cpp
+$(OBJ)RenderTarget.o: create_folders $(SRC)Utils/RenderTarget.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Utils/RenderTarget.cpp $(SFML_FLAGS) -o $(OBJ)RenderTarget.o
 
-$(OBJ)Utils.o: $(SRC)Utils/Utils.cpp
+$(OBJ)Utils.o: create_folders $(SRC)Utils/Utils.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Utils/Utils.cpp -o $(OBJ)Utils.o
 
-$(OBJ)CellInterlayer.o: $(SRC)Interlayers/CellInterlayer.cpp
+$(OBJ)CellInterlayer.o: create_folders $(SRC)Interlayers/CellInterlayer.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Interlayers/CellInterlayer.cpp -o $(OBJ)CellInterlayer.o
 
-$(OBJ)CellViewGroup.o: $(SRC)Graphics/Widget/CellViewGroup.cpp
+$(OBJ)CellViewGroup.o: create_folders $(SRC)Graphics/Widget/CellViewGroup.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Graphics/Widget/CellViewGroup.cpp -o $(OBJ)CellViewGroup.o
 
-$(OBJ)CellManager.o: $(SRC)Managers/CellManager.cpp
+$(OBJ)CellManager.o: create_folders $(SRC)Managers/CellManager.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)Managers/CellManager.cpp -o $(OBJ)CellManager.o
 	
-$(OBJ)CellKeeper.o: $(SRC)CellLoader/CellKeeper.cpp
+$(OBJ)CellKeeper.o: create_folders $(SRC)CellLoader/CellKeeper.cpp
 	$(COMPILER) -c $(FLAGS) $(SRC)CellLoader/CellKeeper.cpp -o $(OBJ)CellKeeper.o
+
+$(OBJ)MapSaveLoad.o: create_folders $(SRC)Map/MapSaveLoad.cpp
+	cd JitCompiler && make && cd ..
+	echo "JitCompiler + make success"
+	$(COMPILER) -c $(FLAGS) $(SRC)Map/MapSaveLoad.cpp -o $(OBJ)MapSaveLoad.o
 
 # $(OBJ)Window.o: $(SRC)Window.cpp
 # 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
@@ -46,5 +52,5 @@ create_folders:
 	-mkdir $(OBJ)
 
 clean:
-	rm -r $(BIN)
-	rm -r $(OBJ)
+	-rm -r $(BIN)
+	-rm -r $(OBJ)
