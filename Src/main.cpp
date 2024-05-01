@@ -115,7 +115,7 @@ int main()
 {
 	RunScript("Fact.sym");
 
-	while(true);
+	return -1;
 
 	loadPlugins();
 	srand(time(nullptr));
