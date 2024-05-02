@@ -1,3 +1,3 @@
 #pragma once
 
-void RunScript(const char* script_file);
+std::vector<std::vector<FieldType>> LoadMap(const char* file);

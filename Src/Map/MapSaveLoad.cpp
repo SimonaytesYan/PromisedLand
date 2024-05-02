@@ -6,6 +6,33 @@
 const size_t kMaxCompileCommandSize = 255;
 const char* command_prototype = "cd JitCompiler && make run_lang FILE=\"../%s\"";
 
+#include "../Constants.hpp"
+#include "../Interlayers/CellInterlayer.hpp"
+
+const size_t kCellFieldSize = 64;
+
+void RunScript(const char* script_file);
+
+std::vector<std::vector<FieldType>> field;
+
+std::vector<std::vector<FieldType>> LoadMap(const char* file)
+{
+	field = std::vector<std::vector<FieldType>>(kCellFieldSize, std::vector<FieldType>(kCellFieldSize, 0));
+	RunScript(file);
+
+	return field;
+}
+
+void BuildCellImplementation(int field_type, int x, int y)
+{
+	field[x][y] = field_type;
+}
+
+int GetCellImplementation(int x, int y)
+{
+	return field[x][y];
+}
+
 void RunScript(const char* script_file)
 {
 	// Compile script into virtual machine executable file
@@ -27,5 +54,5 @@ void RunScript(const char* script_file)
 		return;
 	}
 
-	TranslateAndRun(binary_file, file_size, binary_header);	
+	TranslateAndRun(binary_file, file_size, binary_header, BuildCellImplementation, GetCellImplementation);	
 }
