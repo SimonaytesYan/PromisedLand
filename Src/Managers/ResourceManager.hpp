@@ -81,6 +81,7 @@ public:
                 user_res.free_population += pop;
 
                 house.ptr->setCurWorkers(house.ptr->getCurWorkers() + house_res.population);
+                house.cur_workers = house.max_workers = house.ptr->getCurWorkers();
                 recalculateHouseIncome(house);
             }
             else if (house_res.population < 0)
@@ -106,6 +107,7 @@ public:
                 }
 
                 house.ptr->setCurWorkers(house.ptr->getCurWorkers() + house_res.population);
+                house.cur_workers = house.max_workers = house.ptr->getCurWorkers();
                 recalculateHouseIncome(house);
             }
         }
@@ -196,7 +198,7 @@ private:
 
         for (auto building : buildings)
         {
-            CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
+            CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.ptr->getCurWorkers(), building.max_workers);
             cell_interlayer->pushToView(coeff_changed_event);
         }
     }
