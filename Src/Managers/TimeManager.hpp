@@ -4,8 +4,6 @@ class TimeManager
 {
 public:
 
-
-
 private:
-    
+
 };
