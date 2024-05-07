@@ -11,6 +11,8 @@
 
 class ResourceManager
 {
+    static ResourceManager* current_manager;
+
 private:
 
     struct BuildingProperties
@@ -32,7 +34,9 @@ public:
       : user_res                (kStartResources),
         tick_income             (),
         resource_bar_interlayer (_res_bar_int)
-    {}
+    {
+        ResourceManager::current_manager = this;
+    }
 
     // Non-copyable
     ResourceManager(const ResourceManager& other)           = delete;
@@ -135,9 +139,9 @@ public:
         return user_res;
     }
 
-    bool hasLost() const
+    static bool hasLost()
     {
-        return user_res < kZeroResources;
+        return (current_manager != nullptr) && current_manager->getUserRes() < kZeroResources;
     }
 
     bool tryBuild(FieldType building_type)
