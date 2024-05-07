@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Constants.hpp"
-#include "Interlayers/CellInterlayer.hpp"
+#include "MapSaveLoad.hpp"
+#include "../Constants.hpp"
+#include "../Interlayers/CellInterlayer.hpp"
 
 const double kDfsRiverCoef               = 0.9;
 const double kIslandsFrequencyOccurrence = 0.1;
@@ -31,12 +32,13 @@ void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
 	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
 	const int y_cell_cnt = (window_size.y - kControlPanelH) / kFieldSize;
 
-    std::vector<std::vector<FieldType>> field(x_cell_cnt + 1, 
-                                              std::vector<FieldType>(y_cell_cnt + 1, 
-                                                                     static_cast<size_t>(ReservedTypes::GRASS)));
-
-    generateRiver(field);
-    generateForest(field);
+    // std::vector<std::vector<FieldType>> field(x_cell_cnt + 1, 
+    //                                           std::vector<FieldType>(y_cell_cnt + 1, 
+    //                                                                  static_cast<size_t>(ReservedTypes::GRASS)));
+    
+    std::vector<std::vector<FieldType>> field = LoadMap("Test.sym");
+    // generateRiver(field);
+    // generateForest(field);
 
 	for (int i = 0; i <= x_cell_cnt; ++i) 
 	{

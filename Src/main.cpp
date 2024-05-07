@@ -11,7 +11,8 @@
 #include "Constants.hpp"
 #include "Utils/RenderTarget.hpp"
 #include "Graphics/Widget/Window.hpp"
-#include "MapGenerating.hpp"
+#include "Map/MapGenerating.hpp"
+#include "Map/MapSaveLoad.hpp"
 #include "../Standart/Plugin.hpp"
 
 typedef CellInterface* (*interfaceFun)();
