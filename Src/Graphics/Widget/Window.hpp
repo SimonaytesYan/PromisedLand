@@ -18,8 +18,13 @@ public:
     Window          (const Window& other) = delete;
     Window operator=(const Window& other) = delete;
 
-    // Non-movable
-    Window          (Window&& other) = delete;
+    // Movable
+    Window (Window&& other) : 
+    Widget     (other.pos),
+    children   (std::move(other.children)),
+    background (std::move(other.background))
+    { }
+
     Window operator=(Window&& other) = delete;
 
     void push(const EventPtr event) override
