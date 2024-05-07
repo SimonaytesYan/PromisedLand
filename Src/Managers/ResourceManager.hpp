@@ -263,6 +263,13 @@ private:
 
         tick_income -= building_it->tick_income;
 
+        long int free_pop = delete_building->getCurWorkers();
+        if (free_pop > 0 && delete_building->getMaxWorkers() > 0)
+        {
+            user_res.free_population += free_pop;
+            onNewCitizen(free_pop);
+        }
+
         buildings.erase(building_it);
         tryDeleteHouse(delete_building);
     }
