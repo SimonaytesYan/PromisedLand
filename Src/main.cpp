@@ -30,9 +30,9 @@ void loadPlugins()
 	}
 }
 
-void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& background) 
+void runGameCycle(sf::RenderWindow& window, RenderTarget& rt) 
 {
-	Window game_window({0, 0});
+	Window game_window({0, 0}, "Assets/Background.png");
 
 	ResourceBar* res_bar = new ResourceBar(window.getSize().x, window.getSize().y - kControlPanelH / 2, kStartResources);
 	game_window.addChild(res_bar);
@@ -102,13 +102,67 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& backgr
 
 		rt.clear();
 		window.clear();
-		window.draw(background);
 
 		game_window.draw(rt);
 		
 		rt.display(window);
 		window.display();
     }
+}
+
+void CreateGameWindowAndRunGame(sf::RenderWindow& window)
+{
+	RenderTarget main_rt(Point(window.getSize().x, window.getSize().y));
+	runGameCycle(window, main_rt);
+}
+
+void CreateMenuWindow(sf::RenderWindow& window)
+{
+	RenderTarget menu_rt(Point(window.getSize().x, window.getSize().y));
+	Window menu_window({0, 0}, "Assets/UI/MenuBackground.pn");
+
+	const Point button_size(400, 200);
+	Point position(window.getSize().x / 2 - button_size.x / 2 - 20, 400);
+
+	BasicFunctor* run_game_func = new Functor<sf::RenderWindow&>(CreateGameWindowAndRunGame, window);
+	menu_window.addChild(new Button(position, button_size.x, button_size.y, run_game_func, "Assets/UI/PlayButton.png"));
+	
+	position.y += button_size.y * 1.5;
+	BasicFunctor* load_game_func = new Functor<sf::RenderWindow&>(CreateGameWindowAndRunGame, window);
+	menu_window.addChild(new Button(position, button_size.x, button_size.y, load_game_func, "Assets/UI/LoadButton.png"));
+
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+				case sf::Event::Closed:
+				{
+					window.close();
+				}
+
+				case sf::Event::MouseButtonPressed:
+				{
+					menu_window.push(new MouseClickEvent({event.mouseButton.x, event.mouseButton.y}));
+				}
+
+				case sf::Event::MouseMoved:
+				{
+					menu_window.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
+				}
+			}
+		}
+
+		menu_rt.clear();
+		window.clear();
+
+		menu_window.draw(menu_rt);
+
+		menu_rt.display(window);
+		window.display();
+	}
 }
 
 int main()
@@ -118,13 +172,7 @@ int main()
 	loadPlugins();
 
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
-	RenderTarget main_rt(Point(window.getSize().x, window.getSize().y));
-
-	sf::Texture texture;
-	texture.loadFromFile("Assets/Background.png");
-	sf::Sprite sprite(texture);
-	window.draw(sprite);
-
-	runGameCycle(window, main_rt, sprite);
+	CreateMenuWindow(window);
+	// CreateGameWindowAndRunGame(window);
 	CellKeeper::destroy();
 }
