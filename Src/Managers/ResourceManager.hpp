@@ -110,11 +110,7 @@ public:
             }
         }
 
-        for (auto building : buildings)
-        {
-            CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
-            cell_interlayer->pushToView(coeff_changed_event);
-        }
+        updateCoeffDisplays();
 
         user_res += tick_income;
         informResourceBar();
@@ -125,19 +121,23 @@ public:
         const Building* building_cell = dynamic_cast<const Building*>(new_cell);
         if (!building_cell) return; // it is not a Building
 
+        display_coeff = false;
         calculateOnBuildResources(const_cast<Building*>(building_cell));
 
         informResourceBar();
+        updateCoeffDisplays();
     }
 
     void onNewCitizenArrival(long int citizen_cnt)
     {
+        display_coeff = false;
         long int start_citizen_cnt = citizen_cnt;
         onNewCitizen(citizen_cnt);
 
         user_res.free_population -= (start_citizen_cnt - citizen_cnt);
 
         informResourceBar();
+        updateCoeffDisplays();
     }
 
     void onCitizenLeave(long int citizen_cnt)
@@ -148,6 +148,7 @@ public:
         user_res.free_population += (start_citizen - citizen_cnt);
 
         informResourceBar();
+        updateCoeffDisplays();
     }
 
     void onDelete(const Cell* delete_cell)
@@ -158,6 +159,7 @@ public:
         calculateOnDeleteResources(building_cell);
 
         informResourceBar();
+        updateCoeffDisplays();
     }
 
     Resources getUserRes() const
@@ -181,7 +183,23 @@ public:
         cell_interlayer = _cell_interlayer;
     }
 
+    void onCellViewDeleted()
+    {
+        display_coeff = true;
+    }
+
 private:
+
+    void updateCoeffDisplays()
+    {
+        if (!display_coeff) return;
+
+        for (auto building : buildings)
+        {
+            CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
+            cell_interlayer->pushToView(coeff_changed_event);
+        }
+    }
 
     void informResourceBar()
     {
@@ -296,9 +314,6 @@ private:
         building.cur_workers = cur_workers;
 
         tick_income += building.tick_income;
-
-        // CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
-        // cell_interlayer->pushToView(coeff_changed_event);
     }
 
     void killCitizen(long int& citizen_cnt)
@@ -330,9 +345,6 @@ private:
         building.cur_workers = cur_workers;
 
         tick_income += building.tick_income;
-
-        // CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
-        // cell_interlayer->pushToView(coeff_changed_event);
     }
 
     void recalculateHouseIncome(HouseProperties& house)
@@ -343,9 +355,6 @@ private:
         house.tick_income  = house.default_tick_income * effectiveness_coeff;
 
         tick_income += house.tick_income;
-
-        // CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(house.ptr->getIndex(), house.cur_workers, house.max_workers);
-        // cell_interlayer->pushToView(coeff_changed_event);
     }
 
     std::vector<BuildingProperties>::iterator findBuildingByPtr(const Building* building)
@@ -375,4 +384,6 @@ private:
     // default: Resources()
     std::vector<BuildingProperties> buildings;
     std::vector<HouseProperties>    houses;
+
+    bool display_coeff = true;
 };

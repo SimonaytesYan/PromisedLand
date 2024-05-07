@@ -93,3 +93,10 @@ struct CoeffChangedEvent : public Event
   long int cur_workers;
   long int max_workers;
 };
+
+struct SuccessfulCellDeleteEvent : public Event
+{
+  explicit SuccessfulCellDeleteEvent()
+    : Event (EventType::SUCCESSFUL_CELL_VIEW_DELETE)
+    {}
+};

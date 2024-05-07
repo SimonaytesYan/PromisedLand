@@ -37,10 +37,10 @@ public:
         render_target.drawTexture(pos, texture);
         if (display_coeff)
         {
-            render_target.drawCircle({pos.x - kCoeffTextSize / 2, pos.y - kCoeffTextSize / 2}, kCoeffTextSize, kCircleColor);
+            render_target.drawCircle(pos, kCoeffTextSize, kCircleColor);
 
             std::string str = std::to_string(cur_workers) + "/" + std::to_string(max_workers);
-            render_target.drawText({pos.x - kCoeffTextSize / 4, pos.y - kCoeffTextSize / 4}, str.c_str(), 10, kCoeffTextColor);
+            render_target.drawText({pos.x + kCoeffTextSize / 4, pos.y + kCoeffTextSize / 4}, str.c_str(), kCoeffTextSize, kCoeffTextColor);
         }
         if (is_chosen) 
         {

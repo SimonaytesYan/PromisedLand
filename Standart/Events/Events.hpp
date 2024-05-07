@@ -19,6 +19,7 @@ enum class EventType
     REBUILD_EVENT,
     TRY_BUILD_EVENT,
     COEFF_CHANGED,
+    SUCCESSFUL_CELL_VIEW_DELETE,
 };
 
 struct Event 

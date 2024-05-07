@@ -86,6 +86,9 @@ void CellViewGroup::deleteDeadCells()
         for (size_t index = 0; index < cell_views_size; index++)
             cell_views[index]->setIndexInCellGroup(index);
     }
+
+    SuccessfulCellDeleteEvent* cell_deleted = new SuccessfulCellDeleteEvent();
+    cell_interlayer->pushToLogic(cell_deleted);
 }
 
 void CellViewGroup::addCell(CellView* cell_view)

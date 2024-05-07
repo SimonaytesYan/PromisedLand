@@ -34,6 +34,11 @@ void CellInterlayer::pushToLogic(const EventPtr event)
             cell_manager.onNewCitizenArrival(new_cit_event->citizens);
             break;
         }
+        case EventType::SUCCESSFUL_CELL_VIEW_DELETE:
+        {
+            cell_manager.onCellViewDeleted();
+            break;
+        }
         default:
             break;
     }

@@ -60,6 +60,11 @@ public:
         res_manager->onNewCitizenArrival(citizen_cnt);
     }
 
+    void onCellViewDeleted()
+    {
+        res_manager->onCellViewDeleted();
+    }
+
     void deleteCell(const size_t index)
     {
         if (cells[index]->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
