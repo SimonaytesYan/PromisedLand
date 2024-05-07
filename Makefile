@@ -10,7 +10,7 @@ BIN = Bin/
 OBJ = Obj/
 
 ELF_FILE = $(BIN)run
-OBJECTS  = $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellViewGroup.o $(OBJ)CellKeeper.o $(OBJ)MapSaveLoad.o
+OBJECTS  = $(OBJ)GameCycle.o $(OBJ)Menu.o $(OBJ)RenderTarget.o $(OBJ)Utils.o $(OBJ)CellInterlayer.o $(OBJ)CellManager.o $(OBJ)CellViewGroup.o $(OBJ)CellKeeper.o $(OBJ)MapSaveLoad.o
 JIT_COMPILER_OBJ = JitCompiler/Obj/Stdlib.o JitCompiler/Obj/Translation.o JitCompiler/Obj/CommandSystem.o
 
 compile: create_folders $(OBJECTS)
@@ -39,8 +39,11 @@ $(OBJ)MapSaveLoad.o: create_folders $(SRC)Map/MapSaveLoad.cpp
 	echo "JitCompiler + make success"
 	$(COMPILER) -c $(FLAGS) $(SRC)Map/MapSaveLoad.cpp -o $(OBJ)MapSaveLoad.o
 
-# $(OBJ)Window.o: $(SRC)Window.cpp
-# 	$(COMPILER) -fPIE -c $(FLAGS) $(SRC)Window.cpp -o $(OBJ)Window.o
+$(OBJ)GameCycle.o: create_folders $(SRC)GameCycle/GameCycle.cpp
+	$(COMPILER) -c $(FLAGS) $(SRC)GameCycle/GameCycle.cpp -o $(OBJ)GameCycle.o
+
+$(OBJ)Menu.o: create_folders $(SRC)Menu/Menu.cpp
+	$(COMPILER) -c $(FLAGS) $(SRC)Menu/Menu.cpp -o $(OBJ)Menu.o
 
 update_submodules:
 	git submodule update --init --recursive --remote

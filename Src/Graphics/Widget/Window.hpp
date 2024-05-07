@@ -3,21 +3,28 @@
 #include <vector>
 
 #include "Widget.hpp"
+#include "../../Utils/RenderTarget.hpp"
 
 class Window : public Widget
 {
 public:
-    explicit Window(const Point position, CellInterlayer* _cell_interlayer = nullptr)
-      : Widget          (position),
-        children        ()
+    explicit Window(const Point position, const char* img_path)
+      : Widget    (position),
+        children  (),
+        background(img_path)
     {}
 
     // Non-copyable
     Window          (const Window& other) = delete;
     Window operator=(const Window& other) = delete;
 
-    // Non-movable
-    Window          (Window&& other) = delete;
+    // Movable
+    Window (Window&& other) : 
+    Widget     (other.pos),
+    children   (std::move(other.children)),
+    background (std::move(other.background))
+    { }
+
     Window operator=(Window&& other) = delete;
 
     void push(const EventPtr event) override
@@ -28,6 +35,8 @@ public:
 
     void draw(RenderTargetI& rt) override
     {
+        rt.drawTexture(this->pos, background);
+
         auto begin_iterator = children.begin() - 1;
         auto end_iterator   = children.end()   - 1;
 
@@ -59,4 +68,5 @@ public:
 
 private:
     std::vector<Widget*> children;
+    Texture              background;
 };

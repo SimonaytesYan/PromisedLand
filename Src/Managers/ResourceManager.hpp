@@ -11,6 +11,8 @@
 
 class ResourceManager
 {
+    static ResourceManager* current_manager;
+
 private:
 
     struct BuildingProperties
@@ -32,7 +34,9 @@ public:
       : user_res                (kStartResources),
         tick_income             (),
         resource_bar_interlayer (_res_bar_int)
-    {}
+    {
+        ResourceManager::current_manager = this;
+    }
 
     // Non-copyable
     ResourceManager(const ResourceManager& other)           = delete;
@@ -44,7 +48,7 @@ public:
 
     void onTick()
     {
-        for (auto house : houses)
+        for (auto house : houses)   // TODO auto&
         {
             Resources house_res = house.ptr->getTickIncome();
 
@@ -135,15 +139,20 @@ public:
         return user_res;
     }
 
-    bool hasLost() const
+    static bool hasLost()
     {
-        return user_res < kZeroResources;
+        return (current_manager != nullptr) && current_manager->getUserRes() < kZeroResources;
     }
 
     bool tryBuild(FieldType building_type)
     {
         return (CellKeeper::getAppearIncome(building_type).wood  * -1) <= user_res.wood &&
                (CellKeeper::getAppearIncome(building_type).stone * -1) <= user_res.stone;
+    }
+
+    ~ResourceManager()
+    {
+        current_manager = nullptr;
     }
 
 private:
