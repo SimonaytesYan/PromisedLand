@@ -47,6 +47,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& backgr
 	CellInterlayer          cell_interlayer     (cell_manager);
 	BuildingPanelInterlayer build_pan_interlayer(cell_manager);
 
+	res_manager.setCellInterlayer(&cell_interlayer);
+
 	BuildingPanel* build_panel = new BuildingPanel({window.getSize().x - kControlPanelW / 2, kControlPanelYStart}, build_pan_interlayer);
 	game_window.addChild(build_panel);
 

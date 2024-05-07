@@ -79,3 +79,17 @@ struct RebuildEvent : public Event
   size_t    index;
   FieldType cell_type;
 };
+
+struct CoeffChangedEvent : public Event 
+{
+  explicit CoeffChangedEvent(const size_t _index, long int _cur_workers, long int _max_workers)
+    : Event       (EventType::COEFF_CHANGED),
+      index       (_index),
+      cur_workers (_cur_workers),
+      max_workers (_max_workers)
+    {}
+
+  size_t   index;
+  long int cur_workers;
+  long int max_workers;
+};

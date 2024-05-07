@@ -1,6 +1,8 @@
 #include "CellViewGroup.hpp"
 
 #include "../../Interlayers/CellInterlayer.hpp"
+#include "../../CellLoader/CellKeeper.hpp"
+#include "../../Events/Events.hpp"
 #include "../CellView/CellView.hpp"
 
 void CellViewGroup::push(const EventPtr event)
@@ -37,7 +39,12 @@ void CellViewGroup::push(const EventPtr event)
             addCell(rebuild_event->cell_type, cell_views[rebuild_event->index]->getPos());
             break;
         }
-
+        case EventType::COEFF_CHANGED:
+        {
+            const CoeffChangedEvent* coeff_changed_event = static_cast<const CoeffChangedEvent*>(event.get());
+            cell_views[coeff_changed_event->index]->setCoeff(coeff_changed_event->cur_workers, coeff_changed_event->max_workers);
+            break;
+        }
         default:
             break;
     }

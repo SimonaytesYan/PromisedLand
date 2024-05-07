@@ -1,4 +1,5 @@
 #include "CellInterlayer.hpp"
+#include "../Managers/CellManager.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
 #include "../Graphics/Widget/Window.hpp"
 #include "../Events/Events.hpp"

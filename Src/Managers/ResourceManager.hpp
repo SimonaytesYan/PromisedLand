@@ -2,12 +2,13 @@
 
 #include <vector>
 
-#include "../GameLogic/Tiles/Cell.hpp"
+#include "../Interlayers/CellInterlayer.hpp"
 #include "../Events/Eventable.hpp"
 #include "../Interlayers/ResourceBarInterlayer.hpp"
 #include "../GameLogic/Tiles/Building.hpp"
 #include "../Events/Events.hpp"
 #include "../CellLoader/CellKeeper.hpp"
+
 
 class ResourceManager
 {
@@ -109,6 +110,12 @@ public:
             }
         }
 
+        for (auto building : buildings)
+        {
+            CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
+            cell_interlayer->pushToView(coeff_changed_event);
+        }
+
         user_res += tick_income;
         informResourceBar();
     }
@@ -169,6 +176,11 @@ public:
                (CellKeeper::getAppearIncome(building_type).stone * -1) <= user_res.stone;
     }
 
+    void setCellInterlayer(CellInterlayerI* _cell_interlayer)
+    {
+        cell_interlayer = _cell_interlayer;
+    }
+
 private:
 
     void informResourceBar()
@@ -186,6 +198,10 @@ private:
 
         buildings.emplace_back(building_cell, building_tick_income, cur_workers, max_workers);
         tryAddHouse(building_cell, appear_res.population, building_tick_income);
+
+        auto building = buildings[buildings.size() - 1];
+        // CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
+        // cell_interlayer->pushToView(coeff_changed_event);
     }
 
     Resources calculateBuildTickResources(Building* building_cell, Resources default_tick, long int& cur_workers, long int& max_workers)
@@ -277,8 +293,12 @@ private:
 
         double effectiveness_coeff = static_cast<double>(cur_workers) / static_cast<double>(max_workers);
         building.tick_income = building.ptr->getTickIncome() * effectiveness_coeff;
+        building.cur_workers = cur_workers;
 
         tick_income += building.tick_income;
+
+        // CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
+        // cell_interlayer->pushToView(coeff_changed_event);
     }
 
     void killCitizen(long int& citizen_cnt)
@@ -307,8 +327,12 @@ private:
 
         double effectiveness_coeff = static_cast<double>(cur_workers) / static_cast<double>(max_workers);
         building.tick_income = building.ptr->getTickIncome() * effectiveness_coeff;
+        building.cur_workers = cur_workers;
 
         tick_income += building.tick_income;
+
+        // CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
+        // cell_interlayer->pushToView(coeff_changed_event);
     }
 
     void recalculateHouseIncome(HouseProperties& house)
@@ -319,6 +343,9 @@ private:
         house.tick_income  = house.default_tick_income * effectiveness_coeff;
 
         tick_income += house.tick_income;
+
+        // CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(house.ptr->getIndex(), house.cur_workers, house.max_workers);
+        // cell_interlayer->pushToView(coeff_changed_event);
     }
 
     std::vector<BuildingProperties>::iterator findBuildingByPtr(const Building* building)
@@ -341,6 +368,7 @@ private:
     Resources              user_res;
     Resources              tick_income;
     ResourceBarInterlayer& resource_bar_interlayer;
+    CellInterlayerI*       cell_interlayer;
 
     // "Resources" parameter needed to save resources 
     // that are needed for building

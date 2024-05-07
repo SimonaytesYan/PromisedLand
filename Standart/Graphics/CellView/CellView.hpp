@@ -11,10 +11,13 @@ class CellView : public Widget
 public:
     CellView(const TextureI texture, const Point pos, 
              CellViewGroupI& parent) 
-    : Widget    (pos),
-      texture   (texture),
-      parent    (parent),
-      is_chosen (false)
+    : Widget        (pos),
+      texture       (texture),
+      parent        (parent),
+      is_chosen     (false),
+      display_coeff (false),
+      cur_workers   (0),
+      max_workers   (0)
     { }
 
     CellView(const TextureI texture, const Point pos, 
@@ -23,12 +26,26 @@ public:
       texture             (texture),
       parent              (parent),
       index_in_cell_group (index_in_cell_group),
-      is_chosen           (false)
+      is_chosen           (false),
+      display_coeff       (false),
+      cur_workers         (0),
+      max_workers         (0)
     {}
 
     void draw(RenderTargetI& render_target) override
     {
-        render_target.drawTexture(pos, texture);
+        // std::string str = std::to_string(index_in_cell_group);
+        // render_target.drawText(pos, str.c_str(), 10, {255, 255, 255});
+
+        if (display_coeff)
+        {
+            std::string str = std::to_string(cur_workers);
+            render_target.drawText(pos, str.c_str(), 10, {255, 255, 255});
+        }
+        else
+        {
+            render_target.drawTexture(pos, texture);
+        }
         if (is_chosen) 
         {
             render_target.drawRect(pos, {kFieldSize, kFieldSize}, kChosenCellColor);
@@ -78,6 +95,13 @@ public:
         }
     }
 
+    void setCoeff(long int _cur_workers, long int _max_workers)
+    {
+        display_coeff = true;
+        cur_workers   = _cur_workers;
+        max_workers   = _max_workers;
+    }
+
     void setIndexInCellGroup(size_t index)
     { index_in_cell_group = index; }
 
@@ -99,4 +123,8 @@ protected:
     CellViewGroupI& parent;
     size_t          index_in_cell_group;
     bool            is_chosen;  
+
+    bool            display_coeff;
+    long int        cur_workers;
+    long int        max_workers;
 };

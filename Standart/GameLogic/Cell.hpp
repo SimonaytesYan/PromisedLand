@@ -24,6 +24,11 @@ public:
         index = _index;
     }
 
+    virtual size_t getIndex()
+    {
+        return index;
+    }
+
 protected:
     FieldType field_type;
     size_t    index;

@@ -72,6 +72,10 @@ public:
 
         delete cells[index];
         cells.erase(cells.begin() + index);
+
+        const size_t cells_size = cells.size();
+        for (size_t index = 0; index < cells_size; index++)
+            cells[index]->setIndexInCellGroup(index);
     }
 
 private:
@@ -79,7 +83,7 @@ private:
     void createCell(const Point position);
     void createCell(Cell* new_cell)
     { 
-        cells.push_back(new_cell); 
+        cells.push_back(new_cell);
         new_cell->setIndexInCellGroup(cells.size() - 1);
     }
 
