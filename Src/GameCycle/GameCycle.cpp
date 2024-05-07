@@ -14,7 +14,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 		if (ResourceManager::hasLost())
 		{
 			printf("You have lost!\n");
-			window.close();
+			// window.close();
+            return;
 		}
 
 		rt.clear();

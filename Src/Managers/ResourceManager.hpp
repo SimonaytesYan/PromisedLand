@@ -150,6 +150,11 @@ public:
                (CellKeeper::getAppearIncome(building_type).stone * -1) <= user_res.stone;
     }
 
+    ~ResourceManager()
+    {
+        current_manager = nullptr;
+    }
+
 private:
 
     void informResourceBar()
