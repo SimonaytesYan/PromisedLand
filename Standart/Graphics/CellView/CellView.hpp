@@ -34,17 +34,13 @@ public:
 
     void draw(RenderTargetI& render_target) override
     {
-        // std::string str = std::to_string(index_in_cell_group);
-        // render_target.drawText(pos, str.c_str(), 10, {255, 255, 255});
-
+        render_target.drawTexture(pos, texture);
         if (display_coeff)
         {
-            std::string str = std::to_string(cur_workers);
-            render_target.drawText(pos, str.c_str(), 10, {255, 255, 255});
-        }
-        else
-        {
-            render_target.drawTexture(pos, texture);
+            render_target.drawCircle({pos.x - kCoeffTextSize / 2, pos.y - kCoeffTextSize / 2}, kCoeffTextSize, kCircleColor);
+
+            std::string str = std::to_string(cur_workers) + "/" + std::to_string(max_workers);
+            render_target.drawText({pos.x - kCoeffTextSize / 4, pos.y - kCoeffTextSize / 4}, str.c_str(), 10, kCoeffTextColor);
         }
         if (is_chosen) 
         {
@@ -117,7 +113,10 @@ public:
     
 
 protected:
-    const Color kChosenCellColor = {255, 255, 255, 128};
+    const Color    kChosenCellColor = {255, 255, 255, 128};
+    const Color    kCoeffTextColor  = {0, 0, 0};
+    const Color    kCircleColor     = {255, 0, 0};
+    const uint16_t kCoeffTextSize   = 10;
 
     const TextureI  texture;
     CellViewGroupI& parent;

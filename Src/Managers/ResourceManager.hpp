@@ -196,12 +196,10 @@ private:
         long int cur_workers = 0, max_workers = 0;
         Resources building_tick_income = calculateBuildTickResources(building_cell, building_cell->getTickIncome(), cur_workers, max_workers);
 
+        tryAddHouse(building_cell, appear_res.population, building_tick_income, cur_workers, max_workers);
         buildings.emplace_back(building_cell, building_tick_income, cur_workers, max_workers);
-        tryAddHouse(building_cell, appear_res.population, building_tick_income);
 
         auto building = buildings[buildings.size() - 1];
-        // CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.cur_workers, building.max_workers);
-        // cell_interlayer->pushToView(coeff_changed_event);
     }
 
     Resources calculateBuildTickResources(Building* building_cell, Resources default_tick, long int& cur_workers, long int& max_workers)
@@ -227,12 +225,14 @@ private:
         return building_tick_income;
     }
 
-    void tryAddHouse(Building* building, long int citizen, Resources default_tick)
+    void tryAddHouse(Building* building, long int citizen, Resources default_tick, long int& cur_workers, long int& max_workers)
     {
         if (building->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
         {
             houses.emplace_back(building, default_tick, citizen, citizen, default_tick);
             (houses.end() - 1)->ptr->setCurWorkers(citizen);
+
+            cur_workers = max_workers = citizen;
         }
     }
 
