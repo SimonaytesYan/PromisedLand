@@ -113,10 +113,6 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, sf::Sprite& backgr
 
 int main()
 {
-	RunScript("Fact.sym");
-
-	return 0;
-
 	loadPlugins();
 	srand(time(nullptr));
 

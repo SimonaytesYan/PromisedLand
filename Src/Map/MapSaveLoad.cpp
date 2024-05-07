@@ -23,13 +23,15 @@ std::vector<std::vector<FieldType>> LoadMap(const char* file)
 	return field;
 }
 
-void BuildCellImplementation(int field_type, int x, int y)
+void BuildCellImplementation(long long field_type, long long x, long long y)
 {
+	// printf("BuildCellImplementation(%lld, %lld, %lld)\n", field_type, x, y);
 	field[x][y] = field_type;
 }
 
-int GetCellImplementation(int x, int y)
+long long GetCellImplementation(long long x, long long y)
 {
+	// printf("GetCellImplementation(%lld, %lld) = %lld\n", x, y, field[x][y]);
 	return field[x][y];
 }
 

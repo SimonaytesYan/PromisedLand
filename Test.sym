@@ -1,0 +1,24 @@
+begin
+    var x;
+    var y;
+    var flag;
+
+    while x < 64 do
+    begin
+        y = 0;
+        flag = 1 - flag;
+        while y < 64 do
+        begin
+            flag = 1 - flag;
+
+            if flag == 1 then
+            begin
+                call build_cell(1, x, y);
+            end
+
+            y = y + 1;
+        end
+
+        x = x + 1;
+    end
+end
