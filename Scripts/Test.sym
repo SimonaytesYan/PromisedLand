@@ -1,17 +1,17 @@
 begin
     var x;
     var y;
-    var flag;
+    var marked;
 
     while x < 64 do
     begin
         y = 0;
-        flag = 1 - flag;
+        marked = 0;
         while y < 64 do
         begin
-            flag = 1 - flag;
+            marked = 1 - marked;
 
-            if flag == 1 then
+            if marked == 1 then
             begin
                 call build_cell(1, x, y);
             end
