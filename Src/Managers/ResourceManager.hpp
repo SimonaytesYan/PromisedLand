@@ -81,7 +81,7 @@ public:
                 user_res.free_population += pop;
 
                 house.ptr->setCurWorkers(house.ptr->getCurWorkers() + house_res.population);
-                house.cur_workers = house.max_workers = house.ptr->getCurWorkers();
+                house.cur_workers = house.ptr->getCurWorkers();
                 recalculateHouseIncome(house);
             }
             else if (house_res.population < 0)
@@ -107,7 +107,7 @@ public:
                 }
 
                 house.ptr->setCurWorkers(house.ptr->getCurWorkers() + house_res.population);
-                house.cur_workers = house.max_workers = house.ptr->getCurWorkers();
+                house.cur_workers = house.ptr->getCurWorkers();
                 recalculateHouseIncome(house);
             }
         }
@@ -218,8 +218,6 @@ private:
 
         tryAddHouse(building_cell, appear_res.population, building_tick_income, cur_workers, max_workers);
         buildings.emplace_back(building_cell, building_tick_income, cur_workers, max_workers);
-
-        auto building = buildings[buildings.size() - 1];
     }
 
     Resources calculateBuildTickResources(Building* building_cell, Resources default_tick, long int& cur_workers, long int& max_workers)
