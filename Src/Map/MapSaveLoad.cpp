@@ -4,16 +4,16 @@
 #include "../../JitCompiler/Src/Translation/Translation.h"
 #include "../../JitCompiler/Src/Filework.h"
 #include "../Constants.hpp"
+#include "../Graphics/CellView/CellView.hpp"
 
 const size_t kMaxCompileCommandSize = 255;
-const char* command_prototype = "cd JitCompiler && make run_lang FILE=\"../%s\"";
-
-
+const char*  command_prototype = "cd JitCompiler && make run_lang FILE=\"../%s\"";
 const size_t kCellFieldSize = 64;
 
-void RunScript(const char* script_file);
-
 std::vector<std::vector<FieldType>> field;
+
+static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath);
+static void 							   RunScript(const char* script_file);
 
 void createFieldFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, const char* map_filepath)
 {
@@ -40,7 +40,7 @@ void createFieldFromFile(CellInterlayer& cell_int, const sf::Vector2u window_siz
 	}
 }
 
-std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath)
+static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath)
 {
 	field = std::vector<std::vector<FieldType>>(kCellFieldSize, std::vector<FieldType>(kCellFieldSize, 0));
 	RunScript(script_filepath);
@@ -60,7 +60,7 @@ long long GetCellImplementation(long long x, long long y)
 	return field[x][y];
 }
 
-void RunScript(const char* script_file)
+static void RunScript(const char* script_file)
 {
 	// Compile script into virtual machine executable file
 	char compile_command[kMaxCompileCommandSize] = {};
