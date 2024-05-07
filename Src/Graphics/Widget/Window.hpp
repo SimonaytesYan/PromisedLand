@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "Widget.hpp"
+#include "../../Utils/RenderTarget.hpp"
 
 class Window : public Widget
 {
