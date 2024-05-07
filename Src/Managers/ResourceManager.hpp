@@ -2,12 +2,13 @@
 
 #include <vector>
 
-#include "../GameLogic/Tiles/Cell.hpp"
+#include "../Interlayers/CellInterlayer.hpp"
 #include "../Events/Eventable.hpp"
 #include "../Interlayers/ResourceBarInterlayer.hpp"
 #include "../GameLogic/Tiles/Building.hpp"
 #include "../Events/Events.hpp"
 #include "../CellLoader/CellKeeper.hpp"
+
 
 class ResourceManager
 {
@@ -17,15 +18,38 @@ private:
 
     struct BuildingProperties
     {
+        BuildingProperties(
+            Building* _ptr,
+            Resources _cur_tick,
+            long int  _cur_workers,
+            long int  _max_workers
+        )
+          : ptr (_ptr),
+            tick_income (_cur_tick),
+            cur_workers (_cur_workers),
+            max_workers (_max_workers)
+        {}
+
         Building* ptr;
         Resources tick_income;
+
+        long int cur_workers;
+        long int max_workers;
     };
 
-    struct HouseProperties
+    struct HouseProperties : public BuildingProperties
     {
-        Building* ptr;
-        long int  default_citizen;
-        Resources current_tick_income;
+        HouseProperties(
+            Building* _ptr,
+            Resources _cur_tick,
+            long int  _cur_workers,
+            long int  _max_workers,
+            Resources _default_income
+        )
+          : BuildingProperties  (_ptr, _cur_tick, _cur_workers, _max_workers),
+            default_tick_income (_default_income)
+        {}
+
         Resources default_tick_income;
     };
 
@@ -61,6 +85,7 @@ public:
                 user_res.free_population += pop;
 
                 house.ptr->setCurWorkers(house.ptr->getCurWorkers() + house_res.population);
+                house.cur_workers = house.ptr->getCurWorkers();
                 recalculateHouseIncome(house);
             }
             else if (house_res.population < 0)
@@ -86,9 +111,12 @@ public:
                 }
 
                 house.ptr->setCurWorkers(house.ptr->getCurWorkers() + house_res.population);
+                house.cur_workers = house.ptr->getCurWorkers();
                 recalculateHouseIncome(house);
             }
         }
+
+        updateCoeffDisplays();
 
         user_res += tick_income;
         informResourceBar();
@@ -99,19 +127,23 @@ public:
         const Building* building_cell = dynamic_cast<const Building*>(new_cell);
         if (!building_cell) return; // it is not a Building
 
+        display_coeff = false;
         calculateOnBuildResources(const_cast<Building*>(building_cell));
 
         informResourceBar();
+        updateCoeffDisplays();
     }
 
     void onNewCitizenArrival(long int citizen_cnt)
     {
+        display_coeff = false;
         long int start_citizen_cnt = citizen_cnt;
         onNewCitizen(citizen_cnt);
 
         user_res.free_population -= (start_citizen_cnt - citizen_cnt);
 
         informResourceBar();
+        updateCoeffDisplays();
     }
 
     void onCitizenLeave(long int citizen_cnt)
@@ -122,6 +154,7 @@ public:
         user_res.free_population += (start_citizen - citizen_cnt);
 
         informResourceBar();
+        updateCoeffDisplays();
     }
 
     void onDelete(const Cell* delete_cell)
@@ -132,6 +165,7 @@ public:
         calculateOnDeleteResources(building_cell);
 
         informResourceBar();
+        updateCoeffDisplays();
     }
 
     Resources getUserRes() const
@@ -155,7 +189,28 @@ public:
         current_manager = nullptr;
     }
 
+    void setCellInterlayer(CellInterlayerI* _cell_interlayer)
+    {
+        cell_interlayer = _cell_interlayer;
+    }
+
+    void onCellViewDeleted()
+    {
+        display_coeff = true;
+    }
+
 private:
+
+    void updateCoeffDisplays()
+    {
+        if (!display_coeff) return;
+
+        for (auto building : buildings)
+        {
+            CoeffChangedEvent* coeff_changed_event = new CoeffChangedEvent(building.ptr->getIndex(), building.ptr->getCurWorkers(), building.max_workers);
+            cell_interlayer->pushToView(coeff_changed_event);
+        }
+    }
 
     void informResourceBar()
     {
@@ -167,15 +222,16 @@ private:
         Resources appear_res = building_cell->getAppearIncome();
         user_res += appear_res;
 
-        Resources building_tick_income = calculateBuildTickResources(building_cell, building_cell->getTickIncome());
+        long int cur_workers = 0, max_workers = 0;
+        Resources building_tick_income = calculateBuildTickResources(building_cell, building_cell->getTickIncome(), cur_workers, max_workers);
 
-        buildings.push_back({building_cell, building_tick_income});
-        tryAddHouse(building_cell, appear_res.population, building_tick_income);
+        tryAddHouse(building_cell, appear_res.population, building_tick_income, cur_workers, max_workers);
+        buildings.emplace_back(building_cell, building_tick_income, cur_workers, max_workers);
     }
 
-    Resources calculateBuildTickResources(Building* building_cell, Resources default_tick)
+    Resources calculateBuildTickResources(Building* building_cell, Resources default_tick, long int& cur_workers, long int& max_workers)
     {
-        long max_workers = building_cell->getMaxWorkers();
+        max_workers = building_cell->getMaxWorkers();
         if (max_workers == 0) 
         {
             tick_income += default_tick;
@@ -183,7 +239,7 @@ private:
         }
 
         long available_workers = user_res.free_population;
-        long cur_workers       = std::min(available_workers, building_cell->getMaxWorkers());
+        cur_workers       = std::min(available_workers, building_cell->getMaxWorkers());
 
         user_res.free_population -= cur_workers;
         building_cell->setCurWorkers(cur_workers);
@@ -196,12 +252,14 @@ private:
         return building_tick_income;
     }
 
-    void tryAddHouse(Building* building, long int citizen, Resources default_tick)
+    void tryAddHouse(Building* building, long int citizen, Resources default_tick, long int& cur_workers, long int& max_workers)
     {
         if (building->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
         {
-            houses.push_back({building, citizen, default_tick, default_tick});
+            houses.emplace_back(building, default_tick, citizen, citizen, default_tick);
             (houses.end() - 1)->ptr->setCurWorkers(citizen);
+
+            cur_workers = max_workers = citizen;
         }
     }
 
@@ -213,6 +271,13 @@ private:
         auto building_it = findBuildingByPtr(delete_building);
 
         tick_income -= building_it->tick_income;
+
+        long int free_pop = delete_building->getCurWorkers();
+        if (free_pop > 0 && delete_building->getMaxWorkers() > 0)
+        {
+            user_res.free_population += free_pop;
+            onNewCitizen(free_pop);
+        }
 
         buildings.erase(building_it);
         tryDeleteHouse(delete_building);
@@ -262,6 +327,7 @@ private:
 
         double effectiveness_coeff = static_cast<double>(cur_workers) / static_cast<double>(max_workers);
         building.tick_income = building.ptr->getTickIncome() * effectiveness_coeff;
+        building.cur_workers = cur_workers;
 
         tick_income += building.tick_income;
     }
@@ -292,18 +358,19 @@ private:
 
         double effectiveness_coeff = static_cast<double>(cur_workers) / static_cast<double>(max_workers);
         building.tick_income = building.ptr->getTickIncome() * effectiveness_coeff;
+        building.cur_workers = cur_workers;
 
         tick_income += building.tick_income;
     }
 
     void recalculateHouseIncome(HouseProperties& house)
     {
-        tick_income -= house.current_tick_income;
+        tick_income -= house.tick_income;
 
-        double effectiveness_coeff = static_cast<double>(house.ptr->getCurWorkers()) / static_cast<double>(house.default_citizen);
-        house.current_tick_income  = house.default_tick_income * effectiveness_coeff;
+        double effectiveness_coeff = static_cast<double>(house.ptr->getCurWorkers()) / static_cast<double>(house.max_workers);
+        house.tick_income  = house.default_tick_income * effectiveness_coeff;
 
-        tick_income += house.current_tick_income;
+        tick_income += house.tick_income;
     }
 
     std::vector<BuildingProperties>::iterator findBuildingByPtr(const Building* building)
@@ -326,10 +393,13 @@ private:
     Resources              user_res;
     Resources              tick_income;
     ResourceBarInterlayer& resource_bar_interlayer;
+    CellInterlayerI*       cell_interlayer;
 
     // "Resources" parameter needed to save resources 
     // that are needed for building
     // default: Resources()
     std::vector<BuildingProperties> buildings;
     std::vector<HouseProperties>    houses;
+
+    bool display_coeff = true;
 };

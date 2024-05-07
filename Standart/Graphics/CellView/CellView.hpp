@@ -11,10 +11,13 @@ class CellView : public Widget
 public:
     CellView(const TextureI texture, const Point pos, 
              CellViewGroupI& parent) 
-    : Widget    (pos),
-      texture   (texture),
-      parent    (parent),
-      is_chosen (false)
+    : Widget        (pos),
+      texture       (texture),
+      parent        (parent),
+      is_chosen     (false),
+      display_coeff (false),
+      cur_workers   (0),
+      max_workers   (0)
     { }
 
     CellView(const TextureI texture, const Point pos, 
@@ -23,12 +26,22 @@ public:
       texture             (texture),
       parent              (parent),
       index_in_cell_group (index_in_cell_group),
-      is_chosen           (false)
+      is_chosen           (false),
+      display_coeff       (false),
+      cur_workers         (0),
+      max_workers         (0)
     {}
 
     void draw(RenderTargetI& render_target) override
     {
         render_target.drawTexture(pos, texture);
+        if (display_coeff)
+        {
+            render_target.drawCircle(pos, kCoeffTextSize, kCircleColor);
+
+            std::string str = std::to_string(cur_workers) + "/" + std::to_string(max_workers);
+            render_target.drawText({pos.x + kCoeffTextSize / 4, pos.y + kCoeffTextSize / 4}, str.c_str(), kCoeffTextSize, kCoeffTextColor);
+        }
         if (is_chosen) 
         {
             render_target.drawRect(pos, {kFieldSize, kFieldSize}, kChosenCellColor);
@@ -78,6 +91,13 @@ public:
         }
     }
 
+    void setCoeff(long int _cur_workers, long int _max_workers)
+    {
+        display_coeff = true;
+        cur_workers   = _cur_workers;
+        max_workers   = _max_workers;
+    }
+
     void setIndexInCellGroup(size_t index)
     { index_in_cell_group = index; }
 
@@ -93,10 +113,17 @@ public:
     
 
 protected:
-    const Color kChosenCellColor = {255, 255, 255, 128};
+    const Color    kChosenCellColor = {255, 255, 255, 128};
+    const Color    kCoeffTextColor  = {0, 0, 0};
+    const Color    kCircleColor     = {255, 0, 0};
+    const uint16_t kCoeffTextSize   = 10;
 
     const TextureI  texture;
     CellViewGroupI& parent;
     size_t          index_in_cell_group;
     bool            is_chosen;  
+
+    bool            display_coeff;
+    long int        cur_workers;
+    long int        max_workers;
 };

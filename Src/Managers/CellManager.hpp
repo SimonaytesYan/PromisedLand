@@ -60,6 +60,11 @@ public:
         res_manager->onNewCitizenArrival(citizen_cnt);
     }
 
+    void onCellViewDeleted()
+    {
+        res_manager->onCellViewDeleted();
+    }
+
     void deleteCell(const size_t index)
     {
         if (cells[index]->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
@@ -72,13 +77,20 @@ public:
 
         delete cells[index];
         cells.erase(cells.begin() + index);
+
+        const size_t cells_size = cells.size();
+        for (size_t index = 0; index < cells_size; index++)
+            cells[index]->setIndexInCellGroup(index);
     }
 
 private:
     void tryBuildCell(const size_t index, const Point position);
     void createCell(const Point position);
     void createCell(Cell* new_cell)
-    { cells.push_back(new_cell); }
+    { 
+        cells.push_back(new_cell);
+        new_cell->setIndexInCellGroup(cells.size() - 1);
+    }
 
 private:
     std::vector<Cell*> cells;

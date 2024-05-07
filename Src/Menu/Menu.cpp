@@ -26,6 +26,8 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	CellInterlayer          cell_interlayer(cell_manager);
 	BuildingPanelInterlayer build_pan_interlayer(cell_manager);
 
+	res_manager.setCellInterlayer(&cell_interlayer);
+
 	BuildingPanel* build_panel = new BuildingPanel(Point(args.window.getSize().x - kControlPanelW / 2, kControlPanelYStart), 
 												   build_pan_interlayer);
 	game_window.addChild(build_panel);

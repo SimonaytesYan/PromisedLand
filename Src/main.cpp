@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Constants.hpp"
+#include "CellLoader/CellKeeper.hpp"
 #include "Interlayers/CellInterlayer.hpp"
 #include "Graphics/Widget/Window.hpp"
 #include "../Standart/Plugin.hpp"

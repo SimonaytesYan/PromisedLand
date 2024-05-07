@@ -1,4 +1,5 @@
 #include "CellInterlayer.hpp"
+#include "../Managers/CellManager.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
 #include "../Graphics/Widget/Window.hpp"
 #include "../Events/Events.hpp"
@@ -31,6 +32,11 @@ void CellInterlayer::pushToLogic(const EventPtr event)
         {
             const NewCitizensEvent* new_cit_event = static_cast<const NewCitizensEvent*>(event.get());
             cell_manager.onNewCitizenArrival(new_cit_event->citizens);
+            break;
+        }
+        case EventType::SUCCESSFUL_CELL_VIEW_DELETE:
+        {
+            cell_manager.onCellViewDeleted();
             break;
         }
         default:

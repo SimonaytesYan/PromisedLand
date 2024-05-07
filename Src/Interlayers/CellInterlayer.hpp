@@ -3,8 +3,9 @@
 #include <vector>
 
 #include "../../Standart/Interlayers/CellInterlayerI.hpp"
-#include "../Managers/CellManager.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
+
+class CellManager;
 
 class CellInterlayer : public CellInterlayerI
 {
