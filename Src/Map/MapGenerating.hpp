@@ -36,7 +36,7 @@ void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
     //                                           std::vector<FieldType>(y_cell_cnt + 1, 
     //                                                                  static_cast<size_t>(ReservedTypes::GRASS)));
     
-    std::vector<std::vector<FieldType>> field = LoadMap("Test.sym");
+    std::vector<std::vector<FieldType>> field = LoadMap("Scripts/Test.sym");
     // generateRiver(field);
     // generateForest(field);
 
