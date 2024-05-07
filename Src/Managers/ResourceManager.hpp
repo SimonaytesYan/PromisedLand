@@ -15,15 +15,38 @@ private:
 
     struct BuildingProperties
     {
+        BuildingProperties(
+            Building* _ptr,
+            Resources _cur_tick,
+            long int  _cur_workers,
+            long int  _max_workers
+        )
+          : ptr (_ptr),
+            tick_income (_cur_tick),
+            cur_workers (_cur_workers),
+            max_workers (_max_workers)
+        {}
+
         Building* ptr;
         Resources tick_income;
+
+        long int cur_workers;
+        long int max_workers;
     };
 
-    struct HouseProperties
+    struct HouseProperties : public BuildingProperties
     {
-        Building* ptr;
-        long int  default_citizen;
-        Resources current_tick_income;
+        HouseProperties(
+            Building* _ptr,
+            Resources _cur_tick,
+            long int  _cur_workers,
+            long int  _max_workers,
+            Resources _default_income
+        )
+          : BuildingProperties  (_ptr, _cur_tick, _cur_workers, _max_workers),
+            default_tick_income (_default_income)
+        {}
+
         Resources default_tick_income;
     };
 
@@ -158,15 +181,16 @@ private:
         Resources appear_res = building_cell->getAppearIncome();
         user_res += appear_res;
 
-        Resources building_tick_income = calculateBuildTickResources(building_cell, building_cell->getTickIncome());
+        long int cur_workers = 0, max_workers = 0;
+        Resources building_tick_income = calculateBuildTickResources(building_cell, building_cell->getTickIncome(), cur_workers, max_workers);
 
-        buildings.push_back({building_cell, building_tick_income});
+        buildings.emplace_back(building_cell, building_tick_income, cur_workers, max_workers);
         tryAddHouse(building_cell, appear_res.population, building_tick_income);
     }
 
-    Resources calculateBuildTickResources(Building* building_cell, Resources default_tick)
+    Resources calculateBuildTickResources(Building* building_cell, Resources default_tick, long int& cur_workers, long int& max_workers)
     {
-        long max_workers = building_cell->getMaxWorkers();
+        max_workers = building_cell->getMaxWorkers();
         if (max_workers == 0) 
         {
             tick_income += default_tick;
@@ -174,7 +198,7 @@ private:
         }
 
         long available_workers = user_res.free_population;
-        long cur_workers       = std::min(available_workers, building_cell->getMaxWorkers());
+        cur_workers       = std::min(available_workers, building_cell->getMaxWorkers());
 
         user_res.free_population -= cur_workers;
         building_cell->setCurWorkers(cur_workers);
@@ -191,7 +215,7 @@ private:
     {
         if (building->getFieldType() == static_cast<size_t>(ReservedTypes::HOUSE))
         {
-            houses.push_back({building, citizen, default_tick, default_tick});
+            houses.emplace_back(building, default_tick, citizen, citizen, default_tick);
             (houses.end() - 1)->ptr->setCurWorkers(citizen);
         }
     }
@@ -289,12 +313,12 @@ private:
 
     void recalculateHouseIncome(HouseProperties& house)
     {
-        tick_income -= house.current_tick_income;
+        tick_income -= house.tick_income;
 
-        double effectiveness_coeff = static_cast<double>(house.ptr->getCurWorkers()) / static_cast<double>(house.default_citizen);
-        house.current_tick_income  = house.default_tick_income * effectiveness_coeff;
+        double effectiveness_coeff = static_cast<double>(house.ptr->getCurWorkers()) / static_cast<double>(house.max_workers);
+        house.tick_income  = house.default_tick_income * effectiveness_coeff;
 
-        tick_income += house.current_tick_income;
+        tick_income += house.tick_income;
     }
 
     std::vector<BuildingProperties>::iterator findBuildingByPtr(const Building* building)

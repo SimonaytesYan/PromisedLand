@@ -10,7 +10,9 @@ void CellManager::createCell(const Point position)
         cell_interlayer->pushToLogic(new NewCitizensEvent(static_cast<Building*>(new_cell)->getAppearIncome().population));
 
     createCell(new_cell);
+    
     res_manager->onBuild(new_cell);
+    
 }
 
 void CellManager::tryBuildCell(const size_t index, const Point position)

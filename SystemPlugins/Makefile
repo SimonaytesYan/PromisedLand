@@ -8,7 +8,7 @@ LIB_BUILDER   = gcc
 NAME = House
 LIB_PATH = ../PluginObjects/
 
-SOURCES = "Forest" "House" "Island" "Mine" "Sawmill" "Water" "Well" "Windmill" "Wasteland"
+SOURCES = "Forest" "Grass" "House" "Island" "Mine" "Sawmill" "Water" "Well" "Windmill" "Wasteland"
 
 all: loop
 
