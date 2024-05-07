@@ -20,13 +20,15 @@ ResourceManager* ResourceManager::current_manager = nullptr;
 
 struct MenuButtonArgs
 {
-	MenuButtonArgs(sf::RenderWindow& window, RenderTarget& rt) : 
-	window 	  (window),
-	rt 		  (rt)
+	MenuButtonArgs(sf::RenderWindow& window, RenderTarget& rt, const char* map_filepath = nullptr) : 
+	window		 (window),
+	rt			 (rt),
+	map_filepath (map_filepath)
 	{ }
 
 	sf::RenderWindow& window;
 	RenderTarget& 	  rt;
+	const char*		  map_filepath;
 };
 
 typedef CellInterface* (*interfaceFun)();
@@ -127,8 +129,18 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 
 	cell_view_group->setCellInterlayer(&cell_interlayer);
 
-	generateField(cell_interlayer, args.window.getSize());
+	if (args.map_filepath == nullptr)
+		generateField(cell_interlayer, args.window.getSize());
+	else
+		createFieldFromFile(cell_interlayer, args.window.getSize(), args.map_filepath);
+
 	runGameCycle(args, game_window);
+}
+
+void selectLoadingFile(MenuButtonArgs args)
+{
+	args.map_filepath = "Scripts/Test.sym";
+	CreateGameWindowAndRunGameCycle(args);
 }
 
 Window CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt)

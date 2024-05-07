@@ -1,3 +1,5 @@
 #pragma once
 
-std::vector<std::vector<FieldType>> LoadMap(const char* file);
+#include "../Interlayers/CellInterlayer.hpp"
+
+void createFieldFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, const char* map_filepath);
