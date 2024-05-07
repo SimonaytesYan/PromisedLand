@@ -156,7 +156,7 @@ Window CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt)
 									run_game_func, "Assets/UI/PlayButton.png"));
 	
 	position.y += button_size.y * 1.5;
-	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(CreateGameWindowAndRunGameCycle, {window, rt});
+	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, {window, rt});
 	menu_window.addChild(new Button(position, button_size.x, button_size.y, 
 									load_game_func, "Assets/UI/LoadButton.png"));
 	
