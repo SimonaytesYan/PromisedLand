@@ -44,7 +44,7 @@ public:
 
     void onTick()
     {
-        for (auto house : houses)
+        for (auto house : houses)   // TODO auto&
         {
             Resources house_res = house.ptr->getTickIncome();
 
