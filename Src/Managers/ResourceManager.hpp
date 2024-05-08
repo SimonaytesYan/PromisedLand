@@ -375,6 +375,8 @@ private:
         double effectiveness_coeff = static_cast<double>(house.ptr->getCurWorkers()) / static_cast<double>(house.max_workers);
         house.tick_income  = house.default_tick_income * effectiveness_coeff;
 
+        std::cout << "Coeff: " << effectiveness_coeff << '\n';
+
         auto building_it = findBuildingByPtr(house.ptr);
         building_it->tick_income = house.tick_income;
 

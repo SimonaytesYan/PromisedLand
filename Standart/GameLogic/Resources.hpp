@@ -56,7 +56,7 @@ public:
         return *this;
     }
 
-    Resources& operator*=(const double value)
+    Resources& operator*=(const long double value)
     {
         food            *= value;
         water           *= value;
@@ -84,7 +84,7 @@ public:
         return res;
     }
 
-    Resources operator*(const double value) const 
+    Resources operator*(const long double value) const 
     {
         Resources res = *this;
         res *= value;
