@@ -6,6 +6,7 @@
 #include "../Constants.hpp"
 #include "../Graphics/CellView/CellView.hpp"
 #include "../Interlayers/CellInterlayer.hpp"
+#include "../Managers/CellManager.hpp"
 
 const size_t kMaxCompileCommandSize = 255;
 const char*  command_prototype = "cd JitCompiler && make run_lang FILE=\"../%s\"";
