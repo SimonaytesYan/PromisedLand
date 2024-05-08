@@ -7,6 +7,11 @@
 #include "../Map/MapGenerating.hpp"
 #include "../Map/MapSaveLoad.hpp"
 
+void SaveMap(CellInterlayer& cell_int)
+{
+	MapSaver::saveMapToFile(cell_int, "Scripts/Save.sym");
+}
+
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
 	Window game_window({0, 0}, "Assets/Background.png");
@@ -32,6 +37,11 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 												   build_pan_interlayer);
 	game_window.addChild(build_panel);
 
+	BasicFunctor* save_func = new Functor<CellInterlayer&>(SaveMap, cell_interlayer);
+	Button* save_button = new Button({args.window.getSize().x - 50, 50}, 100, 100, 
+									  save_func, "Assets/UI/SaveIcon.png");
+	game_window.addChild(save_button);
+
 	cell_interlayer.setCellViewGroup(cell_view_group);
 
 	cell_manager.setCellInterlayer(&cell_interlayer);
@@ -42,14 +52,14 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	if (args.map_filepath == nullptr)
 		generateField(cell_interlayer, args.window.getSize());
 	else
-		createFieldFromFile(cell_interlayer, args.window.getSize(), args.map_filepath);
+		loadMapFromFile(cell_interlayer, args.window.getSize(), args.map_filepath);
 
 	runGameCycle(args.window, args.rt, game_window);
 }
 
 void selectLoadingFile(MenuButtonArgs args)
 {
-	args.map_filepath = "Scripts/Test.sym";
+	args.map_filepath = "Scripts/Save.sym";
 	CreateGameWindowAndRunGameCycle(args);
 }
 

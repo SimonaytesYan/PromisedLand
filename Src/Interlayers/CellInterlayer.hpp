@@ -4,11 +4,14 @@
 
 #include "../../Standart/Interlayers/CellInterlayerI.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
+#include "../Map/MapSaveLoad.hpp"
 
 class CellManager;
 
 class CellInterlayer : public CellInterlayerI
 {
+    friend MapSaver;
+
 public:
     explicit CellInterlayer(CellManager& cell_manager)
       : cell_manager    (cell_manager),
