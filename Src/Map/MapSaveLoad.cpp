@@ -5,6 +5,7 @@
 #include "../../JitCompiler/Src/Filework.h"
 #include "../Constants.hpp"
 #include "../Graphics/CellView/CellView.hpp"
+#include "../Interlayers/CellInterlayer.hpp"
 
 const size_t kMaxCompileCommandSize = 255;
 const char*  command_prototype = "cd JitCompiler && make run_lang FILE=\"../%s\"";
@@ -42,7 +43,13 @@ void loadMapFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, c
 
 void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
 {
-	FILE* map_fp = fopen(map_filepath, "-w");
+	FILE* map_fp = fopen(map_filepath, "w");
+
+	if (map_fp == nullptr)
+	{
+		printf("Error during file open\n");
+		return;
+	}
 
 	fprintf(map_fp, "begin\n");
 
@@ -51,7 +58,8 @@ void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
 	{
 		const Point 	pos 	   = cell_int.cell_view_group->cell_views[index]->getPos();
 		const FieldType field_type = cell_int.cell_manager.cells[index]->getFieldType();
-		fprintf(map_fp, "call build_cell(%d, %d, %d)", pos.x, pos.y, field_type);
+		if (field_type != 0)
+			fprintf(map_fp, "call build_cell(%d, %d, %zu);\n", pos.x, pos.y, field_type);
 	}
 
 	fprintf(map_fp, "end\n");
