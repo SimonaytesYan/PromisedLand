@@ -164,6 +164,11 @@ public:
 
         calculateOnDeleteResources(building_cell);
 
+        if (houses.size() == 0)
+        {
+            tick_income = kZeroResources;
+        }
+
         informResourceBar();
         updateCoeffDisplays();
     }
