@@ -3,6 +3,7 @@
 #include "GameCycle.hpp"
 #include "../Managers/ResourceManager.hpp"
 #include "../Constants.hpp"
+#include "../Map/MapSaveLoad.hpp"
 
 ResourceManager* ResourceManager::current_manager = nullptr;
 

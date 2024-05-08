@@ -1,5 +1,13 @@
 #pragma once
 
-#include "../Interlayers/CellInterlayer.hpp"
+#include <SFML/Graphics.hpp>
 
-void createFieldFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, const char* map_filepath);
+class CellInterlayer;
+
+class MapSaver
+{
+public:
+	static void saveMapToFile(CellInterlayer& cell_int, const char* map_filepath);
+};
+
+void loadMapFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, const char* map_filepath);

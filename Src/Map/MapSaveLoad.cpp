@@ -5,6 +5,7 @@
 #include "../../JitCompiler/Src/Filework.h"
 #include "../Constants.hpp"
 #include "../Graphics/CellView/CellView.hpp"
+#include "../Interlayers/CellInterlayer.hpp"
 
 const size_t kMaxCompileCommandSize = 255;
 const char*  command_prototype = "cd JitCompiler && make run_lang FILE=\"../%s\"";
@@ -15,7 +16,7 @@ std::vector<std::vector<FieldType>> field;
 static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath);
 static void 							   RunScript(const char* script_file);
 
-void createFieldFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, const char* map_filepath)
+void loadMapFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, const char* map_filepath)
 {
 	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
 	const int y_cell_cnt = (window_size.y - kControlPanelH) / kFieldSize;
@@ -24,7 +25,7 @@ void createFieldFromFile(CellInterlayer& cell_int, const sf::Vector2u window_siz
     //                                           std::vector<FieldType>(y_cell_cnt + 1, 
     //                                                                  static_cast<size_t>(ReservedTypes::GRASS)));
     
-    std::vector<std::vector<FieldType>> field = RunMapGenScript("Scripts/Test.sym");
+    std::vector<std::vector<FieldType>> field = RunMapGenScript(map_filepath);
     // generateRiver(field);
     // generateForest(field);
 
@@ -39,6 +40,34 @@ void createFieldFromFile(CellInterlayer& cell_int, const sf::Vector2u window_siz
 		}
 	}
 }
+
+void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
+{
+	FILE* map_fp = fopen(map_filepath, "w");
+
+	if (map_fp == nullptr)
+	{
+		printf("Error during file open\n");
+		return;
+	}
+
+	fprintf(map_fp, "begin\n");
+
+	const size_t cell_n = cell_int.cell_view_group->cell_views.size();
+	for(size_t index = 0; index < cell_n; index++)
+	{
+		const Point 	pos 	   = cell_int.cell_view_group->cell_views[index]->getPos();
+		const FieldType field_type = cell_int.cell_manager.cells[index]->getFieldType();
+		if (field_type != 0)
+			fprintf(map_fp, "\tcall build_cell(%zu, %g, %g);\n", field_type,
+															   pos.x / kFieldSize, 
+															   pos.y / kFieldSize);
+	}
+
+	fprintf(map_fp, "end\n");
+	fclose(map_fp);
+}
+
 
 static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath)
 {

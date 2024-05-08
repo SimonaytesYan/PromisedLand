@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "../../../Standart/Graphics/CellView/CellViewGroupI.hpp"
+#include "../../Map/MapSaveLoad.hpp"
 
 class CellInterlayer;
 class CellView;
@@ -10,6 +11,7 @@ class CellView;
 class CellViewGroup : public CellViewGroupI
 {
     friend CellInterlayer;
+    friend MapSaver;
 
 public:
     CellViewGroup(const Point position)
