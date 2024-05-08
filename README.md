@@ -1,3 +1,13 @@
+# Alpha 3.0
+## In game
+* Add indicators of people work/live in buildings
+* Add menu
+* Add new resource: stone
+* Add new cell: mine
+* People in houses can born and die
+## In code
+* Add script language to save and generate map (see examples in folder Scripts)
+* Add all cells like plugins 
 # Alpha 2.0
 ## What new
 * Wold generation
