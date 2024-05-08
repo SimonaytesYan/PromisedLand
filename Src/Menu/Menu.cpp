@@ -9,7 +9,7 @@
 
 void SaveMap(CellInterlayer& cell_int)
 {
-	MapSaver::saveMapToFile(cell_int, "Save1.sym");
+	MapSaver::saveMapToFile(cell_int, "Scripts/Save.sym");
 }
 
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
@@ -57,7 +57,7 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 
 void selectLoadingFile(MenuButtonArgs args)
 {
-	args.map_filepath = "Scripts/Test.sym";
+	args.map_filepath = "Scripts/Save.sym";
 	CreateGameWindowAndRunGameCycle(args);
 }
 

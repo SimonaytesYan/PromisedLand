@@ -25,7 +25,7 @@ void loadMapFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, c
     //                                           std::vector<FieldType>(y_cell_cnt + 1, 
     //                                                                  static_cast<size_t>(ReservedTypes::GRASS)));
     
-    std::vector<std::vector<FieldType>> field = RunMapGenScript("Scripts/Test.sym");
+    std::vector<std::vector<FieldType>> field = RunMapGenScript(map_filepath);
     // generateRiver(field);
     // generateForest(field);
 
@@ -59,7 +59,9 @@ void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
 		const Point 	pos 	   = cell_int.cell_view_group->cell_views[index]->getPos();
 		const FieldType field_type = cell_int.cell_manager.cells[index]->getFieldType();
 		if (field_type != 0)
-			fprintf(map_fp, "call build_cell(%d, %d, %zu);\n", pos.x, pos.y, field_type);
+			fprintf(map_fp, "\tcall build_cell(%zu, %g, %g);\n", field_type,
+															   pos.x / kFieldSize, 
+															   pos.y / kFieldSize);
 	}
 
 	fprintf(map_fp, "end\n");
