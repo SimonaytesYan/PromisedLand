@@ -46,11 +46,12 @@ void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
 
 	fprintf(map_fp, "begin\n");
 
-	for(auto v : cell_int.cell_view_group->cell_views)
+	const size_t cell_n = cell_int.cell_view_group->cell_views.size();
+	for(size_t index = 0; index < cell_n; index++)
 	{
-		const Point pos = v->getPos();
-		
-		fprintf(map_fp, "call build_cell(%d, %d, %d)", pos.x, pos.y, v.);
+		const Point 	pos 	   = cell_int.cell_view_group->cell_views[index]->getPos();
+		const FieldType field_type = cell_int.cell_manager.cells[index]->getFieldType();
+		fprintf(map_fp, "call build_cell(%d, %d, %d)", pos.x, pos.y, field_type);
 	}
 
 	fprintf(map_fp, "end\n");

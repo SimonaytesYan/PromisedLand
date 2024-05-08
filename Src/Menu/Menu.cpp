@@ -7,6 +7,11 @@
 #include "../Map/MapGenerating.hpp"
 #include "../Map/MapSaveLoad.hpp"
 
+void SaveMap(CellInterlayer& cell_int)
+{
+	MapSaver::saveMapToFile(cell_int, "Save1.sym");
+}
+
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
 	Window game_window({0, 0}, "Assets/Background.png");
@@ -29,6 +34,11 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	BuildingPanel* build_panel = new BuildingPanel(Point(args.window.getSize().x - kControlPanelW / 2, kControlPanelYStart), 
 												   build_pan_interlayer);
 	game_window.addChild(build_panel);
+
+	BasicFunctor* save_func = new Functor<CellInterlayer&>(SaveMap, cell_interlayer);
+	Button* save_button = new Button({args.window.getSize().x - 50, 50}, 100, 100, 
+									  save_func, "Assets/UI/SaveIcon.png");
+	game_window.addChild(save_button);
 
 	cell_interlayer.setCellViewGroup(cell_view_group);
 

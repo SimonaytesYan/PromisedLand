@@ -5,11 +5,13 @@
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "ResourceManager.hpp"
 #include "../Utils/Utils.hpp"
+#include "../Map/MapSaveLoad.hpp"
 
 class CellInterlayer;
 
 class CellManager
 {
+    friend MapSaver;
     friend CellInterlayer;
 
 public:

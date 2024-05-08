@@ -56,17 +56,6 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 				{
 					game_window.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
 				}
-
-				case sf::Event::KeyPressed:
-				{
-					if (event.key.code == sf::Keyboard::S)
-					{
-						if (!ResourceManager::hasLost())
-						{
-							MapSaver::saveMapToFile(cell_)
-						}
-					}
-				}
 			}
 		}
     }

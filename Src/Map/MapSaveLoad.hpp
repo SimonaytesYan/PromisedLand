@@ -6,5 +6,6 @@ void loadMapFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, c
 
 class MapSaver
 {
+public:
 	static void saveMapToFile(CellInterlayer& cell_int, const char* map_filepath);
-}
+};
