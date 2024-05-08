@@ -40,7 +40,7 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	if (args.map_filepath == nullptr)
 		generateField(cell_interlayer, args.window.getSize());
 	else
-		createFieldFromFile(cell_interlayer, args.window.getSize(), args.map_filepath);
+		loadMapFromFile(cell_interlayer, args.window.getSize(), args.map_filepath);
 
 	runGameCycle(args.window, args.rt, game_window);
 }

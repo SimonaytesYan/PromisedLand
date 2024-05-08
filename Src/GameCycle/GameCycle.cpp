@@ -3,6 +3,7 @@
 #include "GameCycle.hpp"
 #include "../Managers/ResourceManager.hpp"
 #include "../Constants.hpp"
+#include "../Map/MapSaveLoad.hpp"
 
 ResourceManager* ResourceManager::current_manager = nullptr;
 
@@ -54,6 +55,17 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 				case sf::Event::MouseMoved:
 				{
 					game_window.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
+				}
+
+				case sf::Event::KeyPressed:
+				{
+					if (event.key.code == sf::Keyboard::S)
+					{
+						if (!ResourceManager::hasLost())
+						{
+							MapSaver::saveMapToFile(cell_)
+						}
+					}
 				}
 			}
 		}

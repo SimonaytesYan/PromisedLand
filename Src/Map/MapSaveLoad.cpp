@@ -15,7 +15,7 @@ std::vector<std::vector<FieldType>> field;
 static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath);
 static void 							   RunScript(const char* script_file);
 
-void createFieldFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, const char* map_filepath)
+void loadMapFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, const char* map_filepath)
 {
 	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
 	const int y_cell_cnt = (window_size.y - kControlPanelH) / kFieldSize;
@@ -39,6 +39,24 @@ void createFieldFromFile(CellInterlayer& cell_int, const sf::Vector2u window_siz
 		}
 	}
 }
+
+void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
+{
+	FILE* map_fp = fopen(map_filepath, "-w");
+
+	fprintf(map_fp, "begin\n");
+
+	for(auto v : cell_int.cell_view_group->cell_views)
+	{
+		const Point pos = v->getPos();
+		
+		fprintf(map_fp, "call build_cell(%d, %d, %d)", pos.x, pos.y, v.);
+	}
+
+	fprintf(map_fp, "end\n");
+	fclose(map_fp);
+}
+
 
 static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath)
 {

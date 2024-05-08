@@ -5,9 +5,12 @@
 #include "../../Standart/Interlayers/CellInterlayerI.hpp"
 #include "../Managers/CellManager.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
+#include "../Map/MapSaveLoad.hpp"
 
 class CellInterlayer : public CellInterlayerI
 {
+    friend MapSaver;
+
 public:
     explicit CellInterlayer(CellManager& cell_manager)
       : cell_manager    (cell_manager),
