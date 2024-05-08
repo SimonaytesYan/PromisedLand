@@ -10,6 +10,6 @@ static const char* kPluginFolder = "PluginObjects";
 static const char* kWindowHeader       = "Promised Lands";
 static const int   kControlPanelH      = 150;
 static const int   kControlPanelW      = 150;
-static const int   kControlPanelYStart = 100;
+static const int   kControlPanelYStart = 200;
 static const int   kTextSize           = 20;
 static const int   kMSInClock          = 1000;

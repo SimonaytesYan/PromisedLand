@@ -38,7 +38,7 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	game_window.addChild(build_panel);
 
 	BasicFunctor* save_func = new Functor<CellInterlayer&>(SaveMap, cell_interlayer);
-	Button* save_button = new Button({args.window.getSize().x - 50, 50}, 100, 100, 
+	Button* save_button = new Button({args.window.getSize().x - 150, 50}, 100, 100, 
 									  save_func, "Assets/UI/SaveIcon.png");
 	game_window.addChild(save_button);
 
