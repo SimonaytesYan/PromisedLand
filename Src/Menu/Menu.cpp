@@ -14,7 +14,11 @@ void SaveMap(CellInterlayer& cell_int)
 
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
-	Window game_window({0, 0}, "Assets/Background.png");
+	const auto   window_size    = args.window.getSize();
+	const size_t visible_part_x = (window_size.x - kControlPanelW) / kFieldSize;
+	const size_t visible_part_y = (window_size.y - kControlPanelH) / kFieldSize;
+
+	Window game_window({0, 0}, visible_part_x, visible_part_y, "Assets/Background.png");
 
 	ResourceBar* res_bar = new ResourceBar(args.window.getSize().x, 
 										   args.window.getSize().y - kControlPanelH / 2, 
@@ -65,8 +69,10 @@ void selectLoadingFile(MenuButtonArgs args)
 
 Window CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt)
 {
-	RenderTarget menu_rt(Point(window.getSize().x, window.getSize().y));
-	Window menu_window({0, 0}, "Assets/UI/MenuBackground.png");
+	const auto window_size = window.getSize();
+
+	RenderTarget menu_rt(Point(window_size.x, window_size.y));
+	Window menu_window({0, 0}, window_size.x, window_size.y, "Assets/UI/MenuBackground.png");
 
 	const Point button_size(400, 200);
 	Point position(window.getSize().x / 2 - button_size.x / 2 - 20, 400);

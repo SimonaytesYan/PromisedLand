@@ -8,10 +8,12 @@
 class Window : public Widget
 {
 public:
-    explicit Window(const Point position, const char* img_path)
-      : Widget    (position),
-        children  (),
-        background(img_path)
+    explicit Window(const Point position, size_t _map_size_x, size_t _map_size_y, const char* img_path)
+      : Widget     (position),
+        children   (),
+        background (img_path),
+        map_size_x (_map_size_x),
+        map_size_y (_map_size_y)
     {}
 
     // Non-copyable
@@ -69,4 +71,7 @@ public:
 private:
     std::vector<Widget*> children;
     Texture              background;
+
+    size_t map_size_x;
+    size_t map_size_y;
 };

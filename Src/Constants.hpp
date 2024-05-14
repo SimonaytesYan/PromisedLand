@@ -16,6 +16,3 @@ static const int   kMSInClock          = 1000;
 
 static const int x_cell_cnt = 10;
 static const int y_cell_cnt = 10;
-
-static int visible_part_x = 0;
-static int visible_part_y = 0;
