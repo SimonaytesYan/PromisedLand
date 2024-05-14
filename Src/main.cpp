@@ -28,6 +28,12 @@ void loadPlugins()
 	}
 }
 
+void setMapSize(const sf::Vector2u window_size) 
+{
+	visible_part_x = (window_size.x - kControlPanelW) / kFieldSize;
+	visible_part_y = (window_size.y - kControlPanelH) / kFieldSize;
+}
+
 int main()
 {
 	srand(time(nullptr));
@@ -37,6 +43,8 @@ int main()
 	bool run_loop = true;
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 	RenderTarget main_rt(Point(window.getSize().x, window.getSize().y));
+
+	setMapSize(window.getSize());
 	Window menu = CreateMenuWindow(window, main_rt);
 
 	runGameCycle(window, main_rt, menu);

@@ -50,9 +50,9 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	cell_view_group->setCellInterlayer(&cell_interlayer);
 
 	if (args.map_filepath == nullptr)
-		generateField(cell_interlayer, args.window.getSize());
+		generateField(cell_interlayer);
 	else
-		loadMapFromFile(cell_interlayer, args.window.getSize(), args.map_filepath);
+		loadMapFromFile(cell_interlayer, args.map_filepath);
 
 	runGameCycle(args.window, args.rt, game_window);
 }

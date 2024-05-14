@@ -22,15 +22,11 @@ void dfsRiverGeneration(std::vector<std::vector<FieldType>>& field,
                         const size_t prev_index);
 void generateRiver(std::vector<std::vector<FieldType>>& field);
 void generateForest(std::vector<std::vector<FieldType>>& field);
-void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size);
+void generateField(CellInterlayer& cell_int);
 
-void generateField(CellInterlayer& cell_int, const sf::Vector2u window_size)
+void generateField(CellInterlayer& cell_int)
 {
     srand(time(NULL));
-
-	// leave space for controls below
-	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
-	const int y_cell_cnt = (window_size.y - kControlPanelH) / kFieldSize;
 
     std::vector<std::vector<FieldType>> field(x_cell_cnt + 1, 
                                               std::vector<FieldType>(y_cell_cnt + 1, 

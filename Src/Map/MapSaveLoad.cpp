@@ -17,11 +17,8 @@ std::vector<std::vector<FieldType>> field;
 static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath);
 static void 							   RunScript(const char* script_file);
 
-void loadMapFromFile(CellInterlayer& cell_int, const sf::Vector2u window_size, const char* map_filepath)
+void loadMapFromFile(CellInterlayer& cell_int, const char* map_filepath)
 {
-	const int x_cell_cnt = (window_size.x - kControlPanelW) / kFieldSize;
-	const int y_cell_cnt = (window_size.y - kControlPanelH) / kFieldSize;
-
     // std::vector<std::vector<FieldType>> field(x_cell_cnt + 1, 
     //                                           std::vector<FieldType>(y_cell_cnt + 1, 
     //                                                                  static_cast<size_t>(ReservedTypes::GRASS)));
