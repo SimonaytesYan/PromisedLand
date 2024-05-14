@@ -111,7 +111,6 @@ public:
         return pos;
     }
     
-
 protected:
     const Color    kChosenCellColor = {255, 255, 255, 128};
     const Color    kCoeffTextColor  = {0, 0, 0};

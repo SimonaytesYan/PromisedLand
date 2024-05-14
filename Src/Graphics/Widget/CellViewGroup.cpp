@@ -72,7 +72,10 @@ void CellViewGroup::push(const EventPtr event)
 
             EventPtr cell_view_event = new MouseClickEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
-                val->push(cell_view_event);
+            {
+                if (draw_canvas->isPointVisible(val->getPos()))
+                    val->push(cell_view_event);
+            }
 
             return;
         }
@@ -82,7 +85,10 @@ void CellViewGroup::push(const EventPtr event)
 
             EventPtr cell_view_event = new MouseMoveEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
-                val->push(cell_view_event);
+            {
+                if (draw_canvas->isPointVisible(val->getPos()))
+                    val->push(cell_view_event);
+            }
 
             return;
         }

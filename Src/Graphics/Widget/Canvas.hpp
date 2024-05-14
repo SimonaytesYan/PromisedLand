@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include "../../Utils/RenderTarget.hpp"
 #include "Widget.hpp"
 
@@ -18,6 +16,8 @@ public:
         relative_host_pos (_pos),
         host_size_x       (_host_size_x),
         host_size_y       (_host_size_y),
+        canvas_size_x     (_canvas_size_x),
+        canvas_size_y     (_canvas_size_y),
         canvas_renderer   (new RenderTarget({_canvas_size_x, _canvas_size_y}))
     {}
 
@@ -49,8 +49,10 @@ public:
 
     void updateHostPosition(const int dx, const int dy)
     {
-        relative_host_pos.x += dx;
-        relative_host_pos.y += dy;
+        relative_host_pos.x = 
+            std::max(std::min(relative_host_pos.x + dx, original_host_pos.x + canvas_size_x - host_size_x), original_host_pos.x);
+        relative_host_pos.y = 
+            std::max(std::min(relative_host_pos.y + dy, original_host_pos.y + canvas_size_y - host_size_y), original_host_pos.y);
     }
 
     RenderTarget& getRenderTarget()
@@ -63,12 +65,23 @@ public:
         return {absolute_pos.x + relative_host_pos.x, absolute_pos.y + relative_host_pos.y};
     }
 
+    bool isPointVisible(const Point absolute_pos)
+    {
+        return absolute_pos.x >= relative_host_pos.x                &&
+               absolute_pos.x <= relative_host_pos.x + host_size_x  &&
+               absolute_pos.y >= relative_host_pos.y                &&
+               absolute_pos.y <= relative_host_pos.y + host_size_y;
+    }
+
 private:
     Point original_host_pos;
     Point relative_host_pos;
 
     size_t host_size_x;
     size_t host_size_y;
+
+    size_t canvas_size_x;
+    size_t canvas_size_y;
 
     RenderTarget* canvas_renderer;
 };
