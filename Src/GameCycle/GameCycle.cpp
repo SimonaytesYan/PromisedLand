@@ -56,6 +56,18 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 				{
 					game_window.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
 				}
+
+				case sf::Event::KeyPressed:
+				{
+					if (event.key.code == sf::Keyboard::W) 
+						game_window.push(new MapMovedEvent(0, move_speed));
+					else if (event.key.code == sf::Keyboard::A) 
+						game_window.push(new MapMovedEvent(move_speed, 0));
+					else if (event.key.code == sf::Keyboard::S) 
+						game_window.push(new MapMovedEvent(0, -1 * move_speed));
+					else if (event.key.code == sf::Keyboard::D) 
+						game_window.push(new MapMovedEvent(-1 * move_speed, 0));
+				}
 			}
 		}
     }

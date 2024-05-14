@@ -50,11 +50,21 @@ public:
     void push(const EventPtr event) override
     {}
 
-    void setHostProperties(const Point pos, const size_t size_x, const size_t size_y)
+    void setHostPosition(const Point pos)
     {
-        host_pos    = pos;
+        host_pos = pos;
+    }
+
+    void setHostSize(const size_t size_x, const size_t size_y)
+    {
         host_size_x = size_x;
         host_size_y = size_y;
+    }
+
+    void updateHostPosition(const int dx, const int dy)
+    {
+        host_pos.x += dx;
+        host_pos.y += dy;
     }
 
     RenderTarget& getRenderTarget()

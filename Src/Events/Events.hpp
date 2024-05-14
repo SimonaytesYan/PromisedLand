@@ -100,3 +100,15 @@ struct SuccessfulCellDeleteEvent : public Event
     : Event (EventType::SUCCESSFUL_CELL_VIEW_DELETE)
     {}
 };
+
+struct MapMovedEvent : public Event
+{
+  explicit MapMovedEvent(const int _delta_x, const int _delta_y)
+    : Event   (EventType::MAP_MOVED),
+      delta_x (_delta_x),
+      delta_y (_delta_y)
+  {}
+
+  int delta_x;
+  int delta_y;
+};

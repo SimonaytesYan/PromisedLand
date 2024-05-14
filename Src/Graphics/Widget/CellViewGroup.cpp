@@ -14,7 +14,8 @@ CellViewGroup::CellViewGroup(const Point position, const size_t _map_size_x, con
 
     const size_t map_size_x = std::min(_map_size_x, canvas_size_x);
     const size_t map_size_y = std::min(_map_size_y, canvas_size_y);
-    draw_canvas->setHostProperties(position, map_size_x, map_size_y);
+    draw_canvas->setHostPosition(position);
+    draw_canvas->setHostSize    (map_size_x, map_size_y);
 }
 
 void CellViewGroup::push(const EventPtr event)
@@ -55,6 +56,15 @@ void CellViewGroup::push(const EventPtr event)
         {
             const CoeffChangedEvent* coeff_changed_event = static_cast<const CoeffChangedEvent*>(event.get());
             cell_views[coeff_changed_event->index]->setCoeff(coeff_changed_event->cur_workers, coeff_changed_event->max_workers);
+            break;
+        }
+        case EventType::MAP_MOVED:
+        {
+            const MapMovedEvent* map_moved_event = static_cast<const MapMovedEvent*>(event.get());
+            const auto dx = map_moved_event->delta_x;
+            const auto dy = map_moved_event->delta_y;
+
+            draw_canvas->updateHostPosition(dx, dy);
             break;
         }
         default:

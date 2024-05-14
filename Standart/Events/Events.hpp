@@ -20,6 +20,7 @@ enum class EventType
     TRY_BUILD_EVENT,
     COEFF_CHANGED,
     SUCCESSFUL_CELL_VIEW_DELETE,
+    MAP_MOVED,
 };
 
 struct Event 

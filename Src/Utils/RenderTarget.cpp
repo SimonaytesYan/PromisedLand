@@ -112,7 +112,7 @@ void RenderTarget::drawTexture(const Point pos, const TextureI& texture)
 void RenderTarget::drawTexture(const Point pos, const size_t x_size, const size_t y_size, const TextureI& texture)
 {
     sf::Sprite sprite_to_crop(texture.sf_texture);
-    sprite_to_crop.setPosition({pos.x, pos.y});
+    sprite_to_crop.setPosition({0, 0});
 
     sf::RenderTexture main_rt_copy;
 
@@ -121,7 +121,7 @@ void RenderTarget::drawTexture(const Point pos, const size_t x_size, const size_
     main_rt_copy.display();
 
     sf::Sprite cropped_img(main_rt_copy.getTexture(), sf::IntRect(pos.x, pos.y, x_size, y_size));
-    cropped_img.setPosition({pos.x, pos.y});
+    cropped_img.setPosition({0, 0});
 
     rt.draw(cropped_img);
 }
