@@ -37,6 +37,8 @@ public:
 
     void draw(RenderTargetI& render_target) override
     {
+        canvas_renderer->display();
+
         TextureI* texture = canvas_renderer->getTexture();
         render_target.drawTexture(host_pos, host_size_x, host_size_y, *texture);
 

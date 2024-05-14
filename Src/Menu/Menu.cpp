@@ -25,7 +25,7 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 										   kStartResources);
 	game_window.addChild(res_bar);
 
-	CellViewGroup* cell_view_group = new CellViewGroup({0, 0});
+	CellViewGroup* cell_view_group = new CellViewGroup({0, 0}, visible_part_x, visible_part_y);
 	game_window.addChild(cell_view_group);
 
 	// Interlayer + Manager initialisation

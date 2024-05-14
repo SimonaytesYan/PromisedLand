@@ -16,7 +16,7 @@ class CellViewGroup : public CellViewGroupI
     friend MapSaver;
 
 public:
-    CellViewGroup(const Point position);
+    CellViewGroup(const Point position, const size_t map_size_x, const size_t map_size_y);
 
     void push(const EventPtr event) override;
     virtual void pushToLogic(const EventPtr event);
