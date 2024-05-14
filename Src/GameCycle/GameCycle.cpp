@@ -10,6 +10,11 @@ ResourceManager* ResourceManager::current_manager = nullptr;
 void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_window) 
 {
     auto timer_start = std::chrono::system_clock::now(); 
+
+	int delta_x = 0, delta_y = 0;
+	bool is_map_moving = false, is_clicked = false;
+	Point last_pos;
+
     while (window.isOpen())
 	{
 		if (ResourceManager::hasLost())
@@ -45,28 +50,87 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 				case sf::Event::Closed:
 				{
 					window.close();
+					break;
 				}
 
 				case sf::Event::MouseButtonPressed:
 				{
-					game_window.push(new MouseClickEvent({event.mouseButton.x, event.mouseButton.y}));
+					const auto mouse_position = sf::Mouse::getPosition();
+
+					is_clicked = true;
+					last_pos   = {mouse_position.x, mouse_position.y};
+
+					break;
+				}
+
+				case sf::Event::MouseButtonReleased:
+				{
+					if (!is_map_moving) {
+						// click on cell
+						game_window.push(new MouseClickEvent({event.mouseButton.x, event.mouseButton.y}));
+
+						// for cell hover
+						const auto mouse_position = sf::Mouse::getPosition();
+						game_window.push(new MouseMoveEvent({mouse_position.x, mouse_position.y}));
+
+					}
+
+					is_map_moving = false;
+					is_clicked    = false;
+
+					break;
 				}
 
 				case sf::Event::MouseMoved:
 				{
+					if (is_clicked) {
+						is_map_moving = true;
+						game_window.push(new MapMovedEvent(last_pos.x - event.mouseMove.x, last_pos.y - event.mouseMove.y));
+						last_pos = {event.mouseMove.x, event.mouseMove.y};
+					}
+
 					game_window.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
+					
+					break;
+				}
+
+				case sf::Event::KeyReleased:
+				{
+					if (event.key.code == sf::Keyboard::W) 
+						delta_y = 0;
+					else if (event.key.code == sf::Keyboard::A) 
+						delta_x = 0;
+					else if (event.key.code == sf::Keyboard::S) 
+						delta_y = 0;
+					else if (event.key.code == sf::Keyboard::D) 
+						delta_x = 0;
+					else break;
+
+					is_map_moving = false;
+
+					break;
 				}
 
 				case sf::Event::KeyPressed:
 				{
 					if (event.key.code == sf::Keyboard::W) 
-						game_window.push(new MapMovedEvent(0, move_speed));
+						delta_y = -1 * move_speed;
 					else if (event.key.code == sf::Keyboard::A) 
-						game_window.push(new MapMovedEvent(move_speed, 0));
+						delta_x = -1 * move_speed;
 					else if (event.key.code == sf::Keyboard::S) 
-						game_window.push(new MapMovedEvent(0, -1 * move_speed));
+						delta_y = move_speed;
 					else if (event.key.code == sf::Keyboard::D) 
-						game_window.push(new MapMovedEvent(-1 * move_speed, 0));
+						delta_x = move_speed;
+					else break;
+
+					is_map_moving = true;
+					game_window.push(new MapMovedEvent(delta_x, delta_y));
+
+					// for cell hover
+					const auto mouse_position = sf::Mouse::getPosition();
+					game_window.push(new MouseMoveEvent({mouse_position.x, mouse_position.y}));
+
+					break;
 				}
 			}
 		}

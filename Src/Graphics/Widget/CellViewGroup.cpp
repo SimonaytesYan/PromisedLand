@@ -64,6 +64,7 @@ void CellViewGroup::push(const EventPtr event)
             const auto dy = map_moved_event->delta_y;
 
             draw_canvas->updateHostPosition(dx, dy);
+
             break;
         }
         case EventType::MOUSE_CLICK:
