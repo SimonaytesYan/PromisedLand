@@ -58,6 +58,11 @@ public:
         return *canvas_renderer;
     }
 
+    Point getRelativePos(const Point absolute_pos)
+    {
+        return {absolute_pos.x + relative_host_pos.x, absolute_pos.y + relative_host_pos.y};
+    }
+
 private:
     Point original_host_pos;
     Point relative_host_pos;

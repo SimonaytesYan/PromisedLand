@@ -66,6 +66,26 @@ void CellViewGroup::push(const EventPtr event)
             draw_canvas->updateHostPosition(dx, dy);
             break;
         }
+        case EventType::MOUSE_CLICK:
+        {
+            const MouseClickEvent* mouse_event = static_cast<const MouseClickEvent*>(event.get());
+
+            EventPtr cell_view_event = new MouseClickEvent(draw_canvas->getRelativePos(mouse_event->pos));
+            for (auto val : cell_views)
+                val->push(cell_view_event);
+
+            return;
+        }
+        case EventType::MOUSE_MOVE:
+        {
+            const MouseMoveEvent* mouse_event = static_cast<const MouseMoveEvent*>(event.get());
+
+            EventPtr cell_view_event = new MouseMoveEvent(draw_canvas->getRelativePos(mouse_event->pos));
+            for (auto val : cell_views)
+                val->push(cell_view_event);
+
+            return;
+        }
         default:
             break;
     }
