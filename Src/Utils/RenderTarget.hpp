@@ -35,7 +35,7 @@ public:
 
     void drawText   (const Point pos, const char* const content, const uint16_t char_size, const Color color) override;
     void drawTexture(const Point pos, const TextureI& texture) override;
-    void drawTexture(const Point pos, const size_t x_size, const size_t y_size, const TextureI& texture) override;
+    void drawTexture(const Point original_pos, const Point relative_pos, const size_t x_size, const size_t y_size, const TextureI& texture) override;
 
     void display() override;
     void display(sf::RenderWindow& window) override;

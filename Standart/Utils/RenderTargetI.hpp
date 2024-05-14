@@ -47,7 +47,7 @@ public:
 
     virtual void drawText   (const Point pos, const char* const content, const uint16_t char_size, const Color color) = 0;
     virtual void drawTexture(const Point pos, const TextureI& texture) = 0;
-    virtual void drawTexture(const Point pos, const size_t x_size, const size_t y_size, const TextureI& texture) = 0;
+    virtual void drawTexture(const Point original_pos, const Point relative_pos, const size_t x_size, const size_t y_size, const TextureI& texture) = 0;
 
     virtual void display() = 0;
     virtual void display(sf::RenderWindow& window) = 0;

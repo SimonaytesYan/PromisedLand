@@ -8,20 +8,17 @@
 class Canvas : public Widget
 {
 public:
-    explicit Canvas(const Point _pos, const size_t _size_x, const size_t _size_y)
-      : Widget          (_pos),
-        host_pos        (),
-        host_size_x     (),
-        host_size_y     (),
-        canvas_renderer (new RenderTarget({_size_x, _size_y}))
-    {}
-
-    explicit Canvas(const size_t _size_x, const size_t _size_y)
-      : Widget          (0, 0),
-        host_pos        (),
-        host_size_x     (),
-        host_size_y     (),
-        canvas_renderer (new RenderTarget({_size_x, _size_y}))
+    explicit Canvas(const Point _pos, 
+                    const size_t _host_size_x, 
+                    const size_t _host_size_y, 
+                    const size_t _canvas_size_x, 
+                    const size_t _canvas_size_y)
+      : Widget            (0, 0),
+        original_host_pos (_pos),
+        relative_host_pos (_pos),
+        host_size_x       (_host_size_x),
+        host_size_y       (_host_size_y),
+        canvas_renderer   (new RenderTarget({_canvas_size_x, _canvas_size_y}))
     {}
 
     // Non-copyable
@@ -42,7 +39,7 @@ public:
         canvas_renderer->display();
 
         TextureI* texture = canvas_renderer->getTexture();
-        render_target.drawTexture(host_pos, host_size_x, host_size_y, *texture);
+        render_target.drawTexture(original_host_pos, relative_host_pos, host_size_x, host_size_y, *texture);
 
         delete texture;
     }
@@ -50,21 +47,10 @@ public:
     void push(const EventPtr event) override
     {}
 
-    void setHostPosition(const Point pos)
-    {
-        host_pos = pos;
-    }
-
-    void setHostSize(const size_t size_x, const size_t size_y)
-    {
-        host_size_x = size_x;
-        host_size_y = size_y;
-    }
-
     void updateHostPosition(const int dx, const int dy)
     {
-        host_pos.x += dx;
-        host_pos.y += dy;
+        relative_host_pos.x += dx;
+        relative_host_pos.y += dy;
     }
 
     RenderTarget& getRenderTarget()
@@ -73,7 +59,8 @@ public:
     }
 
 private:
-    Point host_pos;
+    Point original_host_pos;
+    Point relative_host_pos;
 
     size_t host_size_x;
     size_t host_size_y;
