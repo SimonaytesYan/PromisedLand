@@ -15,8 +15,8 @@ void SaveMap(CellInterlayer& cell_int)
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
 	const auto   window_size    = args.window.getSize();
-	const size_t visible_part_x = (window_size.x - kControlPanelW) / kFieldSize;
-	const size_t visible_part_y = (window_size.y - kControlPanelH) / kFieldSize;
+	const size_t visible_part_x = (window_size.x - kControlPanelW);
+	const size_t visible_part_y = (window_size.y - kControlPanelH);
 
 	Window game_window({0, 0}, visible_part_x, visible_part_y, "Assets/Background.png");
 

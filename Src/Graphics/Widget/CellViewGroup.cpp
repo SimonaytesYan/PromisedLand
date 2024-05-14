@@ -5,13 +5,15 @@
 #include "../../Events/Events.hpp"
 #include "../CellView/CellView.hpp"
 
-CellViewGroup::CellViewGroup(const Point position, const size_t map_size_x, const size_t map_size_y)
+CellViewGroup::CellViewGroup(const Point position, const size_t _map_size_x, const size_t _map_size_y)
   : CellViewGroupI (position)
 { 
     const size_t canvas_size_x = x_cell_cnt * kFieldSize;
     const size_t canvas_size_y = y_cell_cnt * kFieldSize;
-
     draw_canvas = new Canvas(canvas_size_x, canvas_size_y);
+
+    const size_t map_size_x = std::min(_map_size_x, canvas_size_x);
+    const size_t map_size_y = std::min(_map_size_y, canvas_size_y);
     draw_canvas->setHostProperties(position, map_size_x, map_size_y);
 }
 

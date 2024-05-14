@@ -111,13 +111,19 @@ void RenderTarget::drawTexture(const Point pos, const TextureI& texture)
 
 void RenderTarget::drawTexture(const Point pos, const size_t x_size, const size_t y_size, const TextureI& texture)
 {
-    sf::Vector2f rect_size = {texture.sf_texture.getSize().x, texture.sf_texture.getSize().y};
-    sf::RectangleShape texture_rect(rect_size);
+    sf::Sprite sprite_to_crop(texture.sf_texture);
+    sprite_to_crop.setPosition({pos.x, pos.y});
 
-    texture_rect.setPosition({pos.x, pos.y});
-    texture_rect.setTexture (&texture.sf_texture);
+    sf::RenderTexture main_rt_copy;
 
-    rt.draw(texture_rect);
+    main_rt_copy.create (rt.getSize().x, rt.getSize().y);
+    main_rt_copy.draw   (sprite_to_crop);
+    main_rt_copy.display();
+
+    sf::Sprite cropped_img(main_rt_copy.getTexture(), sf::IntRect(pos.x, pos.y, x_size, y_size));
+    cropped_img.setPosition({pos.x, pos.y});
+
+    rt.draw(cropped_img);
 }
 
 void RenderTarget::display()

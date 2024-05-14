@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "../../Utils/RenderTarget.hpp"
 #include "Widget.hpp"
 
