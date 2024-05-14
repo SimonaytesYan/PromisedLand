@@ -37,19 +37,32 @@ public:
 
     void draw(RenderTargetI& render_target) override
     {
-        render_target.drawTexture(host_pos, host_size_x, host_size_y, *canvas_renderer->getTexture());
+        TextureI* texture = canvas_renderer->getTexture();
+        render_target.drawTexture(host_pos, host_size_x, host_size_y, *texture);
+
+        delete texture;
     }
 
     void push(const EventPtr event) override
-    {
+    {}
 
+    void setHostProperties(const Point pos, const size_t size_x, const size_t size_y)
+    {
+        host_pos    = pos;
+        host_size_x = size_x;
+        host_size_y = size_y;
+    }
+
+    RenderTarget& getRenderTarget()
+    {
+        return *canvas_renderer;
     }
 
 private:
-    const Point host_pos;
+    Point host_pos;
 
-    const size_t host_size_x;
-    const size_t host_size_y;
+    size_t host_size_x;
+    size_t host_size_y;
 
     RenderTarget* canvas_renderer;
 };

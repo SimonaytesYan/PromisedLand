@@ -5,6 +5,17 @@
 #include "../../Events/Events.hpp"
 #include "../CellView/CellView.hpp"
 
+CellViewGroup::CellViewGroup(const Point position)
+  : CellViewGroupI (position)
+{ 
+    const size_t canvas_size_x = x_cell_cnt * kFieldSize;
+    const size_t canvas_size_y = y_cell_cnt * kFieldSize;
+
+    draw_canvas = new Canvas(canvas_size_x, canvas_size_y);
+    // TODO:
+    // draw_canvas->setHostProperties(position, );
+}
+
 void CellViewGroup::push(const EventPtr event)
 {        
     switch (event->event_type)
@@ -62,9 +73,13 @@ void CellViewGroup::draw(RenderTargetI& rt)
 {
     deleteDeadCells();
 
+    RenderTarget& canvas_rend_target = draw_canvas->getRenderTarget();
+
     const size_t cell_view_size = cell_views.size();
     for (size_t index = 0; index < cell_view_size; index++)
-        cell_views[index]->draw(rt);
+        cell_views[index]->draw(canvas_rend_target);
+        
+    draw_canvas->draw(rt);
 }
 
 void CellViewGroup::deleteDeadCells()

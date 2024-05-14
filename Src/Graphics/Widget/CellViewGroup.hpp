@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "Canvas.hpp"
+#include "../../Constants.hpp"
 #include "../../../Standart/Graphics/CellView/CellViewGroupI.hpp"
 #include "../../Map/MapSaveLoad.hpp"
 
@@ -14,9 +16,7 @@ class CellViewGroup : public CellViewGroupI
     friend MapSaver;
 
 public:
-    CellViewGroup(const Point position)
-    : CellViewGroupI (position)
-    { }
+    CellViewGroup(const Point position);
 
     void push(const EventPtr event) override;
     virtual void pushToLogic(const EventPtr event);
@@ -27,6 +27,8 @@ public:
 
     ~CellViewGroup()
     {
+        delete draw_canvas;
+        
         for (auto val : cell_views)
             delete val;
     }
@@ -41,4 +43,5 @@ protected:
 
     std::vector<CellView*> cell_views;   // CellViewGroup own it
     CellInterlayer*        cell_interlayer;
+    Canvas*                draw_canvas;
 };
