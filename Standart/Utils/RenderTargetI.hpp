@@ -10,6 +10,11 @@
 
 struct TextureI 
 {
+    explicit TextureI(const sf::Texture& _sf_texture)
+      : sf_texture (_sf_texture),
+        _img_path  ("")
+    {}
+
     explicit TextureI(const char* const img_path)
       :  _img_path (img_path)
     {
@@ -42,9 +47,12 @@ public:
 
     virtual void drawText   (const Point pos, const char* const content, const uint16_t char_size, const Color color) = 0;
     virtual void drawTexture(const Point pos, const TextureI& texture) = 0;
+    virtual void drawTexture(const Point pos, const size_t x_size, const size_t y_size, const TextureI& texture) = 0;
 
     virtual void display() = 0;
     virtual void display(sf::RenderWindow& window) = 0;
 
     virtual void clear(const Color clear_color = {0, 0, 0, 0}) = 0;
+
+    virtual TextureI* getTexture() = 0; 
 };

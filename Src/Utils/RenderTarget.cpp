@@ -109,6 +109,17 @@ void RenderTarget::drawTexture(const Point pos, const TextureI& texture)
     rt.draw(texture_rect);
 }
 
+void RenderTarget::drawTexture(const Point pos, const size_t x_size, const size_t y_size, const TextureI& texture)
+{
+    sf::Vector2f rect_size = {texture.sf_texture.getSize().x, texture.sf_texture.getSize().y};
+    sf::RectangleShape texture_rect(rect_size);
+
+    texture_rect.setPosition({pos.x, pos.y});
+    texture_rect.setTexture (&texture.sf_texture);
+
+    rt.draw(texture_rect);
+}
+
 void RenderTarget::display()
 {
     rt.display();
@@ -127,4 +138,10 @@ void RenderTarget::display(sf::RenderWindow& window)
 void RenderTarget::clear(const Color clear_color)
 {
     rt.clear({clear_color.r, clear_color.g, clear_color.b, clear_color.a});
+}
+
+// delete after use
+TextureI* RenderTarget::getTexture() 
+{
+    return new TextureI(rt.getTexture());
 }
