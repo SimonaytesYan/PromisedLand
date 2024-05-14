@@ -71,10 +71,12 @@ void CellViewGroup::push(const EventPtr event)
         {
             const MouseClickEvent* mouse_event = static_cast<const MouseClickEvent*>(event.get());
 
+            if (!draw_canvas->isPointVisible(mouse_event->pos)) return;
+
             EventPtr cell_view_event = new MouseClickEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
             {
-                if (draw_canvas->isPointVisible(val->getPos()))
+                if (draw_canvas->isCellVisible(val->getPos()))
                     val->push(cell_view_event);
             }
 
@@ -84,10 +86,12 @@ void CellViewGroup::push(const EventPtr event)
         {
             const MouseMoveEvent* mouse_event = static_cast<const MouseMoveEvent*>(event.get());
 
+            if (!draw_canvas->isPointVisible(mouse_event->pos)) return;
+
             EventPtr cell_view_event = new MouseMoveEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
             {
-                if (draw_canvas->isPointVisible(val->getPos()))
+                if (draw_canvas->isCellVisible(val->getPos()))
                     val->push(cell_view_event);
             }
 

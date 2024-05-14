@@ -67,6 +67,14 @@ public:
 
     bool isPointVisible(const Point absolute_pos)
     {
+        return absolute_pos.x >= original_host_pos.x                &&
+               absolute_pos.x <= original_host_pos.x + host_size_x  &&
+               absolute_pos.y >= original_host_pos.y                &&
+               absolute_pos.y <= original_host_pos.y + host_size_y;
+    }
+
+    bool isCellVisible(const Point absolute_pos)
+    {
         return absolute_pos.x >= relative_host_pos.x                &&
                absolute_pos.x <= relative_host_pos.x + host_size_x  &&
                absolute_pos.y >= relative_host_pos.y                &&
