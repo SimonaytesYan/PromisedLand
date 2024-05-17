@@ -43,6 +43,9 @@ void MapSaverLoader::loadMapFromFile(CellInterlayer& cell_int, ResourceManager& 
 			house_number++;
 	}
 
+	if (house_number == 0)
+		return;
+
 	const size_t population_per_house = res_man.getUserRes().population / house_number;
 	size_t population_remainder = res_man.getUserRes().population % house_number;
 	if (res_man.getUserRes().population != 0)
@@ -51,7 +54,7 @@ void MapSaverLoader::loadMapFromFile(CellInterlayer& cell_int, ResourceManager& 
 		{
 			if ((size_t)cell_int.cell_manager.cells[i]->getFieldType() == (size_t)ReservedTypes::HOUSE)
 			{
-				Cell* house = static_cast<Cell*>(cell_int.cell_manager.cells[i]);
+				Building* house = static_cast<Building*>(cell_int.cell_manager.cells[i]);
 				if (population_remainder > 0)
 				{
 					house->setPopulation(population_per_house + 1);
@@ -120,6 +123,12 @@ void LoadResourcesImplementation(long long food, long long water, long long wood
 								 long long population, long long free_population, 
 								 long long stone)
 {
+	printf("food 			= %d\n", food);
+	printf("water			= %d\n", water);
+	printf("wood 			= %d\n", wood);
+	printf("population 		= %d\n", population);
+	printf("free_population = %d\n", free_population);
+	printf("stone 			= %d\n", stone);
 	start_resources = Resources(food, water, wood, population, free_population, stone);
 }
 
@@ -144,5 +153,5 @@ static void RunScript(const char* script_file)
 		return;
 	}
 
-	TranslateAndRun(binary_file, file_size, binary_header, BuildCellImplementation, GetCellImplementation);	
+	TranslateAndRun(binary_file, file_size, binary_header, BuildCellImplementation, GetCellImplementation, LoadResourcesImplementation);	
 }
