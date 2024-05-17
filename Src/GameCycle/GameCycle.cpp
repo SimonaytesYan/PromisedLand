@@ -1,5 +1,6 @@
 #include <chrono>
 
+#include "../Events/EventManager.hpp"
 #include "GameCycle.hpp"
 #include "../Managers/ResourceManager.hpp"
 #include "../Constants.hpp"
@@ -7,8 +8,10 @@
 
 ResourceManager* ResourceManager::current_manager = nullptr;
 
-void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_window) 
+void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_window, EventManager& event_manager) 
 {
+	event_manager.addChild(&game_window);
+
     auto timer_start = std::chrono::system_clock::now(); 
 
 	int delta_x = 0, delta_y = 0;
@@ -20,6 +23,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 		if (ResourceManager::hasLost())
 		{
 			printf("You have lost!\n");
+			event_manager.removeChild(&game_window);
 			// window.close();
             return;
 		}
@@ -37,7 +41,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 		if (passed.count() >= kMSInClock)
 		{
 			static int tick = 0;
-			game_window.push(new Event(EventType::TICK));
+			event_manager.push(new Event(EventType::TICK));
 
 			timer_start = timer_end;
 		}
@@ -67,12 +71,11 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 				{
 					if (!is_map_moving) {
 						// click on cell
-						game_window.push(new MouseClickEvent({event.mouseButton.x, event.mouseButton.y}));
+						event_manager.push(new MouseClickEvent({event.mouseButton.x, event.mouseButton.y}));
 
 						// for cell hover
 						const auto mouse_position = sf::Mouse::getPosition();
-						game_window.push(new MouseMoveEvent({mouse_position.x, mouse_position.y}));
-
+						event_manager.push(new MouseMoveEvent({mouse_position.x, mouse_position.y}));
 					}
 
 					is_map_moving = false;
@@ -85,11 +88,11 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 				{
 					if (is_clicked) {
 						is_map_moving = true;
-						game_window.push(new MapMovedEvent(last_pos.x - event.mouseMove.x, last_pos.y - event.mouseMove.y));
+						event_manager.push(new MapMovedEvent(last_pos.x - event.mouseMove.x, last_pos.y - event.mouseMove.y));
 						last_pos = {event.mouseMove.x, event.mouseMove.y};
 					}
 
-					game_window.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
+					event_manager.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
 					
 					break;
 				}
@@ -124,15 +127,17 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 					else break;
 
 					is_map_moving = true;
-					game_window.push(new MapMovedEvent(delta_x, delta_y));
+					event_manager.push(new MapMovedEvent(delta_x, delta_y));
 
 					// for cell hover
 					const auto mouse_position = sf::Mouse::getPosition();
-					game_window.push(new MouseMoveEvent({mouse_position.x, mouse_position.y}));
+					event_manager.push(new MouseMoveEvent({mouse_position.x, mouse_position.y}));
 
 					break;
 				}
 			}
 		}
     }
+
+	event_manager.removeChild(&game_window);
 }

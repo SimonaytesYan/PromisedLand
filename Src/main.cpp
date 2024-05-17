@@ -6,6 +6,7 @@
 
 #include "Constants.hpp"
 #include "CellLoader/CellKeeper.hpp"
+#include "Events/EventManager.hpp"
 #include "Interlayers/CellInterlayer.hpp"
 #include "Graphics/Widget/Window.hpp"
 #include "../Standart/Plugin.hpp"
@@ -28,24 +29,21 @@ void loadPlugins()
 	}
 }
 
-// void setMapSize(const sf::Vector2u window_size) 
-// {
-// 	visible_part_x = (window_size.x - kControlPanelW) / kFieldSize;
-// 	visible_part_y = (window_size.y - kControlPanelH) / kFieldSize;
-// }
-
 int main()
 {
 	srand(time(nullptr));
 
 	loadPlugins();
 
-	bool run_loop = true;
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 	RenderTarget main_rt(Point(window.getSize().x, window.getSize().y));
-	Window menu = CreateMenuWindow(window, main_rt);
+	
+	EventManager event_manager;
+	Window* menu = CreateMenuWindow(window, main_rt, event_manager);
 
-	runGameCycle(window, main_rt, menu);
+	runGameCycle(window, main_rt, *menu, event_manager);
 	// CreateGameWindowAndRunGame(window);
+	
 	CellKeeper::destroy();
+	delete menu;
 }
