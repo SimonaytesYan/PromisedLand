@@ -10,7 +10,6 @@
 
 const size_t kMaxCompileCommandSize = 255;
 const char*  command_prototype = "cd JitCompiler && make run_lang FILE=\"../%s\"";
-const size_t kCellFieldSize = 64;
 
 std::vector<std::vector<FieldType>> field;
 
@@ -19,17 +18,11 @@ static void 							   RunScript(const char* script_file);
 
 void loadMapFromFile(CellInterlayer& cell_int, const char* map_filepath)
 {
-    // std::vector<std::vector<FieldType>> field(x_cell_cnt + 1, 
-    //                                           std::vector<FieldType>(y_cell_cnt + 1, 
-    //                                                                  static_cast<size_t>(ReservedTypes::GRASS)));
-    
     std::vector<std::vector<FieldType>> field = RunMapGenScript(map_filepath);
-    // generateRiver(field);
-    // generateForest(field);
-
-	for (int i = 0; i <= x_cell_cnt; ++i) 
+ 
+	for (int i = 0; i <= kFieldSizeX; ++i) 
 	{
-		for (int j = 0; j <= y_cell_cnt; ++j) 
+		for (int j = 0; j <= kFieldSizeY; ++j) 
 		{
 			const int cell_x = i * kFieldSize;
 			const int cell_y = j * kFieldSize;
@@ -69,7 +62,7 @@ void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
 
 static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath)
 {
-	field = std::vector<std::vector<FieldType>>(kCellFieldSize, std::vector<FieldType>(kCellFieldSize, 0));
+	field = std::vector<std::vector<FieldType>>(kFieldSizeX + 1, std::vector<FieldType>(kFieldSizeY + 1, 0));
 	RunScript(script_filepath);
 
 	return field;

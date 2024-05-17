@@ -8,8 +8,8 @@
 CellViewGroup::CellViewGroup(const Point position, const size_t _map_size_x, const size_t _map_size_y)
   : Widget (position)
 { 
-    const size_t canvas_size_x = x_cell_cnt * kFieldSize;
-    const size_t canvas_size_y = y_cell_cnt * kFieldSize;
+    const size_t canvas_size_x = kFieldSizeX * kFieldSize;
+    const size_t canvas_size_y = kFieldSizeY * kFieldSize;
 
     const size_t map_size_x = std::min(_map_size_x, canvas_size_x);
     const size_t map_size_y = std::min(_map_size_y, canvas_size_y);

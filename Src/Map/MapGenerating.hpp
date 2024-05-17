@@ -28,16 +28,16 @@ void generateField(CellInterlayer& cell_int)
 {
     srand(time(NULL));
 
-    std::vector<std::vector<FieldType>> field(x_cell_cnt + 1, 
-                                              std::vector<FieldType>(y_cell_cnt + 1, 
+    std::vector<std::vector<FieldType>> field(kFieldSizeX + 1, 
+                                              std::vector<FieldType>(kFieldSizeY + 1, 
                                                                      static_cast<size_t>(ReservedTypes::GRASS)));
     
     generateRiver(field);
     generateForest(field);
 
-	for (int i = 0; i <= x_cell_cnt; ++i) 
+	for (int i = 0; i <= kFieldSizeX; ++i) 
 	{
-		for (int j = 0; j <= y_cell_cnt; ++j) 
+		for (int j = 0; j <= kFieldSizeY; ++j) 
 		{
 			const int cell_x = i * kFieldSize;
 			const int cell_y = j * kFieldSize;
