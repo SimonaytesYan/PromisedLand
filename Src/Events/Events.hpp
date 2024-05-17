@@ -25,6 +25,8 @@ enum class EventType
     COEFF_CHANGED,
     SUCCESSFUL_CELL_VIEW_DELETE,
     MAP_MOVED,
+
+    EVENT_CNT,
 };
 
 struct Event 
