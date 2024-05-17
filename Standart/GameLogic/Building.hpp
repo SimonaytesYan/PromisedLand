@@ -45,6 +45,9 @@ public:
         cur_workers = _cur_workers;
     }
 
+    virtual void setPopulation(long int new_pop)
+    {}
+
 private:
     long int max_workers;
     long int cur_workers;
