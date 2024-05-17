@@ -8,8 +8,8 @@
 CellViewGroup::CellViewGroup(const Point position, const size_t _map_size_x, const size_t _map_size_y)
   : Widget (position)
 { 
-    const size_t canvas_size_x = kFieldSizeX * kFieldSize;
-    const size_t canvas_size_y = kFieldSizeY * kFieldSize;
+    const size_t canvas_size_x = kFieldSizeX * kCellSize;
+    const size_t canvas_size_y = kFieldSizeY * kCellSize;
 
     const size_t map_size_x = std::min(_map_size_x, canvas_size_x);
     const size_t map_size_y = std::min(_map_size_y, canvas_size_y);
@@ -76,7 +76,7 @@ void CellViewGroup::push(const EventPtr event)
             EventPtr cell_view_event = new MouseClickEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
             {
-                if (draw_canvas->isCellVisible(val->getPos(), kFieldSize))
+                if (draw_canvas->isCellVisible(val->getPos(), kCellSize))
                     val->push(cell_view_event);
             }
 
@@ -91,7 +91,7 @@ void CellViewGroup::push(const EventPtr event)
             EventPtr cell_view_event = new MouseMoveEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
             {
-                if (draw_canvas->isCellVisible(val->getPos(), kFieldSize))
+                if (draw_canvas->isCellVisible(val->getPos(), kCellSize))
                     val->push(cell_view_event);
             }
 
@@ -119,7 +119,7 @@ void CellViewGroup::draw(RenderTarget& rt)
     const size_t cell_view_size = cell_views.size();
     for (size_t index = 0; index < cell_view_size; index++)
     {
-        if (draw_canvas->isCellVisible(cell_views[index]->getPos(), kFieldSize))
+        if (draw_canvas->isCellVisible(cell_views[index]->getPos(), kCellSize))
             cell_views[index]->draw(canvas_rend_target);
     }
         

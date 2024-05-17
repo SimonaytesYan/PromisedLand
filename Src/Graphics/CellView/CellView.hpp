@@ -5,7 +5,7 @@
 #include "../Widget/CellViewGroup.hpp"
 #include "../../Graphics/Renderable.hpp"
 
-const size_t kFieldSize = 64;
+const size_t kCellSize = 64;
 
 class CellView : public Widget
 {
@@ -45,7 +45,7 @@ public:
         }
         if (is_chosen) 
         {
-            render_target.drawRect(pos, {kFieldSize, kFieldSize}, kChosenCellColor);
+            render_target.drawRect(pos, {kCellSize, kCellSize}, kChosenCellColor);
         }
     }
 
@@ -72,8 +72,8 @@ public:
 
     void onClick(const Point point, const EventPtr event)
     {
-        if (pos.x < point.x && point.x < pos.x + kFieldSize &&
-        pos.y < point.y && point.y < pos.y + kFieldSize)
+        if (pos.x < point.x && point.x < pos.x + kCellSize &&
+        pos.y < point.y && point.y < pos.y + kCellSize)
         {
             parent.pushToLogic(new TryBuildEvent(index_in_cell_group, pos));
         }
@@ -81,8 +81,8 @@ public:
     
     void onMouseMove(const Point point)
     {
-        if (pos.x < point.x && point.x < pos.x + kFieldSize &&
-            pos.y < point.y && point.y < pos.y + kFieldSize)
+        if (pos.x < point.x && point.x < pos.x + kCellSize &&
+            pos.y < point.y && point.y < pos.y + kCellSize)
         {
             is_chosen = true;
         }

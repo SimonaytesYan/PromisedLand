@@ -24,8 +24,8 @@ void loadMapFromFile(CellInterlayer& cell_int, const char* map_filepath)
 	{
 		for (int j = 0; j <= kFieldSizeY; ++j) 
 		{
-			const int cell_x = i * kFieldSize;
-			const int cell_y = j * kFieldSize;
+			const int cell_x = i * kCellSize;
+			const int cell_y = j * kCellSize;
 
 			cell_int.createCell(field[i][j], {cell_x, cell_y});
 		}
@@ -51,8 +51,8 @@ void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
 		const FieldType field_type = cell_int.cell_manager.cells[index]->getFieldType();
 		if (field_type != 0)
 			fprintf(map_fp, "\tcall build_cell(%zu, %g, %g);\n", field_type,
-															   pos.x / kFieldSize, 
-															   pos.y / kFieldSize);
+															   pos.x / kCellSize, 
+															   pos.y / kCellSize);
 	}
 
 	fprintf(map_fp, "end\n");

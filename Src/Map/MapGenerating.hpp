@@ -39,8 +39,8 @@ void generateField(CellInterlayer& cell_int)
 	{
 		for (int j = 0; j <= kFieldSizeY; ++j) 
 		{
-			const int cell_x = i * kFieldSize;
-			const int cell_y = j * kFieldSize;
+			const int cell_x = i * kCellSize;
+			const int cell_y = j * kCellSize;
 
 			cell_int.createCell(field[i][j], {cell_x, cell_y});
 		}
