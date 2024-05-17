@@ -194,7 +194,7 @@ public:
         current_manager = nullptr;
     }
 
-    void setCellInterlayer(CellInterlayerI* _cell_interlayer)
+    void setCellInterlayer(CellInterlayer* _cell_interlayer)
     {
         cell_interlayer = _cell_interlayer;
     }
@@ -401,7 +401,7 @@ private:
     Resources              user_res;
     Resources              tick_income;
     ResourceBarInterlayer& resource_bar_interlayer;
-    CellInterlayerI*       cell_interlayer;
+    CellInterlayer*       cell_interlayer;
 
     // "Resources" parameter needed to save resources 
     // that are needed for building

@@ -1,3 +1,8 @@
 #pragma once
 
-#include "../../Standart/Events/Eventable.hpp"
+#include "EventPtr.hpp"
+
+struct Eventable 
+{
+    virtual void push(const EventPtr event) = 0;
+};

@@ -2,13 +2,12 @@
 
 #include <vector>
 
-#include "../../Standart/Interlayers/CellInterlayerI.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
 #include "../Map/MapSaveLoad.hpp"
 
 class CellManager;
 
-class CellInterlayer : public CellInterlayerI
+class CellInterlayer
 {
     friend MapSaver;
 
@@ -18,13 +17,13 @@ public:
         cell_view_group (nullptr)
     { }
 
-    void pushToView(const EventPtr event) override;
-    void pushToLogic(const EventPtr event) override;
+    void pushToView(const EventPtr event);
+    void pushToLogic(const EventPtr event);
 
-    void setCellViewGroup(CellViewGroup* new_cell_view_group) override
+    void setCellViewGroup(CellViewGroup* new_cell_view_group)
     { cell_view_group = new_cell_view_group; }
 
-    void createCell(const size_t filed_type, const Point pos) override;
+    void createCell(const size_t filed_type, const Point pos);
 
 private:
     CellManager&   cell_manager;

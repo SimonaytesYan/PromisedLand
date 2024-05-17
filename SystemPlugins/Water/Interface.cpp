@@ -1,5 +1,4 @@
 #include "Cell.hpp"
-#include "View.hpp"
 
 #include "Interface.hpp"
 
@@ -11,11 +10,6 @@ CellType WaterInterface::getType()
 Cell* WaterInterface::createCell() 
 {
     return new WaterCell();
-}
-
-CellView* WaterInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
-{
-    return new WaterView(pos, cell_view_group);
 }
 
 Bitmask WaterInterface::getBuildMask() 

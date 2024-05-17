@@ -24,7 +24,6 @@ single:
 
 define make_lib 					
 	$(call create_cell_o) 
-	$(call create_view_o) 			
 	$(call create_interface_o)
 	$(call create_so)
 	$(call rm_o)					
@@ -34,16 +33,12 @@ define create_cell_o
 	$(COMPILER) -g -c $(FLAGS) -o $(NAME)Cell.o $(NAME)/Cell.cpp $(SFML_FLAGS) -fPIC
 endef
 
-define create_view_o	
-	$(COMPILER) -g -c $(FLAGS) -o $(NAME)View.o $(NAME)/View.cpp $(SFML_FLAGS) -fPIC
-endef
-
 define create_interface_o	
 	$(COMPILER) -g -c $(FLAGS) -o $(NAME)Interface.o $(NAME)/Interface.cpp $(SFML_FLAGS) -fPIC
 endef
 
 define create_so	
-	$(LIB_BUILDER) -shared -o $(LIB_PATH)$(NAME).so $(NAME)Cell.o $(NAME)View.o $(NAME)Interface.o
+	$(LIB_BUILDER) -shared -o $(LIB_PATH)$(NAME).so $(NAME)Cell.o $(NAME)Interface.o
 endef
 
 define rm_o 	

@@ -20,7 +20,7 @@ public:
         updateValues(start_res);
     }
 
-    void draw(RenderTargetI& render_target) override
+    void draw(RenderTarget& render_target) override
     {
         food_view      .draw(render_target);
         water_view     .draw(render_target);

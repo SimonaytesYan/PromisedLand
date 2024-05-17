@@ -1,5 +1,4 @@
 #include "Cell.hpp"
-#include "View.hpp"
 
 #include "Interface.hpp"
 
@@ -11,11 +10,6 @@ CellType HouseInterface::getType()
 Cell* HouseInterface::createCell() 
 {
     return new HouseCell();
-}
-
-CellView* HouseInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
-{
-    return new HouseView(pos, cell_view_group);
 }
 
 Bitmask HouseInterface::getBuildMask() 

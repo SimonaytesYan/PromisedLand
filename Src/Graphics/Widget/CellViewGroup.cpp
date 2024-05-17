@@ -6,7 +6,7 @@
 #include "../CellView/CellView.hpp"
 
 CellViewGroup::CellViewGroup(const Point position, const size_t _map_size_x, const size_t _map_size_y)
-  : CellViewGroupI (position)
+  : Widget (position)
 { 
     const size_t canvas_size_x = x_cell_cnt * kFieldSize;
     const size_t canvas_size_y = y_cell_cnt * kFieldSize;
@@ -110,7 +110,7 @@ void CellViewGroup::pushToLogic(const EventPtr event)
     cell_interlayer->pushToLogic(event); 
 }
 
-void CellViewGroup::draw(RenderTargetI& rt)
+void CellViewGroup::draw(RenderTarget& rt)
 {
     deleteDeadCells();
 

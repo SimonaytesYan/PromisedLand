@@ -1,5 +1,4 @@
 #include "Cell.hpp"
-#include "View.hpp"
 
 #include "Interface.hpp"
 
@@ -11,11 +10,6 @@ CellType GrassInterface::getType()
 Cell* GrassInterface::createCell() 
 {
     return new GrassCell();
-}
-
-CellView* GrassInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
-{
-    return new GrassView(pos, cell_view_group);
 }
 
 Bitmask GrassInterface::getBuildMask() 

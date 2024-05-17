@@ -1,5 +1,4 @@
 #include "Cell.hpp"
-#include "View.hpp"
 
 #include "Interface.hpp"
 
@@ -11,11 +10,6 @@ CellType WellInterface::getType()
 Cell* WellInterface::createCell() 
 {
     return new WellCell();
-}
-
-CellView* WellInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
-{
-    return new WellView(pos, cell_view_group);
 }
 
 Bitmask WellInterface::getBuildMask() 

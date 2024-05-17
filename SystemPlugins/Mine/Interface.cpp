@@ -1,5 +1,4 @@
 #include "Cell.hpp"
-#include "View.hpp"
 
 #include "Interface.hpp"
 
@@ -11,11 +10,6 @@ CellType MineInterface::getType()
 Cell* MineInterface::createCell() 
 {
     return new MineCell();
-}
-
-CellView* MineInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
-{
-    return new MineView(pos, cell_view_group);
 }
 
 Bitmask MineInterface::getBuildMask() 

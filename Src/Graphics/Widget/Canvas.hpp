@@ -34,7 +34,7 @@ public:
         delete canvas_renderer;
     }
 
-    void draw(RenderTargetI& render_target) override
+    void draw(RenderTarget& render_target) override
     {
         canvas_renderer->display();
 

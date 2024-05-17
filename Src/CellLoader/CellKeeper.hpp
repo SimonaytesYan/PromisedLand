@@ -5,6 +5,9 @@
 #include "../GameLogic/Tiles/Building.hpp"
 #include "../GameLogic/Tiles/Cell.hpp"
 #include "../GameLogic/CellInterface.hpp"
+#include "../Graphics/CellView/CellView.hpp"
+#include "../Utils/GraphicPrimitives.hpp"
+#include "../Utils/RenderTarget.hpp"
 
 class CellViewGroup;
 
@@ -29,7 +32,8 @@ public:
 
     static CellView* createCellView(const FieldType field_type, const Point pos, CellViewGroup& cell_view_group)
     {
-        return unique_cells[findByInterfaceId(field_type)]->createCellView(pos, reinterpret_cast<CellViewGroupI&>(cell_view_group));
+        const char* asset = unique_cells[findByInterfaceId(field_type)]->getAsset();
+        return new CellView(TextureI(asset), pos, cell_view_group);
     } 
 
     static Bitmask getBuildMask(const FieldType field_type)

@@ -35,7 +35,7 @@ public:
             val->push(event);
     }
 
-    void draw(RenderTargetI& rt) override
+    void draw(RenderTarget& rt) override
     {
         rt.drawTexture(this->pos, background);
 

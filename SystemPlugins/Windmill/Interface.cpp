@@ -1,5 +1,4 @@
 #include "Cell.hpp"
-#include "View.hpp"
 
 #include "Interface.hpp"
 
@@ -11,11 +10,6 @@ CellType WindmillInterface::getType()
 Cell* WindmillInterface::createCell() 
 {
     return new WindmillCell();
-}
-
-CellView* WindmillInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
-{
-    return new WindmillView(pos, cell_view_group);
 }
 
 Bitmask WindmillInterface::getBuildMask() 

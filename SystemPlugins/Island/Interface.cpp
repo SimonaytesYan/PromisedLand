@@ -1,5 +1,4 @@
 #include "Cell.hpp"
-#include "View.hpp"
 
 #include "Interface.hpp"
 
@@ -11,11 +10,6 @@ CellType IslandInterface::getType()
 Cell* IslandInterface::createCell() 
 {
     return new IslandCell();
-}
-
-CellView* IslandInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
-{
-    return new IslandView(pos, cell_view_group);
 }
 
 Bitmask IslandInterface::getBuildMask() 

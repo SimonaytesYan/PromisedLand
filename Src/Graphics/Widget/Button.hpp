@@ -48,7 +48,7 @@ public:
     }
 
 
-    void draw(RenderTargetI& render_target)
+    void draw(RenderTarget& render_target)
     {
         render_target.drawTexture(pos, texture);
     }

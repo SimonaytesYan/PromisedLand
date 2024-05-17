@@ -2,14 +2,15 @@
 
 #include "../../Standart/CellInterface.hpp"
 
+static const char* kViewAsset = "Assets/Sawmill.png";
+
 class WellInterface : public CellInterface
 {
 public:
-    CellType    getType        ()                                                 override;
-    Cell*       createCell     ()                                                 override;
-    CellView*   createCellView (const Point pos, CellViewGroupI& cell_view_group) override;
-    Bitmask     getBuildMask   ()                                                 override;
-    Resources   getAppearIncome()                                                 override;
-    size_t      getId          ()                                                 override;
-    const char* getAsset       ()                                                 override;
+    CellType    getType        () override;
+    Cell*       createCell     () override;
+    Bitmask     getBuildMask   () override;
+    Resources   getAppearIncome() override;
+    size_t      getId          () override;
+    const char* getAsset       () override;
 };

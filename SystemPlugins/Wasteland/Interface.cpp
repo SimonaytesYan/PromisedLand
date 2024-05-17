@@ -1,6 +1,4 @@
 #include "Cell.hpp"
-#include "View.hpp"
-
 #include "Interface.hpp"
 
 CellType WastelandInterface::getType() 
@@ -11,11 +9,6 @@ CellType WastelandInterface::getType()
 Cell* WastelandInterface::createCell() 
 {
     return new WastelandCell();
-}
-
-CellView* WastelandInterface::createCellView(const Point pos, CellViewGroupI& cell_view_group)
-{
-    return new WastelandView(pos, cell_view_group);
 }
 
 Bitmask WastelandInterface::getBuildMask() 
