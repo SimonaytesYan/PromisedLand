@@ -5,3 +5,4 @@ Bin
 log*
 Src/Test.cpp
 .vscode/
+Scripts/
