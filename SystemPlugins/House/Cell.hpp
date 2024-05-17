@@ -17,6 +17,11 @@ public:
     Resources getDestroyIncome() const override;
     Bitmask   getBuildMask() const override;
 
+    void setPopulation(long int new_pop)
+    {
+        cur_citizens = new_pop;
+    }
+
 private:
     static const unsigned kBirthTicks  = 20;
     static const unsigned kRandomCoeff = 4;

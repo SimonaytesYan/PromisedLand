@@ -70,6 +70,11 @@ public:
     ResourceManager(ResourceManager&& other)           = delete;
     ResourceManager operator=(ResourceManager&& other) = delete;
 
+    void setUserResources(const Resources resources)
+    {
+        user_res = resources;
+    }
+
     void onTick()
     {
         for (auto house : houses)   // TODO auto&
