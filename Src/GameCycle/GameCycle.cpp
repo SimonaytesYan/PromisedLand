@@ -5,12 +5,25 @@
 #include "../Managers/ResourceManager.hpp"
 #include "../Constants.hpp"
 #include "../Map/MapSaveLoad.hpp"
+#include "../Graphics/Widget/AnimatableWidget.hpp"
 
 ResourceManager* ResourceManager::current_manager = nullptr;
 
 void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_window, EventManager& event_manager) 
 {
 	event_manager.addChild(&game_window);
+
+	Vector<const char*> animation;
+	animation.PushBack("Assets/UI/Loading/0.png");
+	animation.PushBack("Assets/UI/Loading/1.png");
+	animation.PushBack("Assets/UI/Loading/2.png");
+	animation.PushBack("Assets/UI/Loading/3.png");
+	animation.PushBack("Assets/UI/Loading/4.png");
+	animation.PushBack("Assets/UI/Loading/5.png");
+	animation.PushBack("Assets/UI/Loading/6.png");
+	animation.PushBack("Assets/UI/Loading/7.png");
+
+	game_window.addChild(new AnimatedWidget({100, 100}, animation));
 
     auto timer_start = std::chrono::system_clock::now(); 
 
