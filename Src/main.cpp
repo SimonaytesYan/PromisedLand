@@ -29,6 +29,12 @@ void loadPlugins()
 	}
 }
 
+// void setMapSize(const sf::Vector2u window_size) 
+// {
+// 	visible_part_x = (window_size.x - kControlPanelW) / kCellSize;
+// 	visible_part_y = (window_size.y - kControlPanelH) / kCellSize;
+// }
+
 int main()
 {
 	srand(time(nullptr));

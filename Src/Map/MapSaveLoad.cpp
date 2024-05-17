@@ -10,36 +10,60 @@
 
 const size_t kMaxCompileCommandSize = 255;
 const char*  command_prototype = "cd JitCompiler && make run_lang FILE=\"../%s\"";
-const size_t kCellFieldSize = 64;
 
 std::vector<std::vector<FieldType>> field;
+Resources 							start_resources;
 
 static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath);
 static void 							   RunScript(const char* script_file);
 
-void loadMapFromFile(CellInterlayer& cell_int, const char* map_filepath)
+void MapSaverLoader::loadMapFromFile(CellInterlayer& cell_int, ResourceManager& res_man, const char* map_filepath)
 {
-    // std::vector<std::vector<FieldType>> field(x_cell_cnt + 1, 
-    //                                           std::vector<FieldType>(y_cell_cnt + 1, 
-    //                                                                  static_cast<size_t>(ReservedTypes::GRASS)));
-    
     std::vector<std::vector<FieldType>> field = RunMapGenScript(map_filepath);
-    // generateRiver(field);
-    // generateForest(field);
-
-	for (int i = 0; i <= x_cell_cnt; ++i) 
+ 
+	for (int i = 0; i <= kFieldSizeX; ++i) 
 	{
-		for (int j = 0; j <= y_cell_cnt; ++j) 
+		for (int j = 0; j <= kFieldSizeY; ++j) 
 		{
-			const int cell_x = i * kFieldSize;
-			const int cell_y = j * kFieldSize;
+			const int cell_x = i * kCellSize;
+			const int cell_y = j * kCellSize;
 
 			cell_int.createCell(field[i][j], {cell_x, cell_y});
 		}
 	}
+
+	res_man.setResources(start_resources);
+
+	const size_t cells_number = cell_int.cell_manager.cells.size();
+
+	size_t house_number = 0;
+	for (size_t i = 0; i < cells_number; i++)
+	{
+		if ((size_t)cell_int.cell_manager.cells[i]->getFieldType() == (size_t)ReservedTypes::HOUSE)
+			house_number++;
+	}
+
+	const size_t population_per_house = res_man.getUserRes().population / house_number;
+	size_t population_remainder = res_man.getUserRes().population % house_number;
+	if (res_man.getUserRes().population != 0)
+	{
+		for (size_t i = 0; i < cells_number; i++)
+		{
+			if ((size_t)cell_int.cell_manager.cells[i]->getFieldType() == (size_t)ReservedTypes::HOUSE)
+			{
+				if (population_remainder > 0)
+				{
+					house.setPopulation(population_per_house + 1);
+					population_remainder--;
+				}
+				else
+					house.setPopulation(population_per_house);
+			}
+		}
+	}
 }
 
-void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
+void MapSaverLoader::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
 {
 	FILE* map_fp = fopen(map_filepath, "w");
 
@@ -58,8 +82,8 @@ void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
 		const FieldType field_type = cell_int.cell_manager.cells[index]->getFieldType();
 		if (field_type != 0)
 			fprintf(map_fp, "\tcall build_cell(%zu, %g, %g);\n", field_type,
-															   pos.x / kFieldSize, 
-															   pos.y / kFieldSize);
+															   pos.x / kCellSize, 
+															   pos.y / kCellSize);
 	}
 
 	fprintf(map_fp, "end\n");
@@ -69,7 +93,7 @@ void MapSaver::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
 
 static std::vector<std::vector<FieldType>> RunMapGenScript(const char* script_filepath)
 {
-	field = std::vector<std::vector<FieldType>>(kCellFieldSize, std::vector<FieldType>(kCellFieldSize, 0));
+	field = std::vector<std::vector<FieldType>>(kFieldSizeX + 1, std::vector<FieldType>(kFieldSizeY + 1, 0));
 	RunScript(script_filepath);
 
 	return field;
@@ -85,6 +109,13 @@ long long GetCellImplementation(long long x, long long y)
 {
 	// printf("GetCellImplementation(%lld, %lld) = %lld\n", x, y, field[x][y]);
 	return field[x][y];
+}
+
+void LoadResourcesImplementation(long long food, long long water, long long wood, 
+								 long long population, long long free_population, 
+								 long long stone)
+{
+	start_resources = Resources(food, water, wood, population, free_population, stone);
 }
 
 static void RunScript(const char* script_file)

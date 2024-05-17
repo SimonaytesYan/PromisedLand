@@ -39,7 +39,7 @@ public:
             ButtonArgs    args = ButtonArgs(*this, static_cast<FieldType>(building_int->getId()));
             BasicFunctor* func = new Functor<ButtonArgs>(SetFieldType, args);
 
-            buttons.EmplaceBack(Point(pos.x, pos.y + 70 * build_cnt), kFieldSize, kFieldSize, 
+            buttons.EmplaceBack(Point(pos.x, pos.y + 70 * build_cnt), kCellSize, kCellSize, 
                                     func, building_int->getAsset());
 
             build_cnt++;
