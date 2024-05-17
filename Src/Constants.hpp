@@ -14,7 +14,7 @@ static const int   kControlPanelYStart = 200;
 static const int   kTextSize           = 20;
 static const int   kMSInClock          = 1000;
 
-static const int x_cell_cnt = 100;
-static const int y_cell_cnt = 100;
+static const int x_cell_cnt = 64;
+static const int y_cell_cnt = 64;
 
 static const int move_speed = 20;  // pixels in tick
