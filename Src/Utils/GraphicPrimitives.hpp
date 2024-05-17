@@ -30,15 +30,15 @@ struct Color
     a (a)
     { }
     
-    // static const Color Black   = {0, 0, 0};
-    // static const Color White;
-    // static const Color Red;
-    // static const Color Green;
-    // static const Color Blue;
-    // static const Color Yellow;
-    // static const Color Magenta;
-    // static const Color Cyan;
-    // static const Color Transparent;
+    static const Color Black;
+    static const Color White;
+    static const Color Red;
+    static const Color Green;
+    static const Color Blue;
+    static const Color Yellow;
+    static const Color Magenta;
+    static const Color Cyan;
+    static const Color Transparent;
 
 public:
     unsigned char r;
