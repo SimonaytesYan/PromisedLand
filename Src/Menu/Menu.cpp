@@ -2,9 +2,11 @@
 
 #include "../Interlayers/CellInterlayer.hpp"
 #include "../Events/EventManager.hpp"
+#include "../Graphics/Widget/ImageView.hpp"
 #include "../GameCycle/GameCycle.hpp"
 #include "../Graphics/Widget/BuildingPanel.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
+#include "../Graphics/Widget/DumyWidget.hpp"
 #include "../Map/MapGenerating.hpp"
 #include "../Map/MapSaveLoad.hpp"
 
@@ -13,15 +15,8 @@ void SaveMap(CellInterlayer& cell_int)
 	MapSaver::saveMapToFile(cell_int, "Scripts/Save.sym");
 }
 
-void createWaitWindow()
-{
-	
-}
-
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
-	args.event_man.removeChild(args.game_window);
-
 	const auto   window_size    = args.window.getSize();
 	const size_t visible_part_x = (window_size.x - kControlPanelW);
 	const size_t visible_part_y = (window_size.y - kControlPanelH);
@@ -66,8 +61,13 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	else
 		loadMapFromFile(cell_interlayer, args.map_filepath);
 
-	runGameCycle(args.window, args.rt, game_window, args.event_man);
-	args.event_man.addChild(args.game_window);
+	args.dummy_widget.removeChild(args.game_window);
+	args.event_man   .removeChild(args.game_window);
+
+	runGameCycle(args.window, args.rt, game_window, args.event_man, args.dummy_widget);
+
+	args.dummy_widget.addChild(args.game_window);
+	args.event_man   .addChild(args.game_window);
 }
 
 void selectLoadingFile(MenuButtonArgs args)
@@ -76,7 +76,7 @@ void selectLoadingFile(MenuButtonArgs args)
 	CreateGameWindowAndRunGameCycle(args);
 }
 
-Window* CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager)
+Window* CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager, DummyWidget& dummy_widget)
 {
 	const auto window_size = window.getSize();
 
@@ -86,12 +86,12 @@ Window* CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt, EventManage
 	const Point button_size(400, 200);
 	Point position(window.getSize().x / 2 - button_size.x / 2 - 20, 400);
 
-	BasicFunctor* run_game_func = new Functor<MenuButtonArgs>(CreateGameWindowAndRunGameCycle, {window, rt, event_manager, menu_window});
+	BasicFunctor* run_game_func = new Functor<MenuButtonArgs>(CreateGameWindowAndRunGameCycle, {window, rt, event_manager, menu_window, dummy_widget});
 	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
 									run_game_func, "Assets/UI/PlayButton.png"));
 	
 	position.y += button_size.y * 1.5;
-	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, {window, rt, event_manager, menu_window});
+	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, {window, rt, event_manager, menu_window, dummy_widget});
 	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
 									load_game_func, "Assets/UI/LoadButton.png"));
 	

@@ -3,13 +3,15 @@
 #include "../Events/EventManager.hpp"
 #include "GameCycle.hpp"
 #include "../Managers/ResourceManager.hpp"
+#include "../Graphics/Widget/DumyWidget.hpp"
 #include "../Constants.hpp"
 #include "../Map/MapSaveLoad.hpp"
 
 ResourceManager* ResourceManager::current_manager = nullptr;
 
-void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_window, EventManager& event_manager) 
+void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_window, EventManager& event_manager, DummyWidget& dummy_widget) 
 {
+	dummy_widget .addChild(&game_window);
 	event_manager.addChild(&game_window);
 
     auto timer_start = std::chrono::system_clock::now(); 
@@ -24,6 +26,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 		{
 			printf("You have lost!\n");
 			event_manager.removeChild(&game_window);
+			dummy_widget .removeChild(&game_window);
 			// window.close();
             return;
 		}
@@ -31,7 +34,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 		rt.clear();
 		window.clear();
 
-		game_window.draw(rt);
+		dummy_widget.draw(rt);
 		
 		rt.display(window);
 		window.display();
@@ -140,4 +143,5 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
     }
 
 	event_manager.removeChild(&game_window);
+	dummy_widget .removeChild(&game_window);
 }

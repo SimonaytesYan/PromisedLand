@@ -60,7 +60,7 @@ public:
         children.push_back(child);
     }
 
-    ~Window()
+    virtual ~Window()
     {
         for (auto val : children)
         {

@@ -7,6 +7,7 @@
 #include "Constants.hpp"
 #include "CellLoader/CellKeeper.hpp"
 #include "Events/EventManager.hpp"
+#include "Graphics/Widget/DumyWidget.hpp"
 #include "Interlayers/CellInterlayer.hpp"
 #include "Graphics/Widget/Window.hpp"
 #include "../Standart/Plugin.hpp"
@@ -38,10 +39,11 @@ int main()
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 	RenderTarget main_rt(Point(window.getSize().x, window.getSize().y));
 	
+	DummyWidget  dummy_widget;
 	EventManager event_manager;
-	Window* menu = CreateMenuWindow(window, main_rt, event_manager);
+	Window* menu = CreateMenuWindow(window, main_rt, event_manager, dummy_widget);
 
-	runGameCycle(window, main_rt, *menu, event_manager);
+	runGameCycle(window, main_rt, *menu, event_manager, dummy_widget);
 	// CreateGameWindowAndRunGame(window);
 	
 	CellKeeper::destroy();
