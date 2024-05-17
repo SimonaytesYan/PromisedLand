@@ -13,6 +13,11 @@ void SaveMap(CellInterlayer& cell_int)
 	MapSaver::saveMapToFile(cell_int, "Scripts/Save.sym");
 }
 
+void createWaitWindow()
+{
+	
+}
+
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
 	args.event_man.removeChild(args.game_window);
