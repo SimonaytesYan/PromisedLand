@@ -47,6 +47,9 @@ $(OBJ)Menu.o: create_folders $(SRC)Menu/Menu.cpp
 
 update_submodules:
 	git submodule update --init --recursive --remote
+	git add JitCompiler
+	git add StlVector
+	git commit -m "Update submodules"
 
 run:
 	./$(ELF_FILE)
