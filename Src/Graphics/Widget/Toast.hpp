@@ -6,12 +6,16 @@
 #include "../../Utils/RenderTarget.hpp"
 #include "Widget.hpp"
 
+static const uint16_t kCharSize    = 20;
+static const size_t   kToastWidth  = 200;
+static const size_t   kToastHeight = 40;
+
 class Toast : public Widget
 {
 public:
 
-    explicit Toast(const Point pos, const char* message, EventManager& event_manager, DummyWidget& parent, const unsigned duration = 2)
-      : Widget          (pos),
+    explicit Toast(const size_t win_size_x, const size_t win_size_y, const char* message, EventManager& event_manager, DummyWidget& parent, const unsigned duration = 2)
+      : Widget          (win_size_x - kToastWidth - kBorderIndent, kBorderIndent),
         message         (message),
         duration        (duration),
         parent          (parent),
@@ -32,19 +36,23 @@ public:
 
     void draw(RenderTarget& render_target)
     {   
-        render_target.drawRect(pos, {std::strlen(message) * kCharSize, kCharSize}, kBackColor);
+        render_target.drawRect(pos, {kToastWidth, kToastHeight}, kBackColor);
         render_target.drawText(pos, message, kCharSize, kTextColor);
+
         if (active_tick_cnt >= duration)
         {
+            active_tick_cnt = 0;
+
             parent       .removeChild(this);
             event_manager.removeChild(this);
+
+            delete this;
         }
     }
 
 private:
-    const uint16_t kCharSize  = 10;
-    const Color    kTextColor = Color::Green;
-    const Color    kBackColor = Color::Magenta;
+    const Color kTextColor  = Color::Black;
+    const Color kBackColor  = Color::Magenta;
 
     const char*    message;
     const unsigned duration;    // tick cnt

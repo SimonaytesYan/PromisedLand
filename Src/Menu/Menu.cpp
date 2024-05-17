@@ -11,18 +11,12 @@
 #include "../Map/MapGenerating.hpp"
 #include "../Map/MapSaveLoad.hpp"
 
-Toast createOnSaveToast(DummyWidget& dummy_widget, EventManager& event_manager, const Point win_size)
-{
-	const Point toast_pos = {win_size.x - std::strlen(kSaveSuccessful) - kBorderIndent, kBorderIndent};
-	return Toast(toast_pos, kSaveSuccessful, event_manager, dummy_widget);
-}
-
 void SaveMap(SaveMapArgs args)
 {
 	MapSaver::saveMapToFile(args.cell_int, "Scripts/Save.sym");
 
-	static Toast saved_toast = createOnSaveToast(args.widget, args.event_manager, args.win_size);
-	args.widget.addChild(&saved_toast);
+	// deletes itself after duration finished
+	new Toast(args.win_size.x, args.win_size.y, kSaveSuccessful, args.event_manager, args.widget);
 }
 
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
