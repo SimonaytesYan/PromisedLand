@@ -17,7 +17,7 @@ public:
     Resources getDestroyIncome() const override;
     Bitmask   getBuildMask() const override;
 
-    void setPopulation(long int new_pop)
+    void setPopulation(long int new_pop) override
     {
         cur_citizens = new_pop;
     }

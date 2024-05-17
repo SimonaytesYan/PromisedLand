@@ -24,6 +24,11 @@ void SaveMap(SaveMapArgs args)
 	MapSaverLoader::saveMapToFile(args.cell_int, args.res_man, "Scripts/Save.sym");
 }
 
+void createWaitWindow()
+{
+	
+}
+
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
 	args.event_man.removeChild(args.game_window);
