@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Utils/RenderTarget.hpp"
+// #include "../CellView/CellView.hpp"
 #include "Widget.hpp"
 
 class Canvas : public Widget
@@ -65,20 +66,29 @@ public:
         return {absolute_pos.x + relative_host_pos.x, absolute_pos.y + relative_host_pos.y};
     }
 
-    bool isPointVisible(const Point absolute_pos)
+    // is point visible in canvas visible area
+    bool isScreenPointInCanvas(const Point screen_pos)
     {
-        return absolute_pos.x >= original_host_pos.x                &&
-               absolute_pos.x <= original_host_pos.x + host_size_x  &&
-               absolute_pos.y >= original_host_pos.y                &&
-               absolute_pos.y <= original_host_pos.y + host_size_y;
+        return screen_pos.x >= original_host_pos.x                &&
+               screen_pos.x <= original_host_pos.x + host_size_x  &&
+               screen_pos.y >= original_host_pos.y                &&
+               screen_pos.y <= original_host_pos.y + host_size_y;
     }
 
-    bool isCellVisible(const Point absolute_pos)
+    bool isCellVisible(const Point pos_in_canvas, const size_t field_size)
     {
-        return absolute_pos.x >= relative_host_pos.x                &&
-               absolute_pos.x <= relative_host_pos.x + host_size_x  &&
-               absolute_pos.y >= relative_host_pos.y                &&
-               absolute_pos.y <= relative_host_pos.y + host_size_y;
+        return isCanvasPointVisible(pos_in_canvas)                                                     ||
+               isCanvasPointVisible(Point(pos_in_canvas.x + field_size, pos_in_canvas.y))              ||
+               isCanvasPointVisible(Point(pos_in_canvas.x             , pos_in_canvas.y + field_size)) ||
+               isCanvasPointVisible(Point(pos_in_canvas.x + field_size, pos_in_canvas.y + field_size));
+    }
+
+    bool isCanvasPointVisible(const Point pos_in_canvas)
+    {
+        return pos_in_canvas.x >= relative_host_pos.x                &&
+               pos_in_canvas.x <= relative_host_pos.x + host_size_x  &&
+               pos_in_canvas.y >= relative_host_pos.y                &&
+               pos_in_canvas.y <= relative_host_pos.y + host_size_y;
     }
 
 private:

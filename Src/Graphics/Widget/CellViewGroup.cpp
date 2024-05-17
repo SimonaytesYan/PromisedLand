@@ -71,12 +71,12 @@ void CellViewGroup::push(const EventPtr event)
         {
             const MouseClickEvent* mouse_event = static_cast<const MouseClickEvent*>(event.get());
 
-            if (!draw_canvas->isPointVisible(mouse_event->pos)) return;
+            if (!draw_canvas->isScreenPointInCanvas(mouse_event->pos)) return;
 
             EventPtr cell_view_event = new MouseClickEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
             {
-                if (draw_canvas->isCellVisible(val->getPos()))
+                if (draw_canvas->isCellVisible(val->getPos(), kFieldSize))
                     val->push(cell_view_event);
             }
 
@@ -86,12 +86,12 @@ void CellViewGroup::push(const EventPtr event)
         {
             const MouseMoveEvent* mouse_event = static_cast<const MouseMoveEvent*>(event.get());
 
-            if (!draw_canvas->isPointVisible(mouse_event->pos)) return;
+            if (!draw_canvas->isScreenPointInCanvas(mouse_event->pos)) return;
 
             EventPtr cell_view_event = new MouseMoveEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
             {
-                if (draw_canvas->isCellVisible(val->getPos()))
+                if (draw_canvas->isCellVisible(val->getPos(), kFieldSize))
                     val->push(cell_view_event);
             }
 
@@ -118,7 +118,10 @@ void CellViewGroup::draw(RenderTarget& rt)
 
     const size_t cell_view_size = cell_views.size();
     for (size_t index = 0; index < cell_view_size; index++)
-        cell_views[index]->draw(canvas_rend_target);
+    {
+        if (draw_canvas->isCellVisible(cell_views[index]->getPos(), kFieldSize))
+            cell_views[index]->draw(canvas_rend_target);
+    }
         
     draw_canvas->draw(rt);
 }
