@@ -7,12 +7,22 @@
 #include "../Graphics/Widget/BuildingPanel.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
 #include "../Graphics/Widget/DumyWidget.hpp"
+#include "../Graphics/Widget/Toast.hpp"
 #include "../Map/MapGenerating.hpp"
 #include "../Map/MapSaveLoad.hpp"
 
-void SaveMap(CellInterlayer& cell_int)
+Toast createOnSaveToast(DummyWidget& dummy_widget, EventManager& event_manager, const Point win_size)
 {
-	MapSaver::saveMapToFile(cell_int, "Scripts/Save.sym");
+	const Point toast_pos = {win_size.x - std::strlen(kSaveSuccessful) - kBorderIndent, kBorderIndent};
+	return Toast(toast_pos, kSaveSuccessful, event_manager, dummy_widget);
+}
+
+void SaveMap(SaveMapArgs args)
+{
+	MapSaver::saveMapToFile(args.cell_int, "Scripts/Save.sym");
+
+	static Toast saved_toast = createOnSaveToast(args.widget, args.event_manager, args.win_size);
+	args.widget.addChild(&saved_toast);
 }
 
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
@@ -44,7 +54,7 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 												   build_pan_interlayer);
 	game_window.addChild(build_panel);
 
-	BasicFunctor* save_func = new Functor<CellInterlayer&>(SaveMap, cell_interlayer);
+	BasicFunctor* save_func = new Functor<SaveMapArgs>(SaveMap, {cell_interlayer, args.dummy_widget, args.event_man, {args.window.getSize().x, args.window.getSize().y}});
 	Button* save_button = new Button({args.window.getSize().x - 112, 12}, 100, 100, 
 									  save_func, "Assets/UI/SaveIcon.png");
 	game_window.addChild(save_button);

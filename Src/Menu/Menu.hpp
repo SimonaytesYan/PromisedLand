@@ -4,6 +4,7 @@
 #include "../Graphics/Widget/Window.hpp"
 #include "../Graphics/Widget/DumyWidget.hpp"
 #include "../Utils/RenderTarget.hpp"
+#include "../Interlayers/CellInterlayer.hpp"
 
 struct MenuButtonArgs
 {
@@ -24,8 +25,26 @@ struct MenuButtonArgs
 	const char*		  map_filepath;
 };
 
-static const char* load_img   = "Assets/load.png";
-static const int   load_img_w = 456;
-static const int   load_img_h = 256;
+struct SaveMapArgs
+{
+	SaveMapArgs(CellInterlayer& cell_int, DummyWidget& widget, EventManager& event_manager, const Point win_size)
+	  : cell_int      (cell_int),
+	  	widget        (widget),
+		event_manager (event_manager),
+		win_size      (win_size)
+	{}  
+
+	CellInterlayer& cell_int;
+	DummyWidget&    widget;
+	EventManager&   event_manager;
+	const Point 	win_size;
+};
+
+static const char* kLoadImg  = "Assets/load.png";
+static const int   kLoadImgW = 456;
+static const int   kLoadImgH = 256;
+
+static const char* kSaveSuccessful = "Saved successfully!";
+static const int   kBorderIndent   = 5;
 
 Window* CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager, DummyWidget& dummy_widget);
