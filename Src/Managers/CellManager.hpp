@@ -11,7 +11,7 @@ class CellInterlayer;
 
 class CellManager
 {
-    friend MapSaver;
+    friend MapSaverLoader;
     friend CellInterlayer;
 
 public:

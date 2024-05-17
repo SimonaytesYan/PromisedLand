@@ -9,7 +9,7 @@ class CellManager;
 
 class CellInterlayer
 {
-    friend MapSaver;
+    friend MapSaverLoader;
 
 public:
     explicit CellInterlayer(CellManager& cell_manager)

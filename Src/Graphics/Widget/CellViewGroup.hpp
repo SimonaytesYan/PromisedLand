@@ -12,7 +12,7 @@ class CellView;
 class CellViewGroup : public Widget
 {
     friend CellInterlayer;
-    friend MapSaver;
+    friend MapSaverLoader;
 
 public:
     CellViewGroup(const Point position, const size_t _map_size_x, const size_t _map_size_y);

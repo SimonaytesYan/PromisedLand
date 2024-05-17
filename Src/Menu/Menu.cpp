@@ -9,7 +9,7 @@
 
 void SaveMap(CellInterlayer& cell_int)
 {
-	MapSaver::saveMapToFile(cell_int, "Scripts/Save.sym");
+	MapSaverLoader::saveMapToFile(cell_int, "Scripts/Save.sym");
 }
 
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
