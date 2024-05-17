@@ -32,7 +32,7 @@ void MapSaverLoader::loadMapFromFile(CellInterlayer& cell_int, ResourceManager& 
 		}
 	}
 
-	res_man.setResources(start_resources);
+	res_man.setUserResources(start_resources);
 
 	const size_t cells_number = cell_int.cell_manager.cells.size();
 
@@ -51,19 +51,20 @@ void MapSaverLoader::loadMapFromFile(CellInterlayer& cell_int, ResourceManager& 
 		{
 			if ((size_t)cell_int.cell_manager.cells[i]->getFieldType() == (size_t)ReservedTypes::HOUSE)
 			{
+				Cell* house = static_cast<Cell*>(cell_int.cell_manager.cells[i]);
 				if (population_remainder > 0)
 				{
-					house.setPopulation(population_per_house + 1);
+					house->setPopulation(population_per_house + 1);
 					population_remainder--;
 				}
 				else
-					house.setPopulation(population_per_house);
+					house->setPopulation(population_per_house + 1);
 			}
 		}
 	}
 }
 
-void MapSaverLoader::saveMapToFile(CellInterlayer& cell_int, const char* map_filepath)
+void MapSaverLoader::saveMapToFile(CellInterlayer& cell_int, ResourceManager& res_man, const char* map_filepath)
 {
 	FILE* map_fp = fopen(map_filepath, "w");
 
@@ -85,6 +86,10 @@ void MapSaverLoader::saveMapToFile(CellInterlayer& cell_int, const char* map_fil
 															   pos.x / kCellSize, 
 															   pos.y / kCellSize);
 	}
+
+	Resources res = res_man.getUserRes();
+	fprintf(map_fp, "\tcall load_resources(%lld, %lld, %lld, %lld, %lld, %lld);\n", 
+			res.food, res.water, res.wood, res.population, res.free_population, res.stone);
 
 	fprintf(map_fp, "end\n");
 	fclose(map_fp);

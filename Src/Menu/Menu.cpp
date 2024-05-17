@@ -8,9 +8,20 @@
 #include "../Map/MapGenerating.hpp"
 #include "../Map/MapSaveLoad.hpp"
 
-void SaveMap(CellInterlayer& cell_int)
+struct SaveMapArgs
 {
-	MapSaverLoader::saveMapToFile(cell_int, "Scripts/Save.sym");
+	SaveMapArgs(CellInterlayer& cell_int, ResourceManager& res_man) :
+	cell_int (cell_int),
+	res_man  (res_man)
+	{ }
+
+	CellInterlayer& cell_int;
+	ResourceManager& res_man;
+};
+
+void SaveMap(SaveMapArgs args)
+{
+	MapSaverLoader::saveMapToFile(args.cell_int, args.res_man, "Scripts/Save.sym");
 }
 
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
@@ -44,7 +55,7 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 												   build_pan_interlayer);
 	game_window.addChild(build_panel);
 
-	BasicFunctor* save_func = new Functor<CellInterlayer&>(SaveMap, cell_interlayer);
+	BasicFunctor* save_func = new Functor<SaveMapArgs>(SaveMap, SaveMapArgs(cell_interlayer, res_manager));
 	Button* save_button = new Button({args.window.getSize().x - 112, 12}, 100, 100, 
 									  save_func, "Assets/UI/SaveIcon.png");
 	game_window.addChild(save_button);
@@ -59,7 +70,7 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	if (args.map_filepath == nullptr)
 		generateField(cell_interlayer);
 	else
-		loadMapFromFile(cell_interlayer, args.map_filepath);
+		MapSaverLoader::loadMapFromFile(cell_interlayer, res_manager, args.map_filepath);
 
 	runGameCycle(args.window, args.rt, game_window, args.event_man);
 	args.event_man.addChild(args.game_window);
