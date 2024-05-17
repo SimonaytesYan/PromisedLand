@@ -12,15 +12,6 @@
 // const Color Color::Cyan       (  0, 255, 255);
 // const Color Color::Transparent(  0,   0,   0, 0);
 
-Texture::Texture(const char* const img_path)
-  :  TextureI (img_path)
-{
-    // if (img_path)
-    // {
-        test.loadFromFile(img_path);
-    // }
-}
-
 RenderTarget::RenderTarget(const Point size)
 {
     PRINT_ON_ERROR(!font.loadFromFile(kDefaultFont), stderr, "%s %s\n", kOnOpenError, kDefaultFont);
@@ -92,14 +83,8 @@ void RenderTarget::drawText(const Point pos, const char* const content, const ui
     rt.draw(text_to_draw);
 }
 
-void RenderTarget::drawTexture(const Point pos, const TextureI& texture)
+void RenderTarget::drawTexture(const Point pos, const Texture& texture)
 {
-    // drawRect(pos, {64, 64}, {255, 0, 0});
-    // Texture sf_text(texture._img_path);
-    // fprintf(stderr, "TRY LOAD: %lf %lf %s\n", pos.x, pos.y, texture._img_path);
-    // static sf::Texture ttt;
-    // ttt.loadFromFile(texture._img_path);
-
     sf::Vector2f rect_size = {texture.sf_texture.getSize().x, texture.sf_texture.getSize().y};
     sf::RectangleShape texture_rect(rect_size);
 
@@ -109,7 +94,7 @@ void RenderTarget::drawTexture(const Point pos, const TextureI& texture)
     rt.draw(texture_rect);
 }
 
-void RenderTarget::drawTexture(const Point original_pos, const Point relative_pos, const size_t x_size, const size_t y_size, const TextureI& texture)
+void RenderTarget::drawTexture(const Point original_pos, const Point relative_pos, const size_t x_size, const size_t y_size, const Texture& texture)
 {
     const size_t texture_size_x = texture.sf_texture.getSize().x;
     const size_t texture_size_y = texture.sf_texture.getSize().y;
@@ -150,7 +135,7 @@ void RenderTarget::clear(const Color clear_color)
 }
 
 // delete after use
-TextureI* RenderTarget::getTexture() 
+Texture* RenderTarget::getTexture() 
 {
-    return new TextureI(rt.getTexture());
+    return new Texture(rt.getTexture());
 }

@@ -3,13 +3,14 @@
 #include "../../GameLogic/Tiles/Cell.hpp"
 #include "../Widget/Widget.hpp"
 #include "../Widget/CellViewGroup.hpp"
+#include "../../Graphics/Renderable.hpp"
 
 const size_t kFieldSize = 64;
 
 class CellView : public Widget
 {
 public:
-    CellView(const TextureI texture, const Point pos, 
+    CellView(const Texture texture, const Point pos, 
              CellViewGroup& parent) 
     : Widget        (pos),
       texture       (texture),
@@ -20,7 +21,7 @@ public:
       max_workers   (0)
     { }
 
-    CellView(const TextureI texture, const Point pos, 
+    CellView(const Texture texture, const Point pos, 
              CellViewGroup& parent, size_t index_in_cell_group) 
     : Widget              (pos),
       texture             (texture),
@@ -117,7 +118,7 @@ private:
     const Color    kCircleColor     = {255, 0, 0};
     const uint16_t kCoeffTextSize   = 10;
 
-    const TextureI  texture;
+    const Texture   texture;
     CellViewGroup&  parent;
     size_t          index_in_cell_group;
     bool            is_chosen;  

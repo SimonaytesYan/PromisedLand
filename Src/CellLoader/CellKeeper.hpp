@@ -33,7 +33,7 @@ public:
     static CellView* createCellView(const FieldType field_type, const Point pos, CellViewGroup& cell_view_group)
     {
         const char* asset = unique_cells[findByInterfaceId(field_type)]->getAsset();
-        return new CellView(TextureI(asset), pos, cell_view_group);
+        return new CellView(Texture(asset), pos, cell_view_group);
     } 
 
     static Bitmask getBuildMask(const FieldType field_type)

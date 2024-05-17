@@ -38,7 +38,7 @@ public:
     {
         canvas_renderer->display();
 
-        TextureI* texture = canvas_renderer->getTexture();
+        Texture* texture = canvas_renderer->getTexture();
         render_target.drawTexture(original_host_pos, relative_host_pos, host_size_x, host_size_y, *texture);
 
         delete texture;

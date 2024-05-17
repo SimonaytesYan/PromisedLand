@@ -6,14 +6,14 @@
 #include "GraphicPrimitives.hpp"
 #include "Utils.hpp"
 
-struct TextureI 
+struct Texture 
 {
-    explicit TextureI(const sf::Texture& _sf_texture)
+    explicit Texture(const sf::Texture& _sf_texture)
       : sf_texture (_sf_texture),
         _img_path  ("")
     {}
 
-    explicit TextureI(const char* const img_path)
+    explicit Texture(const char* const img_path)
       :  _img_path (img_path)
     {
       if (img_path)
@@ -24,12 +24,6 @@ struct TextureI
 
     sf::Texture sf_texture;
     const char* _img_path;
-};
-
-struct Texture : public TextureI
-{
-    explicit Texture(const char* const img_path);
-    sf::Texture test;
 };
 
 class RenderTarget
@@ -52,15 +46,15 @@ public:
                              const Color out_color = {0, 0, 0, 0});
 
     void drawText   (const Point pos, const char* const content, const uint16_t char_size, const Color color);
-    void drawTexture(const Point pos, const TextureI& texture);
-    void drawTexture(const Point original_pos, const Point relative_pos, const size_t x_size, const size_t y_size, const TextureI& texture);
+    void drawTexture(const Point pos, const Texture& texture);
+    void drawTexture(const Point original_pos, const Point relative_pos, const size_t x_size, const size_t y_size, const Texture& texture);
 
     void display();
     void display(sf::RenderWindow& window);
 
     void clear(const Color clear_color = {0, 0, 0, 0});
 
-    TextureI* getTexture();
+    Texture* getTexture();
 
 private:
     static constexpr char* const kDefaultFont = "Assets/arial.ttf";
