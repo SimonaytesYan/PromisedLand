@@ -11,6 +11,7 @@
 #include "../Managers/WindowManager.hpp"
 #include "../Map/MapGenerating.hpp"
 #include "../Map/MapSaveLoad.hpp"
+#include "../Utils/SavingScore.hpp"
 
 struct SaveMapArgs
 {
@@ -91,6 +92,26 @@ void createPauseMenu(PauseArgs args) {
 	args.event_manager.privatizeAll(1);
 }
 
+void createTopScoreWindow(MenuButtonArgs args)
+{
+	const auto window_size = args.window.getSize();
+	Window* top_score_window = new Window({0, 0}, window_size.x, window_size.y, "Assets/UI/TopScoreBack.png");
+
+	sf::Font pixel_font;
+	// pixel_font.loadFromFile("Assets/PixelFont.ttf")
+
+	Vector<int> top_score = getTopScore();
+	const size_t records_number = top_score.Size();
+	for (size_t i = 0; i < records_number; i++)
+	{
+		char content[255] = {};
+		sprintf(content, "%zu. %d", i, top_score[i]);
+		top_score_window->addChild(new TextView({300, i * 150 + 400}, content, 100));
+	}
+
+	args.window_manager.setCurWindow(top_score_window, nullptr);
+}
+
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
 	const auto   window_size    = args.window.getSize();
@@ -154,17 +175,26 @@ Window* CreateMenuWindow(CreateMenuArgs args)
 	Window* menu_window = new Window({0, 0}, window_size.x, window_size.y, "Assets/UI/MenuBackground.png");
 
 	const Point button_size(kBtnSizeX, kBtnSizeY);
-	Point position(args.window.getSize().x / 2 - button_size.x / 2 - kBtnIndent, kBtnSizeX);
+	Point position(args.window.getSize().x / 2 - button_size.x / 2 - kBtnIndent, 
+				   kBtnSizeX * 0.85);
 
-	BasicFunctor* run_game_func = new Functor<MenuButtonArgs>(CreateGameWindowAndRunGameCycle, {args.window, args.rt, args.event_manager, args.window_manager, menu_window, args.dummy_widget});
+	const MenuButtonArgs func_arg = {args.window, args.rt, args.event_manager, 
+									 args.window_manager, menu_window, 
+									 args.dummy_widget};
+
+	BasicFunctor* run_game_func = new Functor<MenuButtonArgs>(CreateGameWindowAndRunGameCycle, func_arg);
 	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
 									run_game_func, "Assets/UI/PlayButton.png"));
 	
-	position.y += button_size.y * 1.5;
-	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, {args.window, args.rt, args.event_manager, args.window_manager, menu_window, args.dummy_widget});
+	position.y += button_size.y * 1.2;
+	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, func_arg);
 	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
 									load_game_func, "Assets/UI/LoadButton.png"));
-
+	
+	position.y += button_size.y * 1.2;
+	BasicFunctor* load_top_score_window = new Functor<MenuButtonArgs>(createTopScoreWindow, func_arg);
+	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
+									 load_top_score_window, "Assets/UI/TopScoreBtn.png"));
 
 	return menu_window;
 }
