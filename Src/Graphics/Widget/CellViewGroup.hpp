@@ -48,4 +48,8 @@ protected:
     std::vector<CellView*> cell_views;   // CellViewGroup own it
     CellInterlayer*        cell_interlayer;
     Canvas*                draw_canvas;
+
+    bool  mouse_moving;
+    bool  mouse_clicked;
+    Point prev_pos;
 };

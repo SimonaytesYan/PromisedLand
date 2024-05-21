@@ -11,7 +11,10 @@ CellViewGroup::CellViewGroup(const Point position,
                              const Point  _inv_area_pos,
                              const size_t _inv_area_size_x,
                              const size_t _inv_area_size_y)
-  : Widget (position)
+  : Widget     (position),
+    mouse_moving  (false),
+    mouse_clicked (false),
+    prev_pos      (0, 0)
 { 
     const size_t canvas_size_x = kFieldSizeX * kCellSize;
     const size_t canvas_size_y = kFieldSizeY * kCellSize;
@@ -80,9 +83,26 @@ void CellViewGroup::push(const EventPtr event)
 
             break;
         }
+        case EventType::MOUSE_CLICK:
+        {
+            const MouseClickEvent* mouse_event = static_cast<const MouseClickEvent*>(event.get());
+            if (!draw_canvas->isScreenPointInCanvas(mouse_event->pos)) return;
+
+            mouse_clicked = true;
+            prev_pos      = mouse_event->pos;
+
+            break;
+        }
         case EventType::MOUSE_RELEASE:
         {
             const MouseReleaseEvent* mouse_event = static_cast<const MouseReleaseEvent*>(event.get());
+
+            mouse_clicked = false;
+            if (mouse_moving) 
+            {
+                mouse_moving = false;
+                return;
+            }
 
             if (!draw_canvas->isScreenPointInCanvas(mouse_event->pos)) return;
 
@@ -99,7 +119,20 @@ void CellViewGroup::push(const EventPtr event)
         {
             const MouseMoveEvent* mouse_event = static_cast<const MouseMoveEvent*>(event.get());
 
-            if (!draw_canvas->isScreenPointInCanvas(mouse_event->pos)) return;
+            if (mouse_clicked) mouse_moving = true;
+
+            if (!draw_canvas->isScreenPointInCanvas(mouse_event->pos)) 
+            {
+                mouse_moving = false;
+                return;
+            }
+
+            if (mouse_moving)
+            {
+                cell_interlayer->pushToView(
+                        new MapMovedEvent(prev_pos.x - mouse_event->pos.x, prev_pos.y - mouse_event->pos.y));
+                prev_pos = mouse_event->pos;
+            }
 
             EventPtr cell_view_event = new MouseMoveEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
