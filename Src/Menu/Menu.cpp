@@ -2,83 +2,143 @@
 
 #include "../Interlayers/CellInterlayer.hpp"
 #include "../Events/EventManager.hpp"
+#include "../Graphics/Widget/ImageView.hpp"
 #include "../GameCycle/GameCycle.hpp"
 #include "../Graphics/Widget/BuildingPanel.hpp"
 #include "../Graphics/Widget/CellViewGroup.hpp"
+#include "../Graphics/Widget/DumyWidget.hpp"
+#include "../Graphics/Widget/Toast.hpp"
+#include "../Managers/WindowManager.hpp"
 #include "../Map/MapGenerating.hpp"
 #include "../Map/MapSaveLoad.hpp"
 
 struct SaveMapArgs
 {
-	SaveMapArgs(CellInterlayer& cell_int, ResourceManager& res_man) :
-	cell_int (cell_int),
-	res_man  (res_man)
+	SaveMapArgs(CellInterlayer& cell_int, ResourceManager& res_man, DummyWidget& dummy_widget, EventManager& event_manager, const Point win_size) :
+	cell_int      (cell_int),
+	res_man       (res_man),
+	widget        (dummy_widget),
+	event_manager (event_manager),
+	win_size      (win_size)
 	{ }
 
-	CellInterlayer& cell_int;
+	CellInterlayer&  cell_int;
 	ResourceManager& res_man;
+	DummyWidget&     widget;
+	EventManager&    event_manager;
+	const Point 	 win_size;
 };
 
 void SaveMap(SaveMapArgs args)
 {
 	MapSaverLoader::saveMapToFile(args.cell_int, args.res_man, "Scripts/Save.sym");
+
+	// deletes itself after duration finished
+	new Toast(args.win_size.x, args.win_size.y, kSaveSuccessful, args.event_manager, args.widget);
 }
 
-void createWaitWindow()
-{
+void freeGameManagers(GameSettings args) {
+	delete args.build_pan_interlayer;
+	delete args.cell_interlayer;
+	delete args.cell_manager;
+	delete args.res_bar_inter;
+	delete args.res_manager;
+}
+
+void closePause(PauseArgs args) {
+	args.pause_win->kill();
+	args.event_manager.removeChild(args.pause_win);
+
+	args.event_manager.resetPriorities();
+}
+
+void goToMainFunc(PauseArgs args) {
+	args.pause_win->kill();
+	args.event_manager.removeChild(args.pause_win);
+	args.event_manager.resetPriorities();
+
+	args.window_manager.setCurWindow(CreateMenuWindow({args.window, args.rt, args.event_manager, args.window_manager, args.dummy_widget}));
+}
+
+void createPauseMenu(PauseArgs args) {
+	const auto  window_size   = args.window.getSize();
+	const Point pause_win_pos = {(window_size.x - kPauseWinSizeX) / 2, (window_size.y - kPauseWinSizeY) / 2};
+
+	Window* pause_window = new Window(pause_win_pos, window_size.x, window_size.y, "Assets/UI/PauseBack.png");
+
+	const Point button_size(kBtnSizeX, kBtnSizeY);
+	Point position(args.window.getSize().x / 2 - button_size.x, kUpperBtnPosY * 3 / 2);
+
+	BasicFunctor* resume_func = new Functor<PauseArgs>(closePause, {args.window, args.rt, args.res_manager, args.event_manager, args.window_manager, args.dummy_widget, args.cell_interlayer, pause_window});
+	pause_window->addChild(new Button(position, button_size.x, button_size.y, 
+									resume_func, "Assets/UI/ResumeBtn.png"));
 	
+	BasicFunctor* save_func = new Functor<SaveMapArgs>(SaveMap, {args.cell_interlayer, args.res_manager, args.dummy_widget, args.event_manager, {args.window.getSize().x, args.window.getSize().y}});
+	pause_window->addChild(new Button({position.x, position.y + kBtnSizeY + kBtnIndent}, button_size.x, button_size.y, 
+									  save_func, "Assets/UI/SaveBtn.png"));
+
+	BasicFunctor* to_main_func = new Functor<PauseArgs>(goToMainFunc, {args.window, args.rt, args.res_manager, args.event_manager, args.window_manager, args.dummy_widget, args.cell_interlayer, pause_window});
+	pause_window->addChild(new Button({position.x + kBtnSizeX + kBtnIndent, position.y}, button_size.x, button_size.y, 
+									to_main_func, "Assets/UI/MainBtn.png"));
+
+	BasicFunctor* exit_game_func = new Functor<WindowManager&>(exitGame, args.window_manager);
+	pause_window->addChild(new Button({position.x + kBtnSizeX + kBtnIndent, position.y + kBtnSizeY + kBtnIndent}, button_size.x, button_size.y, 
+									exit_game_func, "Assets/UI/ExitBtn.png"));
+
+	pause_window->setPriority(1);
+	args.dummy_widget .addChild(pause_window);
+	args.event_manager.addChild(pause_window);
+	args.event_manager.privatizeAll(1);
 }
 
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
-	args.event_man.removeChild(args.game_window);
-
 	const auto   window_size    = args.window.getSize();
 	const size_t visible_part_x = (window_size.x - kControlPanelW);
 	const size_t visible_part_y = (window_size.y - kControlPanelH);
 
-	Window game_window({0, 0}, visible_part_x, visible_part_y, "Assets/Background.png");
+	Window* game_window = new Window({0, 0}, visible_part_x, visible_part_y, "Assets/Background.png");
 
 	ResourceBar* res_bar = new ResourceBar(args.window.getSize().x, 
 										   args.window.getSize().y - kControlPanelH / 2, 
 										   kStartResources);
-	game_window.addChild(res_bar);
+	game_window->addChild(res_bar);
 
 	CellViewGroup* cell_view_group = new CellViewGroup({0, 0}, visible_part_x, visible_part_y);
-	game_window.addChild(cell_view_group);
+	game_window->addChild(cell_view_group);
 
 	// Interlayer + Manager initialisation
-	ResourceBarInterlayer   res_bar_inter(*res_bar);
-	ResourceManager         res_manager(res_bar_inter);
-	CellManager             cell_manager(&res_manager);
-	CellInterlayer          cell_interlayer(cell_manager);
-	BuildingPanelInterlayer build_pan_interlayer(cell_manager);
+	ResourceBarInterlayer*   res_bar_inter        = new ResourceBarInterlayer(*res_bar);
+	ResourceManager*         res_manager          = new ResourceManager(*res_bar_inter);
+	CellManager*             cell_manager         = new CellManager(res_manager);
+	CellInterlayer*          cell_interlayer      = new CellInterlayer(*cell_manager);
+	BuildingPanelInterlayer* build_pan_interlayer = new BuildingPanelInterlayer(*cell_manager);
 
-	res_manager.setCellInterlayer(&cell_interlayer);
+	res_manager->setCellInterlayer(cell_interlayer);
 
 	BuildingPanel* build_panel = new BuildingPanel(Point(args.window.getSize().x - kControlPanelW / 2, kControlPanelYStart), 
-												   build_pan_interlayer);
-	game_window.addChild(build_panel);
+												   *build_pan_interlayer);
+	game_window->addChild(build_panel);
 
-	BasicFunctor* save_func = new Functor<SaveMapArgs>(SaveMap, SaveMapArgs(cell_interlayer, res_manager));
-	Button* save_button = new Button({args.window.getSize().x - 112, 12}, 100, 100, 
-									  save_func, "Assets/UI/SaveIcon.png");
-	game_window.addChild(save_button);
 
-	cell_interlayer.setCellViewGroup(cell_view_group);
+	BasicFunctor* pause_func = new Functor<PauseArgs>(createPauseMenu, {args.window, args.rt, *res_manager, args.event_man, args.window_manager, args.dummy_widget, *cell_interlayer});
+	Button* pause_button = new Button({args.window.getSize().x - 112, 12}, 100, 100, 
+									  pause_func, "Assets/UI/PauseBtn.png");
+	game_window->addChild(pause_button);
 
-	cell_manager.setCellInterlayer(&cell_interlayer);
-	cell_manager.setCellType      (0);
+	cell_interlayer->setCellViewGroup(cell_view_group);
 
-	cell_view_group->setCellInterlayer(&cell_interlayer);
+	cell_manager->setCellInterlayer(cell_interlayer);
+	cell_manager->setCellType      (0);
+
+	cell_view_group->setCellInterlayer(cell_interlayer);
 
 	if (args.map_filepath == nullptr)
-		generateField(cell_interlayer);
+		generateField(*cell_interlayer);
 	else
-		MapSaverLoader::loadMapFromFile(cell_interlayer, res_manager, args.map_filepath);
+		MapSaverLoader::loadMapFromFile(*cell_interlayer, *res_manager, args.map_filepath);
 
-	runGameCycle(args.window, args.rt, game_window, args.event_man);
-	args.event_man.addChild(args.game_window);
+	args.window_manager.setCurWindow(game_window, new Functor<GameSettings>(freeGameManagers, {res_bar_inter, res_manager, cell_manager, cell_interlayer, build_pan_interlayer}));
 }
 
 void selectLoadingFile(MenuButtonArgs args)
@@ -87,24 +147,24 @@ void selectLoadingFile(MenuButtonArgs args)
 	CreateGameWindowAndRunGameCycle(args);
 }
 
-Window* CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager)
+Window* CreateMenuWindow(CreateMenuArgs args)
 {
-	const auto window_size = window.getSize();
+	const auto window_size = args.window.getSize();
 
-	RenderTarget menu_rt(Point(window_size.x, window_size.y));
 	Window* menu_window = new Window({0, 0}, window_size.x, window_size.y, "Assets/UI/MenuBackground.png");
 
-	const Point button_size(400, 200);
-	Point position(window.getSize().x / 2 - button_size.x / 2 - 20, 400);
+	const Point button_size(kBtnSizeX, kBtnSizeY);
+	Point position(args.window.getSize().x / 2 - button_size.x / 2 - kBtnIndent, kBtnSizeX);
 
-	BasicFunctor* run_game_func = new Functor<MenuButtonArgs>(CreateGameWindowAndRunGameCycle, {window, rt, event_manager, menu_window});
+	BasicFunctor* run_game_func = new Functor<MenuButtonArgs>(CreateGameWindowAndRunGameCycle, {args.window, args.rt, args.event_manager, args.window_manager, menu_window, args.dummy_widget});
 	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
 									run_game_func, "Assets/UI/PlayButton.png"));
 	
 	position.y += button_size.y * 1.5;
-	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, {window, rt, event_manager, menu_window});
+	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, {args.window, args.rt, args.event_manager, args.window_manager, menu_window, args.dummy_widget});
 	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
 									load_game_func, "Assets/UI/LoadButton.png"));
-	
+
+
 	return menu_window;
 }

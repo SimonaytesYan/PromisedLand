@@ -12,6 +12,7 @@
 
 class ResourceManager
 {
+public:
     static ResourceManager* current_manager;
 
 private:
