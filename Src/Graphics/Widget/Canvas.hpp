@@ -57,9 +57,9 @@ public:
     Point updateHostPosition(const int dx, const int dy)
     {
         relative_host_pos.x = 
-            std::max(std::min(relative_host_pos.x + dx, original_host_pos.x + canvas_size_x - host_size_x), original_host_pos.x);
+            std::max(std::min(relative_host_pos.x + dx, original_host_pos.x + canvas_size_x - host_size_x + inv_area_size_x), original_host_pos.x);
         relative_host_pos.y = 
-            std::max(std::min(relative_host_pos.y + dy, original_host_pos.y + canvas_size_y - host_size_y), original_host_pos.y);
+            std::max(std::min(relative_host_pos.y + dy, original_host_pos.y + canvas_size_y - host_size_y + inv_area_size_y), original_host_pos.y);
     
         return relative_host_pos;
     }
@@ -77,6 +77,7 @@ public:
     // is point visible in canvas visible area
     bool isScreenPointInCanvas(const Point screen_pos)
     {
+        // check if we a re inside map part on canvas
         if (screen_pos.x >= inv_area_pos.x                   &&
             screen_pos.x <= inv_area_pos.x + inv_area_size_x &&
             screen_pos.y >= inv_area_pos.y                   &&
@@ -85,6 +86,23 @@ public:
             return false;
         }
 
+        // check if we are not on black part of canvas
+        if (relative_host_pos.x > original_host_pos.x + canvas_size_x - host_size_x)
+        {
+            // right black line is visible
+            const int invalid_visible_part_x = host_size_x - (canvas_size_x - relative_host_pos.x);
+            if (screen_pos.x > original_host_pos.x + host_size_x - invalid_visible_part_x) return false;
+        }
+
+
+        if (relative_host_pos.y > original_host_pos.y + canvas_size_y - host_size_y)
+        {
+            // down black line is visible
+            const int invalid_visible_part_y = host_size_y - (canvas_size_y - relative_host_pos.y);
+            if (screen_pos.y > original_host_pos.y + host_size_y - invalid_visible_part_y) return false;
+        }
+
+        // default case
         return screen_pos.x >= original_host_pos.x                &&
                screen_pos.x <= original_host_pos.x + host_size_x  &&
                screen_pos.y >= original_host_pos.y                &&
