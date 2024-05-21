@@ -57,7 +57,7 @@ public:
     Texture* getTexture();
 
 private:
-    static constexpr char* const kDefaultFont = "Assets/arial.ttf";
+    static constexpr char* const kDefaultFont = "Assets/PixelFont.ttf";
     static constexpr char* const kOnOpenError = "Could not open file: ";
 
 private:

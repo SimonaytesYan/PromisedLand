@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
 #include <string>
 #include <string_view>
 
@@ -8,9 +9,10 @@
 class TextView : public Widget 
 {
 public:
-    explicit TextView(const Point _pos, const std::string_view _content = "")
-      : Widget  (_pos),
-        content (_content) {} 
+    explicit TextView(const Point _pos, const std::string_view _content = "", uint16_t text_size = 20)
+      : Widget    (_pos),
+        content   (_content),
+        kTextSize (text_size) {} 
 
     void draw(RenderTarget& render_target) override 
     { render_target.drawText(pos, content.c_str(), kTextSize, kTextColor); }
@@ -22,8 +24,8 @@ public:
     { content = _content; }
 
 private:
-    const uint16_t  kTextSize  = 20;
-    const Color kTextColor = {255, 255, 255};
+    const uint16_t kTextSize  = 20;
+    const Color    kTextColor = {255, 255, 255};
 
 private:
     std::string content;
