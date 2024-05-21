@@ -80,13 +80,13 @@ void CellViewGroup::push(const EventPtr event)
 
             break;
         }
-        case EventType::MOUSE_CLICK:
+        case EventType::MOUSE_RELEASE:
         {
-            const MouseClickEvent* mouse_event = static_cast<const MouseClickEvent*>(event.get());
+            const MouseReleaseEvent* mouse_event = static_cast<const MouseReleaseEvent*>(event.get());
 
             if (!draw_canvas->isScreenPointInCanvas(mouse_event->pos)) return;
 
-            EventPtr cell_view_event = new MouseClickEvent(draw_canvas->getRelativePos(mouse_event->pos));
+            EventPtr cell_view_event = new MouseReleaseEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
             {
                 if (draw_canvas->isCellVisible(val->getPos(), kCellSize))

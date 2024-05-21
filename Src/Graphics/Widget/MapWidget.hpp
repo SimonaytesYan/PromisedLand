@@ -23,7 +23,9 @@ public:
         frame_size_x  (frame_size_x),
         frame_size_y  (frame_size_y),
         pixels        (size_x * size_y, Color::Transparent),
-        pixel_texture (new RenderTarget({size_x, size_y}))
+        pixel_texture (new RenderTarget({size_x, size_y})),
+        is_moving     (false),
+        last_pos      ()
     {}
 
     // Non-copyable
@@ -50,7 +52,9 @@ public:
 
         render_target.drawRect({pos.x + scale * cur_frame_pos.x / kCellSize, pos.y + scale * cur_frame_pos.y / kCellSize}, 
                                {scale * frame_size_x / kCellSize, scale * frame_size_y / kCellSize}, 
-                               kFrameColor);
+                               kFrameColor,
+                               kFrameBorderSize,
+                               kFrameBorderColor);
     }
 
     void push(const EventPtr event) override
@@ -80,13 +84,39 @@ public:
 
             break;
           }
+        case EventType::MOUSE_CLICK:
+          {
+            const MouseClickEvent* click_event = static_cast<const MouseClickEvent*>(event.get());
+            if (isMouseInFrame(click_event->pos)) 
+            {
+                // is_moving = true;
+                // last_pos  = 
+            }
+
+            break;
+          }
         default:
             break;
         }
     }
 
 private:
-    const Color kFrameColor = {255, 255, 255, 128};
+
+    bool isMouseInFrame(const Point mouse_pos) 
+    {
+        const Point frame_start = {pos.x + scale * cur_frame_pos.x / kCellSize, pos.y + scale * cur_frame_pos.y / kCellSize};
+        const Point frame_size  = {scale * frame_size_x / kCellSize, scale * frame_size_y / kCellSize};
+
+        return mouse_pos.x >= frame_start.x                &&
+               mouse_pos.x <= frame_start.x + frame_size.x &&
+               mouse_pos.y >= frame_start.y                &&
+               mouse_pos.y <= frame_start.y + frame_size.y; 
+    }
+
+private:
+    const Color kFrameColor       = {255, 255, 255, 128};
+    const Color kFrameBorderColor = {255, 255, 255, 200};
+    const int   kFrameBorderSize  = 2;
 
 private:
     const size_t size_x;
@@ -99,4 +129,7 @@ private:
 
     std::vector<Color> pixels;
     RenderTarget*      pixel_texture;
+
+    bool  is_moving;
+    Point last_pos;
 };

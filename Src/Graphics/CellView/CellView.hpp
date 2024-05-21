@@ -53,9 +53,9 @@ public:
     {
         switch (event->event_type)
         {
-        case EventType::MOUSE_CLICK:
+        case EventType::MOUSE_RELEASE:
           {
-            const MouseClickEvent* mouse_event = static_cast<const MouseClickEvent*>(event.get());
+            const MouseReleaseEvent* mouse_event = static_cast<const MouseReleaseEvent*>(event.get());
             onClick(mouse_event->pos, event);
             break;
           }

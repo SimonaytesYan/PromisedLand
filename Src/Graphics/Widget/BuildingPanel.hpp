@@ -57,7 +57,7 @@ public:
     {
         switch (event->event_type)
         {
-            case EventType::MOUSE_CLICK:
+            case EventType::MOUSE_RELEASE:
             {
                 const size_t size = buttons.Size();
                     for (size_t i = 0; i < buttons.Size(); i++)

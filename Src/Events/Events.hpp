@@ -12,6 +12,7 @@ enum class EventType
     TICK,
     MOUSE_CLICK,
     MOUSE_MOVE,
+    MOUSE_RELEASE,
 
     // VIRTUAL EVENTS
     SELECT_BUILDING_EVENT,
@@ -56,6 +57,16 @@ struct MouseMoveEvent : public Event
 {
     MouseMoveEvent(Point pos)
     : Event(EventType::MOUSE_MOVE),
+      pos (pos)
+    { }
+
+    Point pos;
+};
+
+struct MouseReleaseEvent : public Event
+{
+    MouseReleaseEvent(Point pos)
+    : Event(EventType::MOUSE_RELEASE),
       pos (pos)
     { }
 

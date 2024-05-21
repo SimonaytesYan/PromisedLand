@@ -104,7 +104,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 				{
 					if (!is_map_moving) {
 						// click on cell
-						event_manager.push(new MouseClickEvent({event.mouseButton.x, event.mouseButton.y}));
+						event_manager.push(new MouseReleaseEvent({event.mouseButton.x, event.mouseButton.y}));
 
 						// for cell hover
 						const auto mouse_position = sf::Mouse::getPosition();
