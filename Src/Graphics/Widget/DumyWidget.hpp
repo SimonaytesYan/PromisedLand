@@ -15,16 +15,25 @@ public:
     {
         for (const auto child : drawable_children)
         {
+            if (!child->isAlive())
+            {
+                removeChild(child);
+                delete child;
+            }
+        }
+
+        for (const auto child : drawable_children)
+        {
             child->draw(render_target);
         }
     }
 
-    void addChild(Renderable* child)
+    void addChild(Widget* child)
     {
         drawable_children.push_back(child);
     }
 
-    void removeChild(const Renderable* child)
+    void removeChild(const Widget* child)
     {
         const auto child_it = std::find(drawable_children.begin(), drawable_children.end(), child);
         
@@ -35,5 +44,5 @@ public:
     }
 
 private:
-    std::vector<Renderable*> drawable_children;
+    std::vector<Widget*> drawable_children;
 };

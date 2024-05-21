@@ -16,14 +16,18 @@ public:
 
     void push(const EventPtr event) override
     {
+        fprintf(stderr, "Cycle in\n");
         const size_t event_type = static_cast<size_t>(event->event_type);
         for (const auto child : children)
         {
             if (child->getPriority() >= priorities[event_type]) 
             {
+                fprintf(stderr, "Before push\n");
                 child->push(event);
+                fprintf(stderr, "After push\n");
             }
         }
+        fprintf(stderr, "Cycle out\n");
     }
 
     void setPriority(std::vector<EventType>& event_types, const int new_priority)

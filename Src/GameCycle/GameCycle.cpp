@@ -3,17 +3,16 @@
 #include "../Events/EventManager.hpp"
 #include "GameCycle.hpp"
 #include "../Managers/ResourceManager.hpp"
+#include "../Managers/WindowManager.hpp"
 #include "../Graphics/Widget/DumyWidget.hpp"
 #include "../Constants.hpp"
 #include "../Map/MapSaveLoad.hpp"
+#include "../Menu/Menu.hpp"
 
-ResourceManager* ResourceManager::current_manager = nullptr;
+ResourceManager* ResourceManager::current_manager = nullptr; 
 
-void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_window, EventManager& event_manager, DummyWidget& dummy_widget) 
+void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager, WindowManager& window_manager, DummyWidget& dummy_widget) 
 {
-	dummy_widget .addChild(&game_window);
-	event_manager.addChild(&game_window);
-
     auto timer_start = std::chrono::system_clock::now(); 
 
 	int delta_x = 0, delta_y = 0;
@@ -24,9 +23,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 	{
 		if (ResourceManager::hasLost())
 		{
-			printf("You have lost!\n");
-			event_manager.removeChild(&game_window);
-			dummy_widget .removeChild(&game_window);
+			fprintf(stderr, "You have lost!\n");
+			window_manager.setCurWindow(CreateMenuWindow(window, rt, event_manager, window_manager, dummy_widget));
 			// window.close();
             return;
 		}
@@ -34,7 +32,9 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 		rt.clear();
 		window.clear();
 
+		fprintf(stderr, "TRY DRAW\n");
 		dummy_widget.draw(rt);
+		fprintf(stderr, "DRAW\n");
 		
 		rt.display(window);
 		window.display();
@@ -44,8 +44,9 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 		if (passed.count() >= kMSInClock)
 		{
 			static int tick = 0;
+			fprintf(stderr, "TRY TICK\n");
 			event_manager.push(new Event(EventType::TICK));
-
+			fprintf(stderr, "TICK\n");
 			timer_start = timer_end;
 		}
 
@@ -141,7 +142,4 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 			}
 		}
     }
-
-	event_manager.removeChild(&game_window);
-	dummy_widget .removeChild(&game_window);
 }

@@ -32,7 +32,9 @@ public:
     void push(const EventPtr event) override
     {
         for (auto val : children)
+        {
             val->push(event);
+        }
     }
 
     void draw(RenderTarget& rt) override

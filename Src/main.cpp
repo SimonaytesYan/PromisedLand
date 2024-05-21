@@ -12,6 +12,7 @@
 #include "Graphics/Widget/Window.hpp"
 #include "../Standart/Plugin.hpp"
 #include "Menu/Menu.hpp"
+#include "Managers/WindowManager.hpp"
 #include "GameCycle/GameCycle.hpp"
 #include "Utils/RenderTarget.hpp"
 
@@ -39,13 +40,14 @@ int main()
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);
 	RenderTarget main_rt(Point(window.getSize().x, window.getSize().y));
 	
-	DummyWidget  dummy_widget;
-	EventManager event_manager;
-	Window* menu = CreateMenuWindow(window, main_rt, event_manager, dummy_widget);
+	DummyWidget   dummy_widget;
+	EventManager  event_manager;
+	WindowManager window_manager(event_manager, dummy_widget);
+	Window* menu = CreateMenuWindow(window, main_rt, event_manager, window_manager, dummy_widget);
+	window_manager.setCurWindow(menu);
 
-	runGameCycle(window, main_rt, *menu, event_manager, dummy_widget);
+	runGameCycle(window, main_rt, event_manager, window_manager, dummy_widget);
 	// CreateGameWindowAndRunGame(window);
 	
 	CellKeeper::destroy();
-	delete menu;
 }
