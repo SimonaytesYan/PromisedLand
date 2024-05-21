@@ -16,6 +16,14 @@ public:
         on_win_changed(nullptr)
     {}
 
+    // Non-copyable
+    WindowManager          (const WindowManager& other) = delete;
+    WindowManager operator=(const WindowManager& other) = delete;
+
+    // Non-movable
+    WindowManager          (WindowManager&& other) = delete;
+    WindowManager operator=(WindowManager&& other) = delete;
+
     explicit WindowManager(Window* window, EventManager& event_manager, DummyWidget& dummy_widget)
       : cur_window    (window),
         event_manager (event_manager),
