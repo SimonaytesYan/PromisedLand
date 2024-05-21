@@ -94,6 +94,16 @@ void CellViewGroup::push(const EventPtr event)
 
             return;
         }
+        case EventType::CLICKED_MOUSE_MOVED:
+        {
+            const ClickedMouseMoveEvent* mouse_event = static_cast<const ClickedMouseMoveEvent*>(event.get());
+            if (!draw_canvas->isScreenPointInCanvas(mouse_event->new_pos)) return;
+
+            Point new_pos = draw_canvas->updateHostPosition(mouse_event->delta_x, mouse_event->delta_y);
+            cell_interlayer->pushToView(new SmallMapMovedEvent(new_pos));
+
+            break;
+        }
         case EventType::MOUSE_MOVE:
         {
             const MouseMoveEvent* mouse_event = static_cast<const MouseMoveEvent*>(event.get());
