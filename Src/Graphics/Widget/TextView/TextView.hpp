@@ -15,7 +15,7 @@ public:
         kTextSize (text_size) {} 
 
     void draw(RenderTarget& render_target) override 
-    { render_target.drawText(pos, content.c_str(), kTextSize, kTextColor); }
+    { render_target.drawText(pos, content.c_str(), kTextSize, text_color); }
 
     void push(const EventPtr event) override
     { }
@@ -23,10 +23,15 @@ public:
     void setContent(const std::string_view _content) 
     { content = _content; }
 
-private:
-    const uint16_t kTextSize  = 20;
-    const Color    kTextColor = {255, 255, 255};
+    void setTextColor(Color new_color)
+    {
+        text_color = new_color;
+    }
 
 private:
+    const uint16_t kTextSize  = 20;
+
+private:
+    Color       text_color = {255, 255, 255};
     std::string content;
 };
