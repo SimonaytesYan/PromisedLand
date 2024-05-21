@@ -62,6 +62,11 @@ void goToMainFunc(PauseArgs args) {
 	args.window_manager.setCurWindow(CreateMenuWindow({args.window, args.rt, args.event_manager, args.window_manager, args.dummy_widget}));
 }
 
+void goToMainFunc(MenuButtonArgs args)
+{
+	args.window_manager.setCurWindow(CreateMenuWindow({args.window, args.rt, args.event_man, args.window_manager, args.dummy_widget}));
+}
+
 void createPauseMenu(PauseArgs args) {
 	const auto  window_size   = args.window.getSize();
 	const Point pause_win_pos = {(window_size.x - kPauseWinSizeX) / 2, (window_size.y - kPauseWinSizeY) / 2};
@@ -119,7 +124,9 @@ void createTopScoreWindow(MenuButtonArgs args)
 		top_score_window->addChild(score);
 	}
 
-
+	BasicFunctor* to_main_func = new Functor<MenuButtonArgs>(goToMainFunc, args);
+	top_score_window->addChild(new Button({850, 950}, 400, 200, to_main_func, 
+										  "Assets/UI/SmallMainBtn.png"));
 	args.window_manager.setCurWindow(top_score_window, nullptr);
 }
 
