@@ -6,6 +6,7 @@
 
 void CellInterlayer::pushToView(const EventPtr event)
 {
+    map_widget.push(event);
     cell_view_group->push(event);
 }
 

@@ -139,3 +139,26 @@ Texture* RenderTarget::getTexture()
 {
     return new Texture(rt.getTexture());
 }
+
+Color getTextureMeanColor(const char* asset_path)
+{
+    sf::Image asset_img;
+    asset_img.loadFromFile(asset_path);
+
+    const sf::Uint8* pixels = asset_img.getPixelsPtr();
+    size_t r = 0, g = 0, b = 0, a = 0;
+
+    const size_t texture_size = asset_img.getSize().x * asset_img.getSize().y;
+    for (size_t i = 0; i < texture_size; ++i) 
+    {
+        r += pixels[4 * i + 0];
+        g += pixels[4 * i + 1];
+        b += pixels[4 * i + 2];
+        a += pixels[4 * i + 3];
+    }
+
+    return {static_cast<unsigned char>(r / texture_size), 
+            static_cast<unsigned char>(g / texture_size), 
+            static_cast<unsigned char>(b / texture_size), 
+            static_cast<unsigned char>(a / texture_size)};
+}

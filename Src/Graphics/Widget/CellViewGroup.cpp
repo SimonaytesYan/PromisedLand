@@ -5,7 +5,12 @@
 #include "../../Events/Events.hpp"
 #include "../CellView/CellView.hpp"
 
-CellViewGroup::CellViewGroup(const Point position, const size_t _map_size_x, const size_t _map_size_y)
+CellViewGroup::CellViewGroup(const Point position, 
+                             const size_t _map_size_x, 
+                             const size_t _map_size_y, 
+                             const Point  _inv_area_pos,
+                             const size_t _inv_area_size_x,
+                             const size_t _inv_area_size_y)
   : Widget (position)
 { 
     const size_t canvas_size_x = kFieldSizeX * kCellSize;
@@ -14,7 +19,14 @@ CellViewGroup::CellViewGroup(const Point position, const size_t _map_size_x, con
     const size_t map_size_x = std::min(_map_size_x, canvas_size_x);
     const size_t map_size_y = std::min(_map_size_y, canvas_size_y);
 
-    draw_canvas = new Canvas(position, map_size_x, map_size_y, canvas_size_x, canvas_size_y);
+    draw_canvas = new Canvas(position, 
+                             map_size_x, 
+                             map_size_y, 
+                             canvas_size_x, 
+                             canvas_size_y, 
+                             _inv_area_pos, 
+                             _inv_area_size_x, 
+                             _inv_area_size_y);
 }
 
 void CellViewGroup::push(const EventPtr event)
@@ -160,5 +172,6 @@ void CellViewGroup::addCell(CellView* cell_view)
 
 void CellViewGroup::addCell(const FieldType field_type, const Point pos)
 {
+    cell_interlayer->pushToView(new SmallMapChangedEvent(field_type, pos));
     addCell(CellKeeper::createCellView(field_type, pos, *this));
 }

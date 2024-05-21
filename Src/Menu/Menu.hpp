@@ -31,6 +31,7 @@ struct MenuButtonArgs
 class ResourceBarInterlayer;
 class ResourceManager;
 class BuildingPanelInterlayer;
+class MapWidget;
 struct GameSettings {
 	ResourceBarInterlayer*   res_bar_inter;
 	ResourceManager*         res_manager;

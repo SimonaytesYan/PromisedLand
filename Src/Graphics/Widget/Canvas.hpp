@@ -11,7 +11,10 @@ public:
                     const size_t _host_size_x, 
                     const size_t _host_size_y, 
                     const size_t _canvas_size_x, 
-                    const size_t _canvas_size_y)
+                    const size_t _canvas_size_y,
+                    const Point  _inv_area_pos    = {0, 0},
+                    const size_t _inv_area_size_x = 0,
+                    const size_t _inv_area_size_y = 0)
       : Widget            (0, 0),
         original_host_pos (_pos),
         relative_host_pos (_pos),
@@ -19,7 +22,10 @@ public:
         host_size_y       (_host_size_y),
         canvas_size_x     (_canvas_size_x),
         canvas_size_y     (_canvas_size_y),
-        canvas_renderer   (new RenderTarget({_canvas_size_x, _canvas_size_y}))
+        canvas_renderer   (new RenderTarget({_canvas_size_x, _canvas_size_y})),
+        inv_area_pos      (_inv_area_pos),
+        inv_area_size_x   (_inv_area_size_x),
+        inv_area_size_y   (_inv_area_size_y)
     {}
 
     // Non-copyable
@@ -69,6 +75,14 @@ public:
     // is point visible in canvas visible area
     bool isScreenPointInCanvas(const Point screen_pos)
     {
+        if (screen_pos.x >= inv_area_pos.x                   &&
+            screen_pos.x <= inv_area_pos.x + inv_area_size_x &&
+            screen_pos.y >= inv_area_pos.y                   &&
+            screen_pos.y <= inv_area_pos.y + inv_area_size_y)
+        {
+            return false;
+        }
+
         return screen_pos.x >= original_host_pos.x                &&
                screen_pos.x <= original_host_pos.x + host_size_x  &&
                screen_pos.y >= original_host_pos.y                &&
@@ -102,4 +116,8 @@ private:
     size_t canvas_size_y;
 
     RenderTarget* canvas_renderer;
+
+    Point  inv_area_pos;
+    size_t inv_area_size_x;
+    size_t inv_area_size_y;
 };
