@@ -50,6 +50,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 
     while (window.isOpen())
 	{
+		if (!window_manager.getCurWindow()) return;
+		
 		if (ResourceManager::hasLost())
 		{
 			fprintf(stderr, "You have lost!\n");
@@ -60,7 +62,6 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 		window.clear();
 
 		dummy_widget.draw(rt);
-		if (!window_manager.getCurWindow()) return;
 		
 		rt.display(window);
 		window.display();

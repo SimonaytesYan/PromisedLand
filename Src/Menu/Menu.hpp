@@ -62,6 +62,16 @@ struct CreateMenuArgs {
 	DummyWidget&      dummy_widget;
 };
 
+struct PauseArgs {
+	sf::RenderWindow& window;
+	EventManager&     event_manager;
+	WindowManager&    window_manager;
+	DummyWidget&      dummy_widget;
+	CellInterlayer&   cell_interlayer;
+
+	Window* pause_win = nullptr;
+};
+
 static const char* kLoadImg  = "Assets/load.png";
 static const int   kLoadImgW = 456;
 static const int   kLoadImgH = 256;
@@ -72,5 +82,8 @@ static const int   kBorderIndent   = 5;
 static const int kBtnSizeX  = 400;
 static const int kBtnSizeY  = 200;
 static const int kBtnIndent = 20;
+
+static const int kPauseWinSizeX = 1000;
+static const int kPauseWinSizeY = 800;
 
 Window* CreateMenuWindow(CreateMenuArgs args);

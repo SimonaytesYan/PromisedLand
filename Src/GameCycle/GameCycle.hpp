@@ -6,3 +6,4 @@
 #include "../Managers/WindowManager.hpp"
 
 void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager, WindowManager& window_manager, DummyWidget& dummy_widget);
+void exitGame(WindowManager& win_manager);

@@ -28,6 +28,43 @@ void freeGameManagers(GameSettings args) {
 	delete args.res_manager;
 }
 
+void closePause(PauseArgs args) {
+	args.pause_win->kill();
+	args.event_manager.removeChild(args.pause_win);
+
+	args.event_manager.resetPriorities();
+}
+
+void createPauseMenu(PauseArgs args) {
+	const auto  window_size   = args.window.getSize();
+	const Point pause_win_pos = {(window_size.x - kPauseWinSizeX) / 2, (window_size.y - kPauseWinSizeY) / 2};
+
+	Window* pause_window = new Window(pause_win_pos, window_size.x, window_size.y, "Assets/UI/PauseBack.png");
+
+	const Point button_size(kBtnSizeX, kBtnSizeY);
+	Point position(args.window.getSize().x / 2 - button_size.x / 2, 300);
+
+	BasicFunctor* resume_func = new Functor<PauseArgs>(closePause, {args.window, args.event_manager, args.window_manager, args.dummy_widget, args.cell_interlayer, pause_window});
+	pause_window->addChild(new Button(position, button_size.x, button_size.y, 
+									resume_func, "Assets/UI/ResumeBtn.png"));
+	
+	position.y += kBtnSizeY + kBtnIndent;
+	BasicFunctor* save_func = new Functor<SaveMapArgs>(SaveMap, {args.cell_interlayer, args.dummy_widget, args.event_manager, {args.window.getSize().x, args.window.getSize().y}});
+	Button* save_button = new Button(position, button_size.x, button_size.y, 
+									  save_func, "Assets/UI/SaveBtn.png");
+	pause_window->addChild(save_button);
+
+	position.y += kBtnSizeY + kBtnIndent;
+	BasicFunctor* exit_game_func = new Functor<WindowManager&>(exitGame, args.window_manager);
+	pause_window->addChild(new Button(position, button_size.x, button_size.y, 
+									exit_game_func, "Assets/UI/ExitBtn.png"));
+
+	pause_window->setPriority(1);
+	args.dummy_widget .addChild(pause_window);
+	args.event_manager.addChild(pause_window);
+	args.event_manager.privatizeAll(1);
+}
+
 void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 {
 	const auto   window_size    = args.window.getSize();
@@ -57,10 +94,10 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 												   *build_pan_interlayer);
 	game_window->addChild(build_panel);
 
-	BasicFunctor* save_func = new Functor<SaveMapArgs>(SaveMap, {*cell_interlayer, args.dummy_widget, args.event_man, {args.window.getSize().x, args.window.getSize().y}});
-	Button* save_button = new Button({args.window.getSize().x - 112, 12}, 100, 100, 
-									  save_func, "Assets/UI/SaveIcon.png");
-	game_window->addChild(save_button);
+	BasicFunctor* pause_func = new Functor<PauseArgs>(createPauseMenu, {args.window, args.event_man, args.window_manager, args.dummy_widget, *cell_interlayer});
+	Button* pause_button = new Button({args.window.getSize().x - 112, 12}, 100, 100, 
+									  pause_func, "Assets/UI/PauseBtn.png");
+	game_window->addChild(pause_button);
 
 	cell_interlayer->setCellViewGroup(cell_view_group);
 

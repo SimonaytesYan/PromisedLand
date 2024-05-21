@@ -21,6 +21,7 @@ public:
         {
             if (child->getPriority() >= priorities[event_type]) 
             {
+                std::cout << child->getPriority() << '\n';
                 child->push(event);
             }
         }
@@ -31,6 +32,13 @@ public:
         for (const auto event_type : event_types)
         {
             setPriority(event_type, new_priority);
+        }
+    }
+
+    void privatizeAll(const int new_priority) {
+        for (auto& prior : priorities)
+        {
+            prior = new_priority;
         }
     }
 
@@ -56,7 +64,7 @@ public:
 
     void resetPriorities()
     {
-        for (auto prior : priorities)
+        for (auto& prior : priorities)
         {
             prior = 0;
         }

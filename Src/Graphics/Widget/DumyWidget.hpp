@@ -43,6 +43,14 @@ public:
         }
     }
 
+    ~DummyWidget()
+    {
+        for (const auto child : drawable_children) 
+        {
+            delete child;
+        }
+    }
+
 private:
     std::vector<Widget*> drawable_children;
 };
