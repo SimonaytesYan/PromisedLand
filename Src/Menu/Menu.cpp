@@ -99,13 +99,26 @@ void createTopScoreWindow(MenuButtonArgs args)
 	Window* top_score_window = new Window({0, 0}, window_size.x, window_size.y, "Assets/UI/TopScoreBack.png");
 
 	Vector<int> top_score = getTopScore();
-	const size_t records_number = top_score.Size();
-	for (size_t i = 0; i < records_number; i++)
+	const size_t records_number = (top_score.Size() > 10) ? 10 : top_score.Size();
+	Point text_pos{300, 250}; 
+	for (size_t i = 0; i < records_number; i++, text_pos.y += 135)
 	{
+		if (i == 5)
+		{
+			text_pos.x += 850;
+			text_pos.y = 250;
+		}
+
 		char content[255] = {};
-		sprintf(content, "%zu. %d", i, top_score[i]);
-		top_score_window->addChild(new TextView({300, i * 150 + 400}, content, 200));
+		
+		sprintf(content, "%zu", i + 1);
+		top_score_window->addChild(new TextView(text_pos, content, 120));
+		sprintf(content, "%d", top_score[i]);
+		TextView* score = new TextView({text_pos.x + 250, text_pos.y }, content, 120);
+		score->setTextColor({25 * i, 255, 25 * i});
+		top_score_window->addChild(score);
 	}
+
 
 	args.window_manager.setCurWindow(top_score_window, nullptr);
 }
