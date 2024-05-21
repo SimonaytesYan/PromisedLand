@@ -29,7 +29,7 @@ public:
         if (image_counter < images.Size())
             rt.drawTexture(pos, images[image_counter]);
         time_point now = std::chrono::high_resolution_clock::now();
-        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - prev_time).count() > 100)
+        if (std::chrono::duration_cast<std::chrono::milliseconds>(now - prev_time).count() > frame_duration)
         {
             prev_time = now;
 

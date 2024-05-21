@@ -23,7 +23,10 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, Window& game_windo
 	animation.PushBack("Assets/UI/Loading/6.png");
 	animation.PushBack("Assets/UI/Loading/7.png");
 
-	game_window.addChild(new AnimatedWidget({100, 100}, animation));
+	AnimatedWidget* anim_widget = new AnimatedWidget({100, 100}, animation); 
+	anim_widget->setFrameDuration(100);
+	game_window.addChild(anim_widget);
+
 
     auto timer_start = std::chrono::system_clock::now(); 
 
