@@ -57,6 +57,11 @@ public:
         }
     }
 
+    static const char* getAsset(const FieldType field_type)
+    {
+        return unique_cells[findByInterfaceId(field_type)]->getAsset();
+    }
+
     static void destroy()
     {
         for (const auto cell_int : unique_cells)

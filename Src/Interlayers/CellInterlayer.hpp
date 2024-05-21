@@ -4,6 +4,7 @@
 
 #include "../Graphics/Widget/CellViewGroup.hpp"
 #include "../Map/MapSaveLoad.hpp"
+#include "../Graphics/Widget/MapWidget.hpp"
 
 class CellManager;
 
@@ -12,9 +13,10 @@ class CellInterlayer
     friend MapSaverLoader;
 
 public:
-    explicit CellInterlayer(CellManager& cell_manager)
+    explicit CellInterlayer(CellManager& cell_manager, MapWidget& map_widget)
       : cell_manager    (cell_manager),
-        cell_view_group (nullptr)
+        cell_view_group (nullptr),
+        map_widget      (map_widget)
     { }
 
     void pushToView(const EventPtr event);
@@ -28,4 +30,5 @@ public:
 private:
     CellManager&   cell_manager;
     CellViewGroup* cell_view_group;
+    MapWidget&     map_widget;
 };

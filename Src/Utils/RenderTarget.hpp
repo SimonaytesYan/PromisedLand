@@ -64,3 +64,5 @@ private:
     sf::RenderTexture rt;
     sf::Font          font;
 };
+
+Color getTextureMeanColor(const char* asset_path);

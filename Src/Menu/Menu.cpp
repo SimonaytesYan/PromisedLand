@@ -8,6 +8,7 @@
 #include "../Graphics/Widget/CellViewGroup.hpp"
 #include "../Graphics/Widget/DumyWidget.hpp"
 #include "../Graphics/Widget/Toast.hpp"
+#include "../Graphics/Widget/MapWidget.hpp"
 #include "../Managers/WindowManager.hpp"
 #include "../Map/MapGenerating.hpp"
 #include "../Map/MapSaveLoad.hpp"
@@ -117,27 +118,45 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 
 	Window* game_window = new Window({0, 0}, visible_part_x, visible_part_y, "Assets/Background.png");
 
+	const size_t map_pos_x = window_size.x - kMapScale * kFieldSizeX;
+	const size_t map_pos_y = window_size.y - kMapScale * kFieldSizeY;
+	MapWidget* map_widget  = new MapWidget({map_pos_x, map_pos_y}, 
+							   				kMapScale * kFieldSizeX, 
+											kMapScale * kFieldSizeY, 
+							   				kMapScale,
+											visible_part_x,
+											visible_part_y);
+	game_window->addChild(map_widget);
+
 	ResourceBar* res_bar = new ResourceBar(args.window.getSize().x, 
 										   args.window.getSize().y - kControlPanelH / 2, 
 										   kStartResources);
 	game_window->addChild(res_bar);
 
-	CellViewGroup* cell_view_group = new CellViewGroup({0, 0}, visible_part_x, visible_part_y);
+	const int map_area_size_x = std::max(visible_part_x - map_pos_x, 0ul);
+	const int map_area_size_y = std::max(visible_part_y - map_pos_y, 0ul);
+
+	CellViewGroup* cell_view_group = new CellViewGroup({0, 0}, 
+													   visible_part_x, 
+													   visible_part_y, 
+													   {map_pos_x, map_pos_y}, 
+													   map_area_size_x, 
+													   map_area_size_y);
 	game_window->addChild(cell_view_group);
 
 	// Interlayer + Manager initialisation
 	ResourceBarInterlayer*   res_bar_inter        = new ResourceBarInterlayer(*res_bar);
 	ResourceManager*         res_manager          = new ResourceManager(*res_bar_inter);
 	CellManager*             cell_manager         = new CellManager(res_manager);
-	CellInterlayer*          cell_interlayer      = new CellInterlayer(*cell_manager);
+	CellInterlayer*          cell_interlayer      = new CellInterlayer(*cell_manager, *map_widget);
 	BuildingPanelInterlayer* build_pan_interlayer = new BuildingPanelInterlayer(*cell_manager);
 
 	res_manager->setCellInterlayer(cell_interlayer);
+	map_widget ->setCellInterlayer(cell_interlayer);
 
 	BuildingPanel* build_panel = new BuildingPanel(Point(args.window.getSize().x - kControlPanelW / 2, kControlPanelYStart), 
 												   *build_pan_interlayer);
 	game_window->addChild(build_panel);
-
 
 	BasicFunctor* pause_func = new Functor<PauseArgs>(createPauseMenu, {args.window, args.rt, *res_manager, args.event_man, args.window_manager, args.dummy_widget, *cell_interlayer});
 	Button* pause_button = new Button({args.window.getSize().x - 112, 12}, 100, 100, 
@@ -151,10 +170,12 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 
 	cell_view_group->setCellInterlayer(cell_interlayer);
 
+
 	if (args.map_filepath == nullptr)
 		generateField(*cell_interlayer);
 	else
 		MapSaverLoader::loadMapFromFile(*cell_interlayer, *res_manager, args.map_filepath);
+		
 
 	args.window_manager.setCurWindow(game_window, new Functor<GameSettings>(freeGameManagers, {res_bar_inter, res_manager, cell_manager, cell_interlayer, build_pan_interlayer}));
 }

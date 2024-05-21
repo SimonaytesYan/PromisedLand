@@ -13,9 +13,9 @@ public:
         food_view        ({50,                             y_start}),
         water_view       ({width / text_view_cnt + 50,     y_start}),
         wood_view        ({width / text_view_cnt * 2 + 50, y_start}),
-        population_view  ({width / text_view_cnt * 3 + 50, y_start}),
-        free_pop_view    ({width / text_view_cnt * 4 + 50, y_start}),
-        stone_view       ({width / text_view_cnt * 5 + 50, y_start})
+        stone_view       ({width / text_view_cnt * 3 + 50, y_start}),
+        population_view  ({width / text_view_cnt * 4 + 50, y_start}),
+        free_pop_view    ({width / text_view_cnt * 5 + 50, y_start})
     {
         updateValues(start_res);
     }

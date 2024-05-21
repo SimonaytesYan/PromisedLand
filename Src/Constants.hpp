@@ -16,5 +16,6 @@ static const int   kMSInClock          = 1000;
 
 static const int kFieldSizeX = 100;
 static const int kFieldSizeY = 100;
+static const int kMapScale   = 2;
 
 static const int move_speed = 20;  // pixels in tick

@@ -12,6 +12,8 @@ enum class EventType
     TICK,
     MOUSE_CLICK,
     MOUSE_MOVE,
+    MOUSE_RELEASE,
+    CLICKED_MOUSE_MOVED,
 
     // VIRTUAL EVENTS
     SELECT_BUILDING_EVENT,
@@ -25,6 +27,8 @@ enum class EventType
     COEFF_CHANGED,
     SUCCESSFUL_CELL_VIEW_DELETE,
     MAP_MOVED,
+    SMALL_MAP_CHANGED,
+    SMALL_MAP_MOVED,
 
     EVENT_CNT,
 };
@@ -58,6 +62,30 @@ struct MouseMoveEvent : public Event
     { }
 
     Point pos;
+};
+
+struct MouseReleaseEvent : public Event
+{
+    MouseReleaseEvent(Point pos)
+    : Event(EventType::MOUSE_RELEASE),
+      pos (pos)
+    { }
+
+    Point pos;
+};
+
+struct ClickedMouseMoveEvent : public Event
+{
+    ClickedMouseMoveEvent(const Point pos, const int delta_x, const int delta_y)
+    : Event(EventType::CLICKED_MOUSE_MOVED),
+      new_pos (pos),
+      delta_x (delta_x),
+      delta_y (delta_y)
+    { }
+
+    Point new_pos;
+    int   delta_x;
+    int   delta_y;
 };
 
 struct TryBuildEvent : public Event
@@ -176,4 +204,26 @@ struct MapMovedEvent : public Event
 
   int delta_x;
   int delta_y;
+};
+
+struct SmallMapMovedEvent : public Event
+{
+  explicit SmallMapMovedEvent(const Point new_pos)
+    : Event   (EventType::SMALL_MAP_MOVED),
+      new_pos (new_pos)
+  {}
+
+  const Point new_pos;
+};
+
+struct SmallMapChangedEvent : public Event
+{
+  explicit SmallMapChangedEvent(const FieldType field_type, const Point pos)
+    : Event   (EventType::SMALL_MAP_CHANGED),
+      field_type (field_type),
+      pos        (pos)
+  {}
+
+  const FieldType field_type;
+  const Point     pos;
 };
