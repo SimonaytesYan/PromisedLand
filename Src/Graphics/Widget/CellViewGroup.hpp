@@ -15,7 +15,12 @@ class CellViewGroup : public Widget
     friend MapSaverLoader;
 
 public:
-    CellViewGroup(const Point position, const size_t _map_size_x, const size_t _map_size_y);
+    CellViewGroup(const Point position, 
+                  const size_t _map_size_x, 
+                  const size_t _map_size_y, 
+                  const Point  _inv_area_pos    = {0, 0},
+                  const size_t _inv_area_size_x = 0,
+                  const size_t _inv_area_size_y = 0);
 
     void push(const EventPtr event) override;
     virtual void pushToLogic(const EventPtr event);

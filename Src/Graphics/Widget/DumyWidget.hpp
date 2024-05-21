@@ -11,6 +11,14 @@ public:
       : drawable_children()
     {}
 
+    // Non-copyable
+    DummyWidget          (const DummyWidget& other) = delete;
+    DummyWidget operator=(const DummyWidget& other) = delete;
+
+    // Non-movable
+    DummyWidget          (DummyWidget&& other) = delete;
+    DummyWidget operator=(DummyWidget&& other) = delete;
+
     void draw(RenderTarget& render_target) override
     {
         for (const auto child : drawable_children)

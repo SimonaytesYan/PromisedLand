@@ -5,8 +5,13 @@
 #include "../../Events/Events.hpp"
 #include "../CellView/CellView.hpp"
 
-CellViewGroup::CellViewGroup(const Point position, const size_t _map_size_x, const size_t _map_size_y)
-  : Widget (position)
+CellViewGroup::CellViewGroup(const Point position, 
+                             const size_t _map_size_x, 
+                             const size_t _map_size_y, 
+                             const Point  _inv_area_pos,
+                             const size_t _inv_area_size_x,
+                             const size_t _inv_area_size_y)
+  : Widget(position)
 { 
     const size_t canvas_size_x = kFieldSizeX * kCellSize;
     const size_t canvas_size_y = kFieldSizeY * kCellSize;
@@ -14,7 +19,14 @@ CellViewGroup::CellViewGroup(const Point position, const size_t _map_size_x, con
     const size_t map_size_x = std::min(_map_size_x, canvas_size_x);
     const size_t map_size_y = std::min(_map_size_y, canvas_size_y);
 
-    draw_canvas = new Canvas(position, map_size_x, map_size_y, canvas_size_x, canvas_size_y);
+    draw_canvas = new Canvas(position, 
+                             map_size_x, 
+                             map_size_y, 
+                             canvas_size_x, 
+                             canvas_size_y, 
+                             _inv_area_pos, 
+                             _inv_area_size_x, 
+                             _inv_area_size_y);
 }
 
 void CellViewGroup::push(const EventPtr event)
@@ -63,17 +75,17 @@ void CellViewGroup::push(const EventPtr event)
             const auto dx = map_moved_event->delta_x;
             const auto dy = map_moved_event->delta_y;
 
-            draw_canvas->updateHostPosition(dx, dy);
+            Point new_pos = draw_canvas->updateHostPosition(dx, dy);
+            cell_interlayer->pushToView(new SmallMapMovedEvent(new_pos));
 
             break;
         }
-        case EventType::MOUSE_CLICK:
+        case EventType::MOUSE_RELEASE:
         {
-            const MouseClickEvent* mouse_event = static_cast<const MouseClickEvent*>(event.get());
-
+            const MouseReleaseEvent* mouse_event = static_cast<const MouseReleaseEvent*>(event.get());
             if (!draw_canvas->isScreenPointInCanvas(mouse_event->pos)) return;
 
-            EventPtr cell_view_event = new MouseClickEvent(draw_canvas->getRelativePos(mouse_event->pos));
+            EventPtr cell_view_event = new MouseReleaseEvent(draw_canvas->getRelativePos(mouse_event->pos));
             for (auto val : cell_views)
             {
                 if (draw_canvas->isCellVisible(val->getPos(), kCellSize))
@@ -82,10 +94,19 @@ void CellViewGroup::push(const EventPtr event)
 
             return;
         }
+        case EventType::CLICKED_MOUSE_MOVED:
+        {
+            const ClickedMouseMoveEvent* mouse_event = static_cast<const ClickedMouseMoveEvent*>(event.get());
+            if (!draw_canvas->isScreenPointInCanvas(mouse_event->new_pos)) return;
+
+            Point new_pos = draw_canvas->updateHostPosition(mouse_event->delta_x, mouse_event->delta_y);
+            cell_interlayer->pushToView(new SmallMapMovedEvent(new_pos));
+
+            break;
+        }
         case EventType::MOUSE_MOVE:
         {
             const MouseMoveEvent* mouse_event = static_cast<const MouseMoveEvent*>(event.get());
-
             if (!draw_canvas->isScreenPointInCanvas(mouse_event->pos)) return;
 
             EventPtr cell_view_event = new MouseMoveEvent(draw_canvas->getRelativePos(mouse_event->pos));
@@ -160,5 +181,6 @@ void CellViewGroup::addCell(CellView* cell_view)
 
 void CellViewGroup::addCell(const FieldType field_type, const Point pos)
 {
+    cell_interlayer->pushToView(new SmallMapChangedEvent(field_type, pos));
     addCell(CellKeeper::createCellView(field_type, pos, *this));
 }
