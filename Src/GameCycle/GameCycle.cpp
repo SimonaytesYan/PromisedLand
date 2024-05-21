@@ -48,9 +48,8 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 {
     auto timer_start = std::chrono::system_clock::now(); 
 
-	int delta_x = 0, delta_y = 0;
-	bool is_map_moving = false, is_clicked = false;
-	Point last_pos;
+	int  delta_x = 0, delta_y = 0;
+	bool is_mouse_moving = false, is_clicked = false;
 
     while (window.isOpen())
 	{
@@ -92,41 +91,28 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 
 				case sf::Event::MouseButtonPressed:
 				{
-					const auto mouse_position = sf::Mouse::getPosition();
-
 					is_clicked = true;
-					last_pos   = {mouse_position.x, mouse_position.y};
-
+					event_manager.push(new MouseClickEvent({event.mouseButton.x, event.mouseButton.y}));
 					break;
 				}
 
 				case sf::Event::MouseButtonReleased:
 				{
-					if (!is_map_moving) {
-						// click on cell
+					if (!is_mouse_moving)
 						event_manager.push(new MouseReleaseEvent({event.mouseButton.x, event.mouseButton.y}));
+					is_mouse_moving = is_clicked = false;
 
-						// for cell hover
-						const auto mouse_position = sf::Mouse::getPosition();
-						event_manager.push(new MouseMoveEvent({mouse_position.x, mouse_position.y}));
-					}
-
-					is_map_moving = false;
-					is_clicked    = false;
+					// for cell hover
+					const auto mouse_position = sf::Mouse::getPosition();
+					event_manager.push(new MouseMoveEvent({mouse_position.x, mouse_position.y}));
 
 					break;
 				}
 
 				case sf::Event::MouseMoved:
 				{
-					if (is_clicked) {
-						is_map_moving = true;
-						event_manager.push(new MapMovedEvent(last_pos.x - event.mouseMove.x, last_pos.y - event.mouseMove.y));
-						last_pos = {event.mouseMove.x, event.mouseMove.y};
-					}
-
+					if (is_clicked) is_mouse_moving = true;
 					event_manager.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
-					
 					break;
 				}
 
@@ -140,10 +126,6 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 						delta_y = 0;
 					else if (event.key.code == sf::Keyboard::D) 
 						delta_x = 0;
-					else break;
-
-					is_map_moving = false;
-
 					break;
 				}
 
@@ -159,7 +141,6 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 						delta_x = move_speed;
 					else break;
 
-					is_map_moving = true;
 					event_manager.push(new MapMovedEvent(delta_x, delta_y));
 
 					// for cell hover
