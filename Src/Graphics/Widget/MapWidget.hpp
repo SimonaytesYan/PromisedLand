@@ -5,6 +5,8 @@
 #include "../../CellLoader/CellKeeper.hpp"
 #include "Widget.hpp"
 
+class CellInterlayer;
+
 class MapWidget : public Widget 
 {
 public:
@@ -23,9 +25,7 @@ public:
         frame_size_x  (frame_size_x),
         frame_size_y  (frame_size_y),
         pixels        (size_x * size_y, Color::Transparent),
-        pixel_texture (new RenderTarget({size_x, size_y})),
-        is_moving     (false),
-        last_pos      ()
+        pixel_texture (new RenderTarget({size_x, size_y}))
     {}
 
     // Non-copyable
@@ -57,47 +57,11 @@ public:
                                kFrameBorderColor);
     }
 
-    void push(const EventPtr event) override
+    void push(const EventPtr event) override;
+
+    void setCellInterlayer(CellInterlayer* _cell_interlayer)
     {
-        switch (event->event_type)
-        {
-        case EventType::SMALL_MAP_CHANGED:
-          {
-            const SmallMapChangedEvent* map_event = static_cast<const SmallMapChangedEvent*>(event.get());
-            const Color pixel_color = getTextureMeanColor(CellKeeper::getAsset(map_event->field_type));
-            const Point pixel_pos   = {map_event->pos.x / kCellSize, map_event->pos.y / kCellSize};
-
-            for (int i = 0; i < scale; ++i) 
-            {
-                for (int j = 0; j < scale; ++j)
-                {
-                    pixel_texture->setPixel({scale * pixel_pos.x + i, scale * pixel_pos.y + j}, pixel_color);
-                }
-            }
-
-            break;
-          }
-        case EventType::SMALL_MAP_MOVED:
-          {
-            const SmallMapMovedEvent* move_event = static_cast<const SmallMapMovedEvent*>(event.get());
-            cur_frame_pos = move_event->new_pos;
-
-            break;
-          }
-        case EventType::MOUSE_CLICK:
-          {
-            const MouseClickEvent* click_event = static_cast<const MouseClickEvent*>(event.get());
-            if (isMouseInFrame(click_event->pos)) 
-            {
-                // is_moving = true;
-                // last_pos  = 
-            }
-
-            break;
-          }
-        default:
-            break;
-        }
+        cell_interlayer = _cell_interlayer;
     }
 
 private:
@@ -129,8 +93,5 @@ private:
 
     std::vector<Color> pixels;
     RenderTarget*      pixel_texture;
-
-    bool  is_moving;
-    bool  is_clicked;
-    Point last_pos;
+    CellInterlayer*    cell_interlayer;
 };
