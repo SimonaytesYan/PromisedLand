@@ -5,7 +5,7 @@
 static const Resources kAppearIncome  = Resources( 0,  0, -10, 0, 0, 0);
 static const Resources kTickIncome    = Resources( 0,  0,   5, 0, 0, 0);
 static const Resources kDestroyIncome = Resources( 0,  0,   7, 0, 0, 0);
-static const Bitmask   kBuildMask     = ~((1 << 0) | (1 << 1) | (1 << 3));
+static const Bitmask   kBuildMask     = (1 << 2);
 
 class SawmillCell : public Building
 {
