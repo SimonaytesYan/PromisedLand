@@ -47,6 +47,9 @@ public:
     {
         pixel_texture->display();
 
+        // draw map frame
+        render_target.drawRect({pos.x - kMapBorderSize, pos.y - kMapBorderSize}, {size_x, size_y}, kMapBorderColor);
+
         Texture* texture = pixel_texture->getTexture();
         render_target.drawTexture(pos, *texture);
 
@@ -79,10 +82,16 @@ private:
                mouse_pos.y <= frame_start.y + frame_size.y; 
     }
 
+public:
+
+    static const int kMapBorderSize = 2;
+
 private:
     const Color kFrameColor       = {255, 255, 255, 128};
     const Color kFrameBorderColor = {255, 255, 255, 200};
     const int   kFrameBorderSize  = 2;
+
+    const Color kMapBorderColor = {150, 75, 0, 255};
 
 private:
     const size_t size_x;

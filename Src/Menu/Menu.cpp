@@ -153,8 +153,8 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 										   kStartResources);
 	game_window->addChild(res_bar);
 
-	const int map_area_size_x = std::max(visible_part_x - map_pos_x, 0ul);
-	const int map_area_size_y = std::max(visible_part_y - map_pos_y, 0ul);
+	const int map_area_size_x = std::max(visible_part_x - map_pos_x + MapWidget::kMapBorderSize, 0ul);
+	const int map_area_size_y = std::max(visible_part_y - map_pos_y + MapWidget::kMapBorderSize, 0ul);
 
 	CellViewGroup* cell_view_group = new CellViewGroup({0, 0}, 
 													   visible_part_x, 
