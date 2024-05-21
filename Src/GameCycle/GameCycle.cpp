@@ -26,8 +26,12 @@ Window* createOnLoseWindow(sf::RenderWindow& window, RenderTarget& rt, EventMana
 	Window* lose_window = new Window({0, 0}, win_size.x, win_size.y, "Assets/UI/LoseWinBack.png");
 
 	const Point button_size(400, 200);
-	Point position(window.getSize().x / 2 - button_size.x / 2 - 20, 400);
+	Point position(window.getSize().x / 2 - button_size.x / 2 - 2 * kBtnIndent, 350);
 
+	lose_window->addChild(new TextView({position.x + 125, position.y}, 
+								"Population: " + std::to_string(ResourceManager::current_manager->getUserRes().population)));
+
+	position.y += 100;
 	BasicFunctor* main_btn_func = new Functor<CreateMenuArgs>(goToMainFunc, {window, rt, event_manager, window_manager, dummy_widget});
 	lose_window->addChild(new Button(position, button_size.x, button_size.y, 
 									main_btn_func, "Assets/UI/MainBtn.png"));

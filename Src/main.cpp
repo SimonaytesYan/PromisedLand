@@ -47,6 +47,7 @@ int main()
 	window_manager.setCurWindow(menu);
 
 	runGameCycle(window, main_rt, event_manager, window_manager, dummy_widget);
+	window_manager.setCurWindow(nullptr);
 	// CreateGameWindowAndRunGame(window);
 	
 	CellKeeper::destroy();

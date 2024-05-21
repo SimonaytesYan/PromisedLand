@@ -21,7 +21,6 @@ public:
         {
             if (child->getPriority() >= priorities[event_type]) 
             {
-                std::cout << child->getPriority() << '\n';
                 child->push(event);
             }
         }
