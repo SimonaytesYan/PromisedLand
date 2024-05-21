@@ -54,12 +54,14 @@ public:
     void push(const EventPtr event) override
     {}
 
-    void updateHostPosition(const int dx, const int dy)
+    Point updateHostPosition(const int dx, const int dy)
     {
         relative_host_pos.x = 
             std::max(std::min(relative_host_pos.x + dx, original_host_pos.x + canvas_size_x - host_size_x), original_host_pos.x);
         relative_host_pos.y = 
             std::max(std::min(relative_host_pos.y + dy, original_host_pos.y + canvas_size_y - host_size_y), original_host_pos.y);
+    
+        return relative_host_pos;
     }
 
     RenderTarget& getRenderTarget()

@@ -103,8 +103,11 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	const size_t map_pos_x = window_size.x - kMapScale * kFieldSizeX;
 	const size_t map_pos_y = window_size.y - kMapScale * kFieldSizeY;
 	MapWidget* map_widget  = new MapWidget({map_pos_x, map_pos_y}, 
-							   				kMapScale * kFieldSizeX, kMapScale * kFieldSizeY, 
-							   				kMapScale);
+							   				kMapScale * kFieldSizeX, 
+											kMapScale * kFieldSizeY, 
+							   				kMapScale,
+											visible_part_x,
+											visible_part_y);
 	game_window->addChild(map_widget);
 
 	ResourceBar* res_bar = new ResourceBar(args.window.getSize().x, 

@@ -9,11 +9,19 @@ class MapWidget : public Widget
 {
 public:
 
-    explicit MapWidget(const Point pos, const size_t size_x, const size_t size_y, const int scale)
+    explicit MapWidget(const Point pos, 
+                       const size_t size_x, 
+                       const size_t size_y, 
+                       const int scale, 
+                       const size_t frame_size_x, 
+                       const size_t frame_size_y)
       : Widget        (pos),
         size_x        (size_x),
         size_y        (size_y),
         scale         (scale),
+        cur_frame_pos (0, 0),
+        frame_size_x  (frame_size_x),
+        frame_size_y  (frame_size_y),
         pixels        (size_x * size_y, Color::Transparent),
         pixel_texture (new RenderTarget({size_x, size_y}))
     {}
@@ -39,6 +47,10 @@ public:
         render_target.drawTexture(pos, *texture);
 
         delete texture;
+
+        render_target.drawRect({pos.x + scale * cur_frame_pos.x / kCellSize, pos.y + scale * cur_frame_pos.y / kCellSize}, 
+                               {scale * frame_size_x / kCellSize, scale * frame_size_y / kCellSize}, 
+                               kFrameColor);
     }
 
     void push(const EventPtr event) override
@@ -61,15 +73,29 @@ public:
 
             break;
           }
+        case EventType::SMALL_MAP_MOVED:
+          {
+            const SmallMapMovedEvent* move_event = static_cast<const SmallMapMovedEvent*>(event.get());
+            cur_frame_pos = move_event->new_pos;
+
+            break;
+          }
         default:
             break;
         }
     }
 
 private:
+    const Color kFrameColor = {255, 255, 255, 128};
+
+private:
     const size_t size_x;
     const size_t size_y;
     const int    scale;
+
+    Point        cur_frame_pos;
+    const size_t frame_size_x;
+    const size_t frame_size_y;
 
     std::vector<Color> pixels;
     RenderTarget*      pixel_texture;

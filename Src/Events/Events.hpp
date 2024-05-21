@@ -26,6 +26,7 @@ enum class EventType
     SUCCESSFUL_CELL_VIEW_DELETE,
     MAP_MOVED,
     SMALL_MAP_CHANGED,
+    SMALL_MAP_MOVED,
 
     EVENT_CNT,
 };
@@ -177,6 +178,16 @@ struct MapMovedEvent : public Event
 
   int delta_x;
   int delta_y;
+};
+
+struct SmallMapMovedEvent : public Event
+{
+  explicit SmallMapMovedEvent(const Point new_pos)
+    : Event   (EventType::SMALL_MAP_MOVED),
+      new_pos (new_pos)
+  {}
+
+  const Point new_pos;
 };
 
 struct SmallMapChangedEvent : public Event
