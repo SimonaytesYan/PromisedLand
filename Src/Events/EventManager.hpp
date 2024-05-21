@@ -34,6 +34,13 @@ public:
         }
     }
 
+    void privatizeAll(const int new_priority) {
+        for (auto& prior : priorities)
+        {
+            prior = new_priority;
+        }
+    }
+
     void setPriority(const EventType event_type, const int new_priority)
     {
         priorities[static_cast<size_t>(event_type)] = new_priority;
@@ -56,7 +63,7 @@ public:
 
     void resetPriorities()
     {
-        for (auto prior : priorities)
+        for (auto& prior : priorities)
         {
             prior = 0;
         }
