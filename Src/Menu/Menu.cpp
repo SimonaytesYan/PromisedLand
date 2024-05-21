@@ -97,16 +97,13 @@ void createTopScoreWindow(MenuButtonArgs args)
 	const auto window_size = args.window.getSize();
 	Window* top_score_window = new Window({0, 0}, window_size.x, window_size.y, "Assets/UI/TopScoreBack.png");
 
-	sf::Font pixel_font;
-	// pixel_font.loadFromFile("Assets/PixelFont.ttf")
-
 	Vector<int> top_score = getTopScore();
 	const size_t records_number = top_score.Size();
 	for (size_t i = 0; i < records_number; i++)
 	{
 		char content[255] = {};
 		sprintf(content, "%zu. %d", i, top_score[i]);
-		top_score_window->addChild(new TextView({300, i * 150 + 400}, content, 100));
+		top_score_window->addChild(new TextView({300, i * 150 + 400}, content, 200));
 	}
 
 	args.window_manager.setCurWindow(top_score_window, nullptr);
