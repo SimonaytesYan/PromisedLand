@@ -64,6 +64,7 @@ struct CreateMenuArgs {
 
 struct PauseArgs {
 	sf::RenderWindow& window;
+	RenderTarget&     rt;
 	EventManager&     event_manager;
 	WindowManager&    window_manager;
 	DummyWidget&      dummy_widget;
@@ -85,5 +86,6 @@ static const int kBtnIndent = 20;
 
 static const int kPauseWinSizeX = 1000;
 static const int kPauseWinSizeY = 800;
+static const int kUpperBtnPosY  = 250;
 
 Window* CreateMenuWindow(CreateMenuArgs args);

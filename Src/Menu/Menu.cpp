@@ -35,6 +35,14 @@ void closePause(PauseArgs args) {
 	args.event_manager.resetPriorities();
 }
 
+void goToMainFunc(PauseArgs args) {
+	args.pause_win->kill();
+	args.event_manager.removeChild(args.pause_win);
+	args.event_manager.resetPriorities();
+
+	args.window_manager.setCurWindow(CreateMenuWindow({args.window, args.rt, args.event_manager, args.window_manager, args.dummy_widget}));
+}
+
 void createPauseMenu(PauseArgs args) {
 	const auto  window_size   = args.window.getSize();
 	const Point pause_win_pos = {(window_size.x - kPauseWinSizeX) / 2, (window_size.y - kPauseWinSizeY) / 2};
@@ -42,21 +50,22 @@ void createPauseMenu(PauseArgs args) {
 	Window* pause_window = new Window(pause_win_pos, window_size.x, window_size.y, "Assets/UI/PauseBack.png");
 
 	const Point button_size(kBtnSizeX, kBtnSizeY);
-	Point position(args.window.getSize().x / 2 - button_size.x / 2, 300);
+	Point position(args.window.getSize().x / 2 - button_size.x, kUpperBtnPosY * 3 / 2);
 
-	BasicFunctor* resume_func = new Functor<PauseArgs>(closePause, {args.window, args.event_manager, args.window_manager, args.dummy_widget, args.cell_interlayer, pause_window});
+	BasicFunctor* resume_func = new Functor<PauseArgs>(closePause, {args.window, args.rt, args.event_manager, args.window_manager, args.dummy_widget, args.cell_interlayer, pause_window});
 	pause_window->addChild(new Button(position, button_size.x, button_size.y, 
 									resume_func, "Assets/UI/ResumeBtn.png"));
 	
-	position.y += kBtnSizeY + kBtnIndent;
 	BasicFunctor* save_func = new Functor<SaveMapArgs>(SaveMap, {args.cell_interlayer, args.dummy_widget, args.event_manager, {args.window.getSize().x, args.window.getSize().y}});
-	Button* save_button = new Button(position, button_size.x, button_size.y, 
-									  save_func, "Assets/UI/SaveBtn.png");
-	pause_window->addChild(save_button);
+	pause_window->addChild(new Button({position.x, position.y + kBtnSizeY + kBtnIndent}, button_size.x, button_size.y, 
+									  save_func, "Assets/UI/SaveBtn.png"));
 
-	position.y += kBtnSizeY + kBtnIndent;
+	BasicFunctor* to_main_func = new Functor<PauseArgs>(goToMainFunc, {args.window, args.rt, args.event_manager, args.window_manager, args.dummy_widget, args.cell_interlayer, pause_window});
+	pause_window->addChild(new Button({position.x + kBtnSizeX + kBtnIndent, position.y}, button_size.x, button_size.y, 
+									to_main_func, "Assets/UI/MainBtn.png"));
+
 	BasicFunctor* exit_game_func = new Functor<WindowManager&>(exitGame, args.window_manager);
-	pause_window->addChild(new Button(position, button_size.x, button_size.y, 
+	pause_window->addChild(new Button({position.x + kBtnSizeX + kBtnIndent, position.y + kBtnSizeY + kBtnIndent}, button_size.x, button_size.y, 
 									exit_game_func, "Assets/UI/ExitBtn.png"));
 
 	pause_window->setPriority(1);
@@ -94,7 +103,7 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 												   *build_pan_interlayer);
 	game_window->addChild(build_panel);
 
-	BasicFunctor* pause_func = new Functor<PauseArgs>(createPauseMenu, {args.window, args.event_man, args.window_manager, args.dummy_widget, *cell_interlayer});
+	BasicFunctor* pause_func = new Functor<PauseArgs>(createPauseMenu, {args.window, args.rt, args.event_man, args.window_manager, args.dummy_widget, *cell_interlayer});
 	Button* pause_button = new Button({args.window.getSize().x - 112, 12}, 100, 100, 
 									  pause_func, "Assets/UI/PauseBtn.png");
 	game_window->addChild(pause_button);
@@ -137,6 +146,7 @@ Window* CreateMenuWindow(CreateMenuArgs args)
 	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, {args.window, args.rt, args.event_manager, args.window_manager, menu_window, args.dummy_widget});
 	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
 									load_game_func, "Assets/UI/LoadButton.png"));
-	
+
+
 	return menu_window;
 }
