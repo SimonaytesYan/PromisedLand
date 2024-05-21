@@ -54,6 +54,14 @@ struct GameSettings {
 	BuildingPanelInterlayer* build_pan_interlayer;
 };
 
+struct CreateMenuArgs {
+	sf::RenderWindow& window;
+	RenderTarget&     rt;
+	EventManager&     event_manager;
+	WindowManager&    window_manager;
+	DummyWidget&      dummy_widget;
+};
+
 static const char* kLoadImg  = "Assets/load.png";
 static const int   kLoadImgW = 456;
 static const int   kLoadImgH = 256;
@@ -61,4 +69,8 @@ static const int   kLoadImgH = 256;
 static const char* kSaveSuccessful = "Saved successfully!";
 static const int   kBorderIndent   = 5;
 
-Window* CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager, WindowManager& window_manager, DummyWidget& dummy_widget);
+static const int kBtnSizeX  = 400;
+static const int kBtnSizeY  = 200;
+static const int kBtnIndent = 20;
+
+Window* CreateMenuWindow(CreateMenuArgs args);

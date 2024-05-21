@@ -8,8 +8,37 @@
 #include "../Constants.hpp"
 #include "../Map/MapSaveLoad.hpp"
 #include "../Menu/Menu.hpp"
+#include "../Graphics/Widget/Button.hpp"
 
 ResourceManager* ResourceManager::current_manager = nullptr; 
+
+void goToMainFunc(CreateMenuArgs args) {
+	args.window_manager.setCurWindow(CreateMenuWindow(args));
+}
+
+void exitGame(WindowManager& win_manager) {
+	win_manager.setCurWindow(nullptr);
+}
+
+Window* createOnLoseWindow(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager, WindowManager& window_manager, DummyWidget& dummy_widget) {
+	const auto win_size = window.getSize();
+
+	Window* lose_window = new Window({0, 0}, win_size.x, win_size.y, "Assets/UI/LoseWinBack.png");
+
+	const Point button_size(400, 200);
+	Point position(window.getSize().x / 2 - button_size.x / 2 - 20, 400);
+
+	BasicFunctor* main_btn_func = new Functor<CreateMenuArgs>(goToMainFunc, {window, rt, event_manager, window_manager, dummy_widget});
+	lose_window->addChild(new Button(position, button_size.x, button_size.y, 
+									main_btn_func, "Assets/UI/MainBtn.png"));
+	
+	position.y += button_size.y * 1.5;
+	BasicFunctor* load_game_func = new Functor<WindowManager&>(exitGame, window_manager);
+	lose_window->addChild(new Button(position, button_size.x, button_size.y, 
+									load_game_func, "Assets/UI/ExitBtn.png"));
+	
+	return lose_window;
+}
 
 void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager, WindowManager& window_manager, DummyWidget& dummy_widget) 
 {
@@ -24,17 +53,14 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 		if (ResourceManager::hasLost())
 		{
 			fprintf(stderr, "You have lost!\n");
-			window_manager.setCurWindow(CreateMenuWindow(window, rt, event_manager, window_manager, dummy_widget));
-			// window.close();
-            return;
+			window_manager.setCurWindow(createOnLoseWindow(window, rt, event_manager, window_manager, dummy_widget));
 		}
 
 		rt.clear();
 		window.clear();
 
-		fprintf(stderr, "TRY DRAW\n");
 		dummy_widget.draw(rt);
-		fprintf(stderr, "DRAW\n");
+		if (!window_manager.getCurWindow()) return;
 		
 		rt.display(window);
 		window.display();
@@ -44,9 +70,7 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 		if (passed.count() >= kMSInClock)
 		{
 			static int tick = 0;
-			fprintf(stderr, "TRY TICK\n");
 			event_manager.push(new Event(EventType::TICK));
-			fprintf(stderr, "TICK\n");
 			timer_start = timer_end;
 		}
 

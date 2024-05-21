@@ -74,10 +74,7 @@ void CreateGameWindowAndRunGameCycle(MenuButtonArgs args)
 	else
 		loadMapFromFile(*cell_interlayer, args.map_filepath);
 
-	fprintf(stderr, "Start set\n");
-	// add functor to delete managers for game
 	args.window_manager.setCurWindow(game_window, new Functor<GameSettings>(freeGameManagers, {res_bar_inter, res_manager, cell_manager, cell_interlayer, build_pan_interlayer}));
-	fprintf(stderr, "Set finished\n");
 }
 
 void selectLoadingFile(MenuButtonArgs args)
@@ -86,22 +83,21 @@ void selectLoadingFile(MenuButtonArgs args)
 	CreateGameWindowAndRunGameCycle(args);
 }
 
-Window* CreateMenuWindow(sf::RenderWindow& window, RenderTarget& rt, EventManager& event_manager, WindowManager& window_manager, DummyWidget& dummy_widget)
+Window* CreateMenuWindow(CreateMenuArgs args)
 {
-	const auto window_size = window.getSize();
+	const auto window_size = args.window.getSize();
 
-	RenderTarget menu_rt(Point(window_size.x, window_size.y));
 	Window* menu_window = new Window({0, 0}, window_size.x, window_size.y, "Assets/UI/MenuBackground.png");
 
-	const Point button_size(400, 200);
-	Point position(window.getSize().x / 2 - button_size.x / 2 - 20, 400);
+	const Point button_size(kBtnSizeX, kBtnSizeY);
+	Point position(args.window.getSize().x / 2 - button_size.x / 2 - kBtnIndent, kBtnSizeX);
 
-	BasicFunctor* run_game_func = new Functor<MenuButtonArgs>(CreateGameWindowAndRunGameCycle, {window, rt, event_manager, window_manager, menu_window, dummy_widget});
+	BasicFunctor* run_game_func = new Functor<MenuButtonArgs>(CreateGameWindowAndRunGameCycle, {args.window, args.rt, args.event_manager, args.window_manager, menu_window, args.dummy_widget});
 	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
 									run_game_func, "Assets/UI/PlayButton.png"));
 	
 	position.y += button_size.y * 1.5;
-	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, {window, rt, event_manager, window_manager, menu_window, dummy_widget});
+	BasicFunctor* load_game_func = new Functor<MenuButtonArgs>(selectLoadingFile, {args.window, args.rt, args.event_manager, args.window_manager, menu_window, args.dummy_widget});
 	menu_window->addChild(new Button(position, button_size.x, button_size.y, 
 									load_game_func, "Assets/UI/LoadButton.png"));
 	

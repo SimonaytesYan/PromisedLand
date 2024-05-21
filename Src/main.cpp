@@ -43,7 +43,7 @@ int main()
 	DummyWidget   dummy_widget;
 	EventManager  event_manager;
 	WindowManager window_manager(event_manager, dummy_widget);
-	Window* menu = CreateMenuWindow(window, main_rt, event_manager, window_manager, dummy_widget);
+	Window* menu = CreateMenuWindow({window, main_rt, event_manager, window_manager, dummy_widget});
 	window_manager.setCurWindow(menu);
 
 	runGameCycle(window, main_rt, event_manager, window_manager, dummy_widget);

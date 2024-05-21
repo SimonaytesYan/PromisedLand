@@ -38,9 +38,13 @@ public:
         }
 
         cur_window = _cur_window;
-        dummy_widget .addChild(cur_window);
-	    event_manager.addChild(cur_window);
 
+        if (cur_window) {
+            dummy_widget .addChild(cur_window);
+	        event_manager.addChild(cur_window);
+        }
+
+        delete on_win_changed;
         on_win_changed = _on_win_changed;
     }
 
