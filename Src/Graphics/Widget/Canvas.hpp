@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../Utils/RenderTarget.hpp"
-// #include "../CellView/CellView.hpp"
 #include "Widget.hpp"
 
 class Canvas : public Widget

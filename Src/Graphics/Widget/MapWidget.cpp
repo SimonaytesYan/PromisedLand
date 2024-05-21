@@ -8,8 +8,21 @@ void MapWidget::push(const EventPtr event)
     case EventType::SMALL_MAP_CHANGED:
         {
         const SmallMapChangedEvent* map_event = static_cast<const SmallMapChangedEvent*>(event.get());
-        const Color pixel_color = getTextureMeanColor(CellKeeper::getAsset(map_event->field_type));
         const Point pixel_pos   = {map_event->pos.x / kCellSize, map_event->pos.y / kCellSize};
+              Color pixel_color = Color::Transparent;
+        const char* pixel_asset = CellKeeper::getAsset(map_event->field_type);
+
+        if (asset_color_map.contains(pixel_asset))
+        {
+            pixel_color = asset_color_map[pixel_asset];
+        }
+        else
+        {
+            Color mean_color = getTextureMeanColor(pixel_asset);
+
+            asset_color_map[pixel_asset] = mean_color;
+            pixel_color                  = mean_color;
+        }
 
         for (int i = 0; i < scale; ++i) 
         {

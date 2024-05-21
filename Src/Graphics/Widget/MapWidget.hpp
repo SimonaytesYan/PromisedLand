@@ -1,5 +1,6 @@
 #pragma once
 
+#include <unordered_map>
 #include <vector>
 
 #include "../../CellLoader/CellKeeper.hpp"
@@ -17,15 +18,16 @@ public:
                        const int scale, 
                        const size_t frame_size_x, 
                        const size_t frame_size_y)
-      : Widget        (pos),
-        size_x        (size_x),
-        size_y        (size_y),
-        scale         (scale),
-        cur_frame_pos (0, 0),
-        frame_size_x  (frame_size_x),
-        frame_size_y  (frame_size_y),
-        pixels        (size_x * size_y, Color::Transparent),
-        pixel_texture (new RenderTarget({size_x, size_y}))
+      : Widget          (pos),
+        size_x          (size_x),
+        size_y          (size_y),
+        scale           (scale),
+        cur_frame_pos   (0, 0),
+        frame_size_x    (frame_size_x),
+        frame_size_y    (frame_size_y),
+        pixels          (size_x * size_y, Color::Transparent),
+        pixel_texture   (new RenderTarget({size_x, size_y})),
+        asset_color_map ()
     {}
 
     // Non-copyable
@@ -94,4 +96,6 @@ private:
     std::vector<Color> pixels;
     RenderTarget*      pixel_texture;
     CellInterlayer*    cell_interlayer;
+
+    std::unordered_map<const char*, Color> asset_color_map;
 };
