@@ -13,6 +13,7 @@ enum class EventType
     MOUSE_CLICK,
     MOUSE_MOVE,
     MOUSE_RELEASE,
+    CLICKED_MOUSE_MOVED,
 
     // VIRTUAL EVENTS
     SELECT_BUILDING_EVENT,
@@ -71,6 +72,20 @@ struct MouseReleaseEvent : public Event
     { }
 
     Point pos;
+};
+
+struct ClickedMouseMoveEvent : public Event
+{
+    ClickedMouseMoveEvent(const Point pos, const int delta_x, const int delta_y)
+    : Event(EventType::CLICKED_MOUSE_MOVED),
+      new_pos (pos),
+      delta_x (delta_x),
+      delta_y (delta_y)
+    { }
+
+    Point new_pos;
+    int   delta_x;
+    int   delta_y;
 };
 
 struct TryBuildEvent : public Event

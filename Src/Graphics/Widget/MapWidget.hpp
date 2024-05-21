@@ -131,5 +131,6 @@ private:
     RenderTarget*      pixel_texture;
 
     bool  is_moving;
+    bool  is_clicked;
     Point last_pos;
 };

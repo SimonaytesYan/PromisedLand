@@ -48,7 +48,9 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 {
     auto timer_start = std::chrono::system_clock::now(); 
 
-	int delta_x = 0, delta_y = 0;
+	int   delta_x = 0, delta_y = 0;
+	bool  is_clicked = false, is_moving = false;
+	Point prev_pos;
 
     while (window.isOpen())
 	{
@@ -90,13 +92,18 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 
 				case sf::Event::MouseButtonPressed:
 				{
-					event_manager.push(new MouseClickEvent({event.mouseButton.x, event.mouseButton.y}));
+					is_clicked = true;
+					prev_pos = {event.mouseButton.x, event.mouseButton.y};
+					event_manager.push(new MouseClickEvent(prev_pos));
 					break;
 				}
 
 				case sf::Event::MouseButtonReleased:
 				{
-					event_manager.push(new MouseReleaseEvent({event.mouseButton.x, event.mouseButton.y}));
+					if (!is_moving) 
+						event_manager.push(new MouseReleaseEvent({event.mouseButton.x, event.mouseButton.y}));
+
+					is_clicked = is_moving = false;
 
 					// for cell hover
 					const auto mouse_position = sf::Mouse::getPosition();
@@ -107,7 +114,15 @@ void runGameCycle(sf::RenderWindow& window, RenderTarget& rt, EventManager& even
 
 				case sf::Event::MouseMoved:
 				{
-					event_manager.push(new MouseMoveEvent({event.mouseMove.x, event.mouseMove.y}));
+					if (is_clicked) is_moving = true;
+
+					if (is_moving)
+						event_manager.push(new ClickedMouseMoveEvent({event.mouseMove.x, event.mouseMove.y},
+																	  prev_pos.x - event.mouseMove.x,
+																	  prev_pos.y - event.mouseMove.y));
+					prev_pos = {event.mouseMove.x, event.mouseMove.y};
+
+					event_manager.push(new MouseMoveEvent(prev_pos));
 					break;
 				}
 
