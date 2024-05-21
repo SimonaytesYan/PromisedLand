@@ -44,9 +44,23 @@ public:
     void draw(RenderTarget& render_target) override
     {
         canvas_renderer->display();
-
         Texture* texture = canvas_renderer->getTexture();
-        render_target.drawTexture(original_host_pos, relative_host_pos, host_size_x, host_size_y, *texture);
+
+        size_t texture_size_x = host_size_x;
+        size_t texture_size_y = host_size_y;
+
+        // check if we are not on white part of canvas
+        if (relative_host_pos.x > original_host_pos.x + canvas_size_x - host_size_x)
+        {
+            // right white line is visible
+            texture_size_x = canvas_size_x - relative_host_pos.x;
+        }
+        if (relative_host_pos.y > original_host_pos.y + canvas_size_y - host_size_y)
+        {
+            // down white line is visible
+            texture_size_y = canvas_size_y - relative_host_pos.y;
+        }
+        render_target.drawTexture(original_host_pos, relative_host_pos, texture_size_x, texture_size_y, *texture);
 
         delete texture;
     }
@@ -86,10 +100,10 @@ public:
             return false;
         }
 
-        // check if we are not on black part of canvas
+        // check if we are not on white part of canvas
         if (relative_host_pos.x > original_host_pos.x + canvas_size_x - host_size_x)
         {
-            // right black line is visible
+            // right white line is visible
             const int invalid_visible_part_x = host_size_x - (canvas_size_x - relative_host_pos.x);
             if (screen_pos.x > original_host_pos.x + host_size_x - invalid_visible_part_x) return false;
         }
@@ -97,7 +111,7 @@ public:
 
         if (relative_host_pos.y > original_host_pos.y + canvas_size_y - host_size_y)
         {
-            // down black line is visible
+            // down white line is visible
             const int invalid_visible_part_y = host_size_y - (canvas_size_y - relative_host_pos.y);
             if (screen_pos.y > original_host_pos.y + host_size_y - invalid_visible_part_y) return false;
         }
