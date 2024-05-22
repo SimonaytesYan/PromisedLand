@@ -29,7 +29,9 @@ enum class ReservedTypes
     WELL,
     WINDMILL,
     MINE,
-    WASTELAND
+    WASTELAND,
+    OVEN,
+    WATER_TOWER
 };
 
 struct CellInterface
