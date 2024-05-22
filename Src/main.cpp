@@ -40,7 +40,6 @@ void loadPlugins()
 int main()
 {
 	srand(time(nullptr));
-
 	loadPlugins();
 
     sf::RenderWindow window(sf::VideoMode(), kWindowHeader, sf::Style::Fullscreen);

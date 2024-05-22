@@ -4,9 +4,9 @@
 #include "../Constants.hpp"
 #include "../Interlayers/CellInterlayer.hpp"
 
-const double kDfsRiverCoef               = 0.9;
+const double kDfsRiverCoef               = 0.999;
 const double kIslandsFrequencyOccurrence = 0.1;
-const double kDfsForestCoef              = 0.8;
+const double kDfsForestCoef              = 0.9;
 
 const Point kTransition[] = {{ 1,  0}, 
                              {-1,  0}, 
@@ -16,10 +16,8 @@ const Point kTransition[] = {{ 1,  0},
 void dfsGenerating(std::vector<std::vector<FieldType>>& field, 
                    const FieldType field_type,
                    const int x, const int y, const double generate_chance);
-void dfsRiverGeneration(std::vector<std::vector<FieldType>>& field, 
-                        const FieldType field_type,
-                        const int x, const int y, const double generate_chance, 
-                        const size_t prev_index);
+bool dfsRiverGeneration(std::vector<std::vector<FieldType>>& field,
+                        const int x, const int y, const size_t prev_index);
 void generateRiver(std::vector<std::vector<FieldType>>& field);
 void generateForest(std::vector<std::vector<FieldType>>& field);
 void generateField(CellInterlayer& cell_int);
@@ -44,17 +42,44 @@ void generateField(CellInterlayer& cell_int)
 
 			cell_int.createCell(field[i][j], {cell_x, cell_y});
 		}
-	}
+	};
 }
 
 void generateRiver(std::vector<std::vector<FieldType>>& field)
 {
-    dfsRiverGeneration(field, static_cast<size_t>(ReservedTypes::WATER), 0, getRandFromInterval(1, field.size()), 
-                       kDfsRiverCoef, -1);
-
-    for (size_t i = 0; i < field.size(); i++)
+    int start_x = getRandFromInterval(1, field[0].size()/10);
+    int start_y = getRandFromInterval(1, field.size());
+    for (int x = 0; x < start_x; x++)
     {
-        for (size_t j = 0; j < field[i].size(); j++)
+        field[start_y][x] = static_cast<size_t>(ReservedTypes::WATER);
+        if (start_y + 1 < field.size())
+            field[start_y + 1][x] = static_cast<size_t>(ReservedTypes::WATER);
+        if (start_y > 0)
+            field[start_y - 1][x] = static_cast<size_t>(ReservedTypes::WATER);
+        
+    }
+    
+    start_x = getRandFromInterval(1, field[0].size());
+    start_y = getRandFromInterval(1, field.size()/10);
+    for (int y = 0; y < start_y; y++)
+    {
+        field[y][start_x] = static_cast<size_t>(ReservedTypes::WATER);
+        if (start_x + 1 < field[0].size())
+            field[y][start_x + 1] = static_cast<size_t>(ReservedTypes::WATER);
+        if (start_x > 0)
+            field[y][start_x - 1] = static_cast<size_t>(ReservedTypes::WATER);
+        
+    }
+
+    dfsRiverGeneration(field, start_x, start_y, -1);
+    printf("River gen end\n");
+
+    const size_t field_y_size = field.size(); 
+    const size_t field_x_size = field[0].size();
+
+    for (size_t i = 0; i < field_y_size; i++)
+    {
+        for (size_t j = 0; j < field_x_size; j++)
         {
             if (field[i][j] == static_cast<size_t>(ReservedTypes::WATER))
             {
@@ -76,8 +101,14 @@ void generateForest(std::vector<std::vector<FieldType>>& field)
 
     while(field[y_start][x_start] != static_cast<size_t>(ReservedTypes::GRASS))
     { 
-        y_start = getRandFromInterval(1, field.size());
-        x_start = getRandFromInterval(1, field[0].size());
+        x_start++;
+        if (x_start == field[0].size())
+        {
+            x_start = 0;
+            y_start++;
+            if (y_start == field.size())
+                y_start = 0;
+        }
     }
 
     dfsGenerating(field, static_cast<size_t>(ReservedTypes::FOREST), x_start, y_start, kDfsForestCoef);
@@ -112,38 +143,45 @@ void dfsGenerating(std::vector<std::vector<FieldType>>& field,
     }
 }
 
-void dfsRiverGeneration(std::vector<std::vector<FieldType>>& field, 
-                        const FieldType field_type,
-                        const int x, const int y, const double generate_chance, 
+// return should we continue generation or not
+bool dfsRiverGeneration(std::vector<std::vector<FieldType>>& field,
+                        const int x, const int y, 
                         const size_t prev_index)
 {
     if (field.size() == 0)
-        return;
-    if (generate_chance < 0.1)
-        return;
+        return false;
 
     if (x < 0 || field[0].size() <= x)
-        return;
+        return true;
+
     if (y < 0 || field.size() <= y)
-        return;
+        return true;
+    
 
-    if (field[y][x] != static_cast<size_t>(ReservedTypes::GRASS))
-        return;
-    field[y][x] = field_type;
-
-    size_t counter = 0;
-    for (size_t i = 0; i < sizeof(kTransition) / sizeof(kTransition[0]); i++)
+    bool continue_gen = false;
+    do 
     {
-        if (prev_index == i && (bernoulliTrial(generate_chance) || bernoulliTrial(generate_chance)) || 
-            (prev_index != i && bernoulliTrial(generate_chance)))
-        {
-            dfsRiverGeneration(field, field_type,
-                               x + kTransition[i].x, y + kTransition[i].y,
-                               generate_chance * 0.95, i);
-            counter++;
-            if (counter == 2)
-                break;
-        }
+        if (!bernoulliTrial(kDfsRiverCoef))
+            break;
+        
+        const size_t trans_number = sizeof(kTransition) / sizeof(kTransition[0]);
+        size_t trans_index = getRandFromInterval(0, trans_number);
+        if (prev_index != -1 && 
+            kTransition[trans_index].x == -kTransition[prev_index].x && 
+            kTransition[trans_index].y == -kTransition[prev_index].y)
+            trans_index = (trans_index + 1) % trans_number;
+
+        continue_gen = dfsRiverGeneration(field, x + kTransition[trans_index].x, 
+                                          y + kTransition[trans_index].y, trans_index);
     }
+    while (continue_gen);
+
+    field[y][x] = static_cast<size_t>(ReservedTypes::WATER);
+    if (x + 1 < field[0].size())
+        field[y][x + 1] = static_cast<size_t>(ReservedTypes::WATER);
+    if (x > 0)
+        field[y][x - 1] = static_cast<size_t>(ReservedTypes::WATER);
+
+    return false;
 }
 

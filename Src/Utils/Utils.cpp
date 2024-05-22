@@ -12,7 +12,8 @@ void mPrint(FILE* ostream, const char* const fmt, ...)
 
 bool bernoulliTrial(const double p)
 {
-    return ((double)rand() / (double)RAND_MAX) < p;
+    const double value = ((double)rand() / (double)RAND_MAX);
+    return value < p;
 }
 
 size_t getRandFromInterval(const size_t left, const size_t right)
