@@ -1,3 +1,12 @@
+# Alpha 5.0
+## In game
+* Add top population games
+* Add minimap
+* Add new cell: WaterTower - water generator
+* Add new cell: Oven - food generator
+* fix bugs
+![](Assets/Alpha5_0.png "Gameplay screenshot")
+
 # Alpha 4.0
 ## In game
 * Update menu
