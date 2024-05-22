@@ -6,7 +6,7 @@
 
 const double kDfsRiverCoef               = 0.999;
 const double kIslandsFrequencyOccurrence = 0.1;
-const double kDfsForestCoef              = 0.5;
+const double kDfsForestCoef              = 0.9;
 
 const Point kTransition[] = {{ 1,  0}, 
                              {-1,  0}, 
@@ -135,7 +135,7 @@ void dfsGenerating(std::vector<std::vector<FieldType>>& field,
         {
             dfsGenerating(field, field_type,
                           x + kTransition[i].x, y + kTransition[i].y,
-                          generate_chance);
+                          generate_chance * 0.99);
         }
     }
 }
