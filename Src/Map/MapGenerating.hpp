@@ -6,7 +6,7 @@
 
 const double kDfsRiverCoef               = 0.999;
 const double kIslandsFrequencyOccurrence = 0.1;
-const double kDfsForestCoef              = 0.9;
+const double kDfsForestCoef              = 0.5;
 
 const Point kTransition[] = {{ 1,  0}, 
                              {-1,  0}, 
@@ -72,7 +72,6 @@ void generateRiver(std::vector<std::vector<FieldType>>& field)
     }
 
     dfsRiverGeneration(field, start_x, start_y, -1);
-    printf("River gen end\n");
 
     const size_t field_y_size = field.size(); 
     const size_t field_x_size = field[0].size();
@@ -120,8 +119,6 @@ void dfsGenerating(std::vector<std::vector<FieldType>>& field,
 {
     if (field.size() == 0)
         return;
-    if (generate_chance < 0.1)
-        return;
 
     if (x < 0 || field[0].size() <= x)
         return;
@@ -138,7 +135,7 @@ void dfsGenerating(std::vector<std::vector<FieldType>>& field,
         {
             dfsGenerating(field, field_type,
                           x + kTransition[i].x, y + kTransition[i].y,
-                          generate_chance * 0.95);
+                          generate_chance);
         }
     }
 }
