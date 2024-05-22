@@ -1,9 +1,9 @@
 # Promised Land
-## Описание
+### Описание
 Promised land - игра в жанре стратегия. 
 Стойте своё поселение, обеспечивайте его ресурсами и соберите как можно большее население!
 
-## Игровые механики
+### Игровые механики
 В игре перед вами предстаёт случайно сгенерированное поле 100x100 клеток.
 
 В нижней части экрана отображается количество доступных ресурсов. Ресурсы зарабатываются с помощью зданий, о них речь пойдёт позже.
@@ -28,8 +28,10 @@ Promised land - игра в жанре стратегия.
 
 Справа внизу расположена миникарта, а в правом верхнем углу кнопка паузы.
 
-## Alpha 5.0
-### In game
+## Release history
+
+### Alpha 5.0
+#### In game
 * Add top population games
 * Add minimap
 * Add new cell: WaterTower - water generator
@@ -37,8 +39,8 @@ Promised land - игра в жанре стратегия.
 * fix bugs
 ![](Assets/Alpha5_0.png "Gameplay screenshot")
 
-## Alpha 4.0
-### In game
+### Alpha 4.0
+#### In game
 * Update menu
 * Add pause
 * Add notifications
@@ -47,8 +49,8 @@ Promised land - игра в жанре стратегия.
 * Map bigger than screen
 ![](Assets/Alpha4_0.png "Gameplay screenshot")
 
-## Alpha 3.0
-### In game
+### Alpha 3.0
+#### In game
 * Add indicators of people work/live in buildings
 * Add menu
 * Add new resource: stone
@@ -58,8 +60,8 @@ Promised land - игра в жанре стратегия.
 * Add script language to save and generate map (see examples in folder Scripts)
 * Add all cells like plugins 
 
-## Alpha 2.0
-### In game
+### Alpha 2.0
+#### In game
 * Wold generation
 * Add limitation for building place for every buildings
 * Add icons on resource bar
