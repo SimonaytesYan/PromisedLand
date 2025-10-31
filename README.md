@@ -86,3 +86,4 @@ make run
 * Producer building(windmill, well, sawmill) now need people to work. More people - more efficiency
 
 ![](Assets/Alpha2_0.png "Gameplay screenshot")
+
